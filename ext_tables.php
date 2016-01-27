@@ -9,7 +9,7 @@ $boot = function () {
         'system',
         'dm_developerlog',
         'after:BelogLog',
-        ['Devlog' => 'index'],
+        ['Devlog' => 'index,flush'],
         [
             'access' => 'admin',
             'iconIdentifier' => 'module-dmdeveloperlog',

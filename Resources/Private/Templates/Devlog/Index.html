@@ -1,7 +1,77 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+{namespace devlog=DieMedialen\DmDeveloperlog\ViewHelpers}
 <f:layout name="Backend/Default" />
 
+<f:section name="headline">
+	Developer log
+</f:section>
+
 <f:section name="content">
-	<h1>
-		Devlog
-	</h1>
+
+	<style>
+		.zeroPadding {
+			padding: 0 !important;
+		}
+		.zeroPadding .collapse.in div{
+			padding:2em;
+			transition: padding 0.5s ease;
+		}
+		.zeroPadding .collapse div {
+			padding:0;
+		}
+	</style>
+
+	<f:flashMessages renderMode="div" />
+	
+	<f:form action="index" object="{constraint}" name="constraint" class="form-inline">
+		<div class="form-group">
+			<label for="search">Search for</label> <f:form.textfield property="search" class="form-control" />
+			
+		</div>
+		<div class="form-group">
+			<f:form.select property="severity" options="{severity-options}" class="form-control" />
+		</div>
+		<f:form.submit class="btn btn-default" value="Search" /> 
+	</f:form>
+	<p class="clearfix">Test</p>
+	
+	<f:if condition="{logEntries->f:count()}">
+	<f:then>
+	<f:be.widget.paginate objects="{logEntries}" as="paginatedLogEntries" configuration="{itemsPerPage:20}">
+	<div class="table-fit">
+		<table id="dm-developerlog-list" class="table table-hover">
+		<thead>
+			<tr>
+				<th>Crmsec</th>
+				<th>Key</th>
+				<th>Severity</th>
+				<th>Location</th>
+				<th>Line</th>
+				<th>Message</th>
+			</tr>
+		</thead>
+		<tbody>
+			<f:for each="{paginatedLogEntries}" as="logEntry">
+			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}"  data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="Click to expand">
+				<td><f:format.raw>{logEntry.crmsec}</f:format.raw>
+				<td>{logEntry.extkey}</td>
+				<td>{logEntry.severity}</td>
+				<td>{logEntry.location}</td>
+				<td>{logEntry.line}</td>
+				<td style="white-space:normal">{logEntry.message}</td>
+			</tr>
+			<tr>
+				<td class="zeroPadding" colspan="6"><div class="collapse" id="collapsed-{logEntry.uid}">
+					<div>{logEntry.dataVar}</div>
+				</div></td>
+			</tr>
+			</f:for>
+		</tbody>
+		</table>
+	</div>
+	</f:be.widget.paginate>
+	</f:then>
+	</f:if>
+	
+	<p><a href="{f:uri.action(action:'flush')}" class="btn btn-warning t3js-modal-trigger" data-severity="warning" data-title="Delete all log entries" data-severity"danger"><core:icon identifier="actions-delete" /> Delete all</a></p>
 </f:section>

@@ -9,7 +9,7 @@ if (!defined ('TYPO3_MODE')) {
 if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mstamp']) {
     // Timestamp with microseconds to make sure 2 log runs can always be distinguished
     // even when happening very close to one another
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mstamp'] = str_replace('.', '', microtime(true));
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mstamp'] = microtime(true);
     // Normal timestamp
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['tstamp'] = $GLOBALS['EXEC_TIME'];
 }

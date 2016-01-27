@@ -1,4 +1,22 @@
-<div class="typo3-documentation">
-	<f:flashMessages />
-	<f:render section="content" />
-</div>
+<f:be.container
+	includeRequireJsModules="{
+		1: 'bootstrap',
+		2: 'TYPO3/CMS/Backend/ContextHelp',
+		3: 'TYPO3/CMS/Backend/DocumentHeader',
+		4: 'TYPO3/CMS/Backend/SplitButtons',
+		5: 'TYPO3/CMS/Backend/Modal',
+		6: 'TYPO3/CMS/Lang/Lang'
+	}"
+	loadExtJsTheme="0"
+	loadJQuery="1"
+>
+	<div class="module" data-module-id="" data-module-name="">
+		<div class="module-docheader t3js-module-docheader">
+		
+		</div>
+		<div class="module-body t3js-module-body">
+			<h1><f:render section="headline" /></h1>
+			<f:render section="content" />
+		</div>
+	</div>
+</f:be.container>

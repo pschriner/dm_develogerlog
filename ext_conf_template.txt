@@ -5,4 +5,4 @@ dumpSize = 1000000
 minLogLevel = -1
 
 # cat=basic/filtering/; type=string; label=Exclude keys: Comma-separated list of (extension) keys that should not be logged into the Developer Log
-excludeKeys = TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+excludeKeys = TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, extbase

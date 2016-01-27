@@ -78,7 +78,7 @@ class Developerlog {
 		} else {
 			$message = strip_tags($logArr['msg']);
 		}
-		$insertFields['msg'] = $message;
+		$insertFields['message'] = $message;
 		
         // There's no reason to have any markup in the extension key
 		$insertFields['extkey'] = strip_tags($logArr['extKey']);
@@ -99,13 +99,13 @@ class Developerlog {
                 if (!isset($this->extConf['dumpSize']) || strlen($serializedData) <= $this->extConf['dumpSize']) {
                     $insertFields['data_var'] = $serializedData;
                 } else {
-                    $insertFields['data_var'] = serialize(array('tx_dm_devlog_error' => 'toolong'));
+                    $insertFields['data_var'] = serialize(array('tx_dm_developerlog_error' => 'toolong'));
                 }
             } else {
-                $insertFields['data_var'] = serialize(array('tx_dm_devlog_error' => 'invalid'));
+                $insertFields['data_var'] = serialize(array('tx_dm_developerlog_error' => 'invalid'));
             }
         }
-        $this->getDatabaseConnection()->exec_INSERTquery('tx_dm_devlog', $insertFields);
+        $this->getDatabaseConnection()->exec_INSERTquery('tx_dmdeveloperlog_domain_model_logentry', $insertFields);
     }
     
     /**

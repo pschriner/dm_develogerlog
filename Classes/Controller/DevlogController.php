@@ -15,6 +15,7 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  */
  
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -23,70 +24,39 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
  
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-    /**
-     * BackendTemplateContainer
-     *
-     * @var BackendTemplateView
-     */
-    protected $view;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Backend Template Container
-     *
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * The name of the module
-     *
-     * @var string
-     */
-    protected $moduleName = 'dm_developerlog';
+        
+    protected $severityOptions = [
+        -1 => 'OK',
+        0 => 'INFO',
+        1 => 'NOTICE',
+        2 => 'WARNING',
+        3 => 'ERROR'
+    ];
     
     /**
-     * Constructor
+     * @var DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
+     * @inject
      */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->MCONF = array(
-            'name' => $this->moduleName,
-        );
-    }
-
-
-    /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-
-        $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-
-        //$this->createMenu();
-        //$this->createButtons();
-    }
+    protected $logEntryRepository;
     
     /**
      * Main action for list
      *
+     * @param DieMedialen\DmDeveloperlog\Domain\Model\Constraint $search
+     *
      * @return void
      */
-    public function indexAction()
+    public function indexAction($constraint = NULL)
     {
-        ;
+        $this->view->assign('constraint', $constraint);
+        $this->view->assign('severity-options', $this->severityOptions);
+        $this->view->assign('logEntries', $this->logEntryRepository->findByConstraint($constraint));
+    }
+    
+    public function flushAction()
+    {
+        $this->logEntryRepository->removeAll();
+        $this->addFlashMessage('TEST', 'Ok - Title for OK message', FlashMessage::OK, true);
+        $this->redirect('index');
     }
  }
