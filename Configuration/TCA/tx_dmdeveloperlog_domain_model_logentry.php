@@ -8,7 +8,7 @@ return array(
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => true,
-        'default_sortby' => 'ORDER BY crmsec DESC',
+        'default_sortby' => 'ORDER BY crdate DESC',
         'label' => 'message'
     ],
     'columns' => [
