@@ -17,6 +17,8 @@ namespace DieMedialen\DmDeveloperlog\Utility;
 class Developerlog {
     protected $extKey = 'dm_developerlog';	// The extension key
     protected $extConf = array(); // The extension configuration
+    
+    protected $request_id = '';
 
     /**
      * Constructor
@@ -25,6 +27,7 @@ class Developerlog {
     public function __construct()
     {
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        $this->request_id = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
     }
     
     /**
@@ -63,8 +66,8 @@ class Developerlog {
         
         $insertFields = array(
             'pid' => $pid,
-            'crdate' => $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tstamp'],
-            'crmsec' => $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['mstamp'],
+            'crdate' => microtime(true),
+            'request_id' => $this->request_id,
             'cruser_id' => empty($GLOBALS['BE_USER']->user['uid']) ? 0 : $GLOBALS['BE_USER']->user['uid'],
             'line' => 0
         );
@@ -95,14 +98,14 @@ class Developerlog {
 
         if (!empty($logArr['dataVar'])) {
             if (is_array($logArr['dataVar']) && self::isSerializeable($logArr['dataVar'])) {
-                $serializedData = serialize($logArr['dataVar']);
+                $serializedData = json_encode($logArr['dataVar']);
                 if (!isset($this->extConf['dumpSize']) || strlen($serializedData) <= $this->extConf['dumpSize']) {
                     $insertFields['data_var'] = $serializedData;
                 } else {
-                    $insertFields['data_var'] = serialize(array('tx_dm_developerlog_error' => 'toolong'));
+                    $insertFields['data_var'] = json_encode(array('tx_dm_developerlog_error' => 'toolong'));
                 }
             } else {
-                $insertFields['data_var'] = serialize(array('tx_dm_developerlog_error' => 'invalid'));
+                $insertFields['data_var'] = json_encode(array('tx_dm_developerlog_error' => 'invalid'));
             }
         }
         $this->getDatabaseConnection()->exec_INSERTquery('tx_dmdeveloperlog_domain_model_logentry', $insertFields);

@@ -21,7 +21,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     
     protected $defaultOrderings = array(
-        'crmsec' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+        'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
         'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
     );
     

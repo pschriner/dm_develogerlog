@@ -19,6 +19,9 @@
 		.zeroPadding .collapse div {
 			padding:0;
 		}
+		tr[data-toggle~=collapse]:hover {
+			cursor: pointer;
+		}
 	</style>
 
 	<f:flashMessages renderMode="div" />
@@ -42,7 +45,8 @@
 		<table id="dm-developerlog-list" class="table table-hover">
 		<thead>
 			<tr>
-				<th>Crmsec</th>
+				<th>Timestamp</th>
+				<th>Request ID</th>
 				<th>Key</th>
 				<th>Severity</th>
 				<th>Location</th>
@@ -52,19 +56,22 @@
 		</thead>
 		<tbody>
 			<f:for each="{paginatedLogEntries}" as="logEntry">
-			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}"  data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="Click to expand">
-				<td><f:format.raw>{logEntry.crmsec}</f:format.raw>
+			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" {f:if(condition:logEntry.dataVar, then: 'data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="Click to expand"')}>
+				<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
+				<td>{logEntry.requestId}</td>
 				<td>{logEntry.extkey}</td>
 				<td>{logEntry.severity}</td>
 				<td>{logEntry.location}</td>
 				<td>{logEntry.line}</td>
 				<td style="white-space:normal">{logEntry.message}</td>
 			</tr>
+			<f:if condition="{logEntry.dataVar}">
 			<tr>
 				<td class="zeroPadding" colspan="6"><div class="collapse" id="collapsed-{logEntry.uid}">
 					<div>{logEntry.dataVar}</div>
 				</div></td>
 			</tr>
+			</f:if>
 			</f:for>
 		</tbody>
 		</table>

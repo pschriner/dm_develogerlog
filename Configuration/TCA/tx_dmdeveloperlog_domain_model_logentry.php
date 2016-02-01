@@ -35,10 +35,12 @@ return array(
                 'readOnly' => 1
             ]
         ],
-         'crmsec' => [
-            'label' => 'crdate',
+         'request_id' => [
+            'label' => 'Request ID',
             'config' => [
-                'type' => 'passthrough',
+                'type' => 'input',
+                'size' => 255,
+                'readOnly' => 1,
             ]
         ],
         'extkey' => [

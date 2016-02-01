@@ -27,7 +27,7 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var string
      */
-    protected $crmsec;
+    protected $requestId;
     
     /**
      * @var int
@@ -76,8 +76,8 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return string
      */
-    public function getCrmsec() {
-        return $this->crmsec;
+    public function getRequestId() {
+        return $this->requestId;
     }
     
     /**
@@ -127,17 +127,6 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getDataVar() {
         return $this->dataVar;
-    }
-    
-    /**
-     * Set workspace uid
-     *
-     * @param int $workspaceUid
-     * @return void
-     */
-    public function setWorkspaceUid($workspaceUid)
-    {
-        $this->workspaceUid = $workspaceUid;
     }
 
     /**
