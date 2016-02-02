@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-07-17T18:42:28Z" product-name="dm_developerlog">
+		<header/>
+		<body>
+			<trans-unit id="search.for">
+				<source>Search for</source>
+			</trans-unit>
+			<trans-unit id="module.list.crdate">
+				<source>Date / Time</source>
+			</trans-unit>
+			<trans-unit id="module.list.request_id">
+				<source>Request ID</source>
+			</trans-unit>
+			<trans-unit id="module.list.key">
+				<source>Key</source>
+			</trans-unit>
+			<trans-unit id="module.list.severity">
+				<source>Severity</source>
+			</trans-unit>
+			<trans-unit id="module.list.location">
+				<source>Location</source>
+			</trans-unit>
+			<trans-unit id="module.list.line">
+				<source>Line</source>
+			</trans-unit>
+			<trans-unit id="module.list.message">
+				<source>Message</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
