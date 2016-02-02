@@ -1,0 +1,7 @@
+<script>
+<f:flashMessages queueIdentifier="extbase.flashmessages.dm_developerlog.notifications" as="notifications">
+<f:for each="{notifications}" as="notification">
+top.TYPO3.Notification.{f:translate(key:"severity.to.notification.{notification.class}")}('{notification.title}', '{notification.message}');
+</f:for>
+</f:flashMessages>
+</script>

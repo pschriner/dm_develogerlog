@@ -4,16 +4,20 @@ defined('TYPO3_MODE') or die();
 return array(
     'ctrl' => [
         'title' => 'Logentry',
-        'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'dividers2tabs' => true,
         'default_sortby' => 'ORDER BY crdate DESC',
         'label' => 'message'
     ],
     'columns' => [
-        'cruser_id' => [
-            'label' => 'cruser_id',
+        'be_user' => [
+            'label' => 'be_user',
+            'config' => [
+                'type' => 'passthrough'
+            ]
+        ],
+        'fe_user' => [
+            'label' => 'fe_user',
             'config' => [
                 'type' => 'passthrough'
             ]
@@ -37,6 +41,14 @@ return array(
         ],
          'request_id' => [
             'label' => 'Request ID',
+            'config' => [
+                'type' => 'input',
+                'size' => 255,
+                'readOnly' => 1,
+            ]
+        ],
+         'request_type' => [
+            'label' => 'Request Type',
             'config' => [
                 'type' => 'input',
                 'size' => 255,

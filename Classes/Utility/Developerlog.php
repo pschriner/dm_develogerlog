@@ -15,10 +15,23 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  */
  
 class Developerlog {
+    
+    /** @var $extkey String */
     protected $extKey = 'dm_developerlog';	// The extension key
+    
     protected $extConf = array(); // The extension configuration
     
     protected $request_id = '';
+
+    protected $request_type = 0;
+    
+    protected $requestTypeMap = [
+        1 => 'TYPO3_REQUESTTYPE_FE',
+        2 => 'TYPO3_REQUESTTYPE_BE',
+        4 => 'TYPO3_REQUESTTYPE_CLI',
+        8 => 'TYPO3_REQUESTTYPE_AJAX',
+        16 => 'TYPO3_REQUESTTYPE_INSTALL'
+    ];
 
     /**
      * Constructor
@@ -28,6 +41,7 @@ class Developerlog {
     {
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
         $this->request_id = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
+        $this->request_type = TYPO3_REQUESTTYPE;
     }
     
     /**
@@ -63,25 +77,25 @@ class Developerlog {
                 $pid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id');
             }
         }
-        
         $insertFields = array(
             'pid' => $pid,
             'crdate' => microtime(true),
             'request_id' => $this->request_id,
-            'cruser_id' => empty($GLOBALS['BE_USER']->user['uid']) ? 0 : $GLOBALS['BE_USER']->user['uid'],
+            'request_type' => $this->request_type,
             'line' => 0
         );
-        $insertFields['pid'] = $pid;
         
-        // Clean up the message before insertion into the database
-        // If possible use RemoveXSS (TYPO3 4.2+), otherwise strip all tags
-		$message = '';
-		if (method_exists(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'removeXSS')) {
-			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($logArr['msg']);
-		} else {
-			$message = strip_tags($logArr['msg']);
-		}
-		$insertFields['message'] = $message;
+        if (!empty($GLOBALS['BE_USER']->user['uid']))
+        {
+            $insertFields['be_user'] = (int)$GLOBALS['BE_USER']->user['uid'];
+        }
+        
+        if (!empty($GLOBALS['TSFE']->fe_user->user['uid']))
+        {
+            $insertFields['fe_user'] = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        }
+        
+		$insertFields['message'] = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($logArr['msg']);
 		
         // There's no reason to have any markup in the extension key
 		$insertFields['extkey'] = strip_tags($logArr['extKey']);

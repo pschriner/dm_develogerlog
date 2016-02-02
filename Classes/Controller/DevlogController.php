@@ -13,7 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
- 
+
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,10 +21,10 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
- 
+
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-        
+
     protected $severityOptions = [
         -1 => 'OK',
         0 => 'INFO',
@@ -33,12 +33,19 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         3 => 'ERROR'
     ];
     
+    protected $extkeyOptions = [];
+
     /**
      * @var DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
      * @inject
      */
     protected $logEntryRepository;
     
+    public function initializeIndexAction()
+    {
+        $this->extkeyOptions = $this->logEntryRepository->getExtensionKeys();
+    }
+
     /**
      * Main action for list
      *
@@ -50,13 +57,29 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $this->view->assign('constraint', $constraint);
         $this->view->assign('severity-options', $this->severityOptions);
+        $this->view->assign('extkey-options', $this->extkeyOptions);
         $this->view->assign('logEntries', $this->logEntryRepository->findByConstraint($constraint));
     }
-    
+
     public function flushAction()
     {
         $this->logEntryRepository->removeAll();
-        $this->addFlashMessage('TEST', 'Ok - Title for OK message', FlashMessage::OK, true);
+
+        /** @var FlashMessage $message */
+        $message = $this->objectManager->get(
+            FlashMessage::class,
+           'Developer log emptied',
+           'Flushed',
+           FlashMessage::OK,
+           TRUE
+        );
+        /** @var FlashMessageService $flashMessageService */
+        $flashMessageService = $this->objectManager->get(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+
+        /** @var FlashMessageService $flashMessageService */
+        $messageQueue = $flashMessageService->getMessageQueueByIdentifier('extbase.flashmessages.dm_developerlog.notifications');
+        $messageQueue->addMessage($message);
+
         $this->redirect('index');
     }
  }

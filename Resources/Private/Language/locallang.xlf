@@ -27,6 +27,21 @@
 			<trans-unit id="module.list.message">
 				<source>Message</source>
 			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-notice">
+				<source>notice</source>
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-info">
+				<source>info</source>
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-success">
+				<source>success</source>
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-warning">
+				<source>warning</source>
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-danger">
+				<source>error</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

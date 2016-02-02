@@ -61,7 +61,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         
         $extkey = $constraint->getExtkey();
         if ($extkey !== '') {
-            $and['extkey'] = $query->equals($extkey);
+            $and['extkey'] = $query->equals('extkey', $extkey);
         }
         
         if (count($and) > 1) {
@@ -74,5 +74,17 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         
         
     }
-
+    
+    public function getExtensionKeys()
+    {
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+            'extkey',
+            'tx_dmdeveloperlog_domain_model_logentry',
+            '1=1',
+            'extkey',
+            'extkey',
+            '',
+            'extkey'
+        );
+    }
 }

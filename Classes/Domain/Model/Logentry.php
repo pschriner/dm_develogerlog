@@ -32,7 +32,17 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @var int
      */
-    protected $cruser_id;
+    protected $requestType;
+    
+    /**
+     * @var int
+     */
+    protected $beUser;
+    
+    /**
+     * @var int
+     */
+    protected $feUser;
     
     /**
      * @var int
@@ -83,8 +93,22 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getCruserId() {
-        return $this->cruser_id;
+    public function getRequestType() {
+        return $this->requestType;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getBeUser() {
+        return $this->beUser;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getFeUser() {
+        return $this->feUser;
     }
     
     /**

@@ -6,7 +6,9 @@ CREATE TABLE tx_dmdeveloperlog_domain_model_logentry (
 	pid int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
 	request_id varchar(40) DEFAULT '' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+	request_type int(11) unsigned DEFAULT '0' NOT NULL,
+	be_user int(11) unsigned DEFAULT '0' NOT NULL,
+	fe_user int(11) unsigned DEFAULT '0' NOT NULL,
 	severity int(4) DEFAULT '0' NOT NULL,
 	extkey varchar(100) DEFAULT '' NOT NULL,
 	message text NOT NULL,
@@ -18,5 +20,5 @@ CREATE TABLE tx_dmdeveloperlog_domain_model_logentry (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY crdate (crdate),
-	KEY request_id (request_id)
+	KEY severity (severity)
 );
