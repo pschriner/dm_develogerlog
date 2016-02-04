@@ -2,39 +2,29 @@
 
 /***************************************************************
  * Extension Manager/Repository config file for ext "dm_developerlog".
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array (
-  'title' => 'Devlog replacement',
-  'description' => 'Better devlog.',
-  'category' => 'misc',
-  'version' => '0.1.0',
-  'state' => 'alpha',
-  'uploadfolder' => false,
-  'author' => 'Patrick Schriner',
-  'author_email' => 'patrick.schriner@diemedialen.de',
-  'author_company' => 'DieMedialen GmbH',
-  'constraints' => 
-  array (
-    'depends' => 
-    array (
-      'typo3' => '7.6.2-7.6.99',
+    'title' => 'Developer log',
+    'description' => 'An extension to capture TYPO3 devlog messages for debugging. Provides a backend module.',
+    'category' => 'misc',
+    'version' => '0.5.0',
+    'state' => 'beta',
+    'uploadfolder' => false,
+    'author' => 'Patrick Schriner',
+    'author_email' => 'patrick.schriner@diemedialen.de',
+    'author_company' => 'DieMedialen GmbH',
+    'constraints' => array (
+        'depends' => array(
+            'php' => '5.5.0-0.0.0',
+            'typo3' => '6.2.7-8.0.99',
+        ),
+        'conflicts' => array(),
+        'suggests' => array(),
     ),
-    'conflicts' => 
-    array (
-    ),
-    'suggests' => 
-    array (
-    ),
-  ),
-  'createDirs' => NULL,
-  'clearcacheonload' => false,
-  'autoload' =>
-    array(
+    'createDirs' => NULL,
+    'clearcacheonload' => true,
+    'autoload' => array(
         'psr-4' => array('DieMedialen\\DmDeveloperlog\\' => 'Classes')
     ),
 );

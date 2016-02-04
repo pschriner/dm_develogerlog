@@ -77,7 +77,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     
     public function getExtensionKeys()
     {
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+        $extKeys =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
             'extkey',
             'tx_dmdeveloperlog_domain_model_logentry',
             '1=1',
@@ -86,5 +86,6 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             '',
             'extkey'
         );
+        return array_combine(array_keys($extKeys),array_keys($extKeys));
     }
 }

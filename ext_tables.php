@@ -1,21 +1,38 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$boot = function () {
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
-    $iconRegistry->registerIcon('module-dmdeveloperlog', \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class, array('name' => 'ambulance'));
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'DieMedialen.dm_developerlog',
-        'system',
-        'dm_developerlog',
-        'after:BelogLog',
-        ['Devlog' => 'index,flush'],
-        [
-            'access' => 'admin',
-            'iconIdentifier' => 'module-dmdeveloperlog',
-            'labels' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_mod.xlf',
-        ]
-    );
-};
-$boot();
-unset($boot);
+if (TYPO3_MODE === 'BE') {
+    if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('7.6')) {
+        $boot = function () {
+            $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
+            $iconRegistry->registerIcon('module-dmdeveloperlog', \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class, array('name' => 'ambulance'));
+            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+                'DieMedialen.dm_developerlog',
+                'system',
+                'dm_developerlog',
+                'after:BelogLog',
+                ['Devlog' => 'index,flush'],
+                [
+                    'access' => 'admin',
+                    'iconIdentifier' => 'module-dmdeveloperlog',
+                    'labels' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_mod.xlf',
+                ]
+            );
+        };
+        $boot();
+        unset($boot);
+    } else { // 6.2
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+            'DieMedialen.' . $_EXTKEY,
+            'system',	 // Make module a submodule of 'web'
+            'dm_developerlog',	// Submodule key
+            'after:BelogLog',						// Position
+            ['Devlog62' => 'index,flush'],
+            [
+                'access' => 'admin',
+                'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.png',
+                'labels' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_mod.xlf',
+            ]
+        );
+    }
+}

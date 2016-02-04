@@ -1,6 +1,6 @@
 {
 	"name": "diemedialen/dm-developerlog",
-	"description": "Devlog replacement.",
+	"description": "An extension to capture TYPO3 devlog messages for debugging. Provides a backend module.",
 	"type": "typo3-cms-extension",
 	"license": "GPL-2.0+",
 	"authors": [
@@ -14,7 +14,8 @@
 		"dm_devlog": "*"
 	},
 	"require": {
-		"typo3/cms-core": "7.6.2 - 7.6.99"
+		"php": ">=5.5.0",
+		"typo3/cms-core": "6.2.7 - 8.0.99"
 	},
 	"autoload": {
 		"psr-4": {

@@ -14,13 +14,8 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -64,15 +59,10 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function flushAction()
     {
         $this->logEntryRepository->removeAll();
-
+        
         /** @var FlashMessage $message */
-        $message = $this->objectManager->get(
-            FlashMessage::class,
-           'Developer log emptied',
-           'Flushed',
-           FlashMessage::OK,
-           TRUE
-        );
+        $message = $this->getFlushFlashMessage();
+
         /** @var FlashMessageService $flashMessageService */
         $flashMessageService = $this->objectManager->get(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 
@@ -81,5 +71,19 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $messageQueue->addMessage($message);
 
         $this->redirect('index');
+    }
+    
+    /**
+     * @return FlashMessage $message
+     */
+    protected function getFlushFlashMessage()
+    {
+        return $this->objectManager->get(
+            FlashMessage::class,
+           'Developer log emptied',
+           'Flushed',
+           FlashMessage::OK,
+           TRUE
+        );
     }
  }
