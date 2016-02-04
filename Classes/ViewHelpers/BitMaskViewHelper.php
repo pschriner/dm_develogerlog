@@ -19,26 +19,22 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
      
-class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-    
-    static protected $map = [
-        -1 => 'success',
-        0 => 'info',
-        1 => 'warning',
-        2 => 'danger',
-        3 => 'danger'
-    ];
-    
     /**
-     * @param int $severity 
-     * @return string bootstrap color mapped value
+     * @param string $operator
+     * @param int $value
+     * @param array $mask
+     * @param string $as
+     * @return string
      */
-    public function render($severity = -2)
+    public function render($operator = '&', $value = NULL, $mask = array())
     {
         return static::renderStatic(
             array(
-                'severity' => $severity,
+                'operator' => $operator,
+                'value' => $value,
+                'mask' => $mask
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -52,21 +48,34 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $severity = 0;
-        if ($arguments['severity'] == -2) {
+        $value = 0;
+        if ($arguments['value'] === NULL) {
             try {
-                $severity = (int)$renderChildrenClosure();
-            } catch (Exception $e) {
-                $severity = 0;
+                $value = (int)$renderChildrenClosure();
+            } catch (\Exception $e) {
+                $value = 0;
             }
         } else {
-            $severity = (int)$arguments['severity'];
+            $value = (int)$arguments['value'];
         }
-        if (isset(self::$map[$severity])) {
-            return self::$map[$severity];
-        } else {
-            return self::$map[0];
+        $operator = '&';
+        if (in_array($arguments['operator'],['&','|'])) {
+            $operator = $arguments['operator'];
         }
-        
+        $masked = [];
+        foreach ($arguments['mask'] as $v) {
+            $v = (int)$v;
+            if ($operator == '&') {
+                if ($v & $value) {
+                    $masked[] = $v;
+                }
+            }
+            if ($operator == '|') {
+                if ($v | $value) {
+                    $masked[$v] = $v;
+                }
+            }
+        }
+        return $masked;
     }
 }
