@@ -17,26 +17,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Developerlog {
 
-    /** @var $extkey String */
+    /** @var string $extkey  */
     protected $extKey = 'dm_developerlog';
 
-    /** @var $extConf array */
+    /** @var array $extConf */
     protected $extConf = array();
 
-    /** @var $request_id string */
+    /** @var string $request_id */
     protected $request_id = '';
 
-    /** @var $request_type int */
+    /** @var int $request_type */
     protected $request_type = 0;
 
-    /** @var $excludeKeys array */
+    /** @var array $excludeKeys */
     protected $excludeKeys = array();
 
-    /** @var $currentPageId int */
+    /** @var int $currentPageId */
     protected $currentPageId = null;
 
     /**
-     * @var $requestTypeMap array Sad duplicate from \TYPO3\CMS\Core\Core\Bootstrap
+     * @var array $requestTypeMap Sad duplicate from \TYPO3\CMS\Core\Core\Bootstrap
      */
     protected $requestTypeMap = [
         1 => 'TYPO3_REQUESTTYPE_FE',
@@ -124,7 +124,7 @@ class Developerlog {
     /**
      * Gather some basic log data
      *
-     * @param $logArray array
+     * @param array $logArray
      *
      * @return array
      */
@@ -158,9 +158,15 @@ class Developerlog {
         return $insertFields;
     }
 
+    /**
+     * JSON-encode the extra data provided
+     *
+     * @param mixed $extraData
+     * @return string
+     */
     protected function getExtraData($extraData)
     {
-        $serializedData = json_encode($extraData);
+        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR);
         if ($serializedData !== FALSE) {
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
@@ -172,14 +178,14 @@ class Developerlog {
     }
 
     /**
-	 * Given a backtrace, this method tries to find the place where a "devLog" function was called
-	 * and return info about the place
-	 *
-	 * @param	array	$backTrace: function call backtrace, as provided by debug_backtrace()
-	 *
-	 * @return	array	information about the call place
-	 */
-	protected function getCallerInformation($backtrace)
+     * Given a backtrace, this method tries to find the place where a "devLog" function was called
+     * and return info about the place
+     *
+     * @param array $backTrace: function call backtrace, as provided by debug_backtrace()
+     *
+     * @return array information about the call place
+     */
+    protected function getCallerInformation($backtrace)
     {
         foreach ($backtrace as $entry) {
             if ($entry['class'] !== self::class && $entry['function'] === 'devLog') {
