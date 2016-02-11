@@ -1,0 +1,16 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<f:if condition="{logEntry.severity} == '-1'">
+	<core:icon identifier="status-dialog-ok" />
+</f:if>
+<f:if condition="{logEntry.severity} == '0'">
+	<core:icon identifier="status-dialog-information" />
+</f:if>
+<f:if condition="{logEntry.severity} == '1'">
+	<core:icon identifier="status-dialog-notification" />
+</f:if>
+<f:if condition="{logEntry.severity} == '2'">
+	<core:icon identifier="status-dialog-warning" />
+</f:if>
+<f:if condition="{logEntry.severity} == '3'">
+	<core:icon identifier="status-dialog-error" />
+</f:if>

@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
     if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('7.6')) {
-        $boot = function () {
+        $boot = function ($extension) {
             $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
             $iconRegistry->registerIcon('module-dmdeveloperlog', \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class, array('name' => 'ambulance'));
             \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -14,12 +14,14 @@ if (TYPO3_MODE === 'BE') {
                 ['Devlog' => 'index,flush'],
                 [
                     'access' => 'admin',
+                    'icon'   => 'EXT:' . $extension . '/ext_icon.png',
                     'iconIdentifier' => 'module-dmdeveloperlog',
-                    'labels' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_mod.xlf',
+                    'labels' => 'LLL:EXT:' . $extension .'/Resources/Private/Language/locallang_mod.xlf',
+                    'cssFiles' => ['EXT:'. $extension .'/Resources/Public/Css/Backend.css']
                 ]
             );
         };
-        $boot();
+        $boot($_EXTKEY);
         unset($boot);
     } else { // 6.2
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -32,6 +34,7 @@ if (TYPO3_MODE === 'BE') {
                 'access' => 'admin',
                 'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.png',
                 'labels' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_mod.xlf',
+                'cssFiles' => ['EXT:dm_developerlog/Resources/Public/Css/Backend.css']
             ]
         );
     }

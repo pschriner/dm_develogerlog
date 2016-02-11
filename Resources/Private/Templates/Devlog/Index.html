@@ -27,6 +27,9 @@
 		ul.f3-widget-paginator li.current {
 			background-color:#eeeeee;
 		}
+		tr.collapse.in {
+			display: table-row;
+		}
 	</style>
 
 	<f:flashMessages />
@@ -54,9 +57,10 @@
 	<f:then>
 	<f:widget.paginate objects="{logEntries}" as="paginatedLogEntries" configuration="{itemsPerPage:20,addQueryStringMethod:'POST,GET'}">
 	<div class="table-fit">
-		<table id="dm-developerlog-list" class="table table-hover">
+		<table id="dm-developerlog-list" class="table table-responsive table-hover">
 		<thead>
 			<tr>
+				<th></th>
 				<th><f:translate key="module.list.crdate" /></th>
 				<th><f:translate key="module.list.request_id" /></th>
 				<th><f:translate key="module.list.key" /></th>
@@ -68,6 +72,7 @@
 		<tbody>
 			<f:for each="{paginatedLogEntries}" as="logEntry">
 			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="Click to expand">
+				<td><f:render partial="SeverityIcon" arguments="{_all}" /></td>
 				<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
 				<td>{logEntry.requestId}</td>
 				<td>{logEntry.extkey}</td>
@@ -75,8 +80,8 @@
 				<td style="white-space:normal">{logEntry.message}</td>
 				<th class="hidden-md hidden-lg"></th>
 			</tr>
-			<tr>
-				<td class="zeroPadding" colspan="6"><div class="collapse" id="collapsed-{logEntry.uid}">
+			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}">
+				<td class="zeroPadding" colspan="7"><div class="collapse" id="collapsed-{logEntry.uid}">
 					<div class="container-fluid">
 						<div class="row hidden-md hidden-lg">
 							<div class="col-sm-12 col-xs-12">
@@ -86,23 +91,29 @@
 						<div class="row">
 							<div class="col-sm-3 col-md-2">
 								<f:translate key="module.list.requestType" />:
-								<f:for each="{devlog:bitMask(mask:{1:1,2:2,4:4,8:8,16:16},value:logEntry.requestType)}" as="requestType">
+								<f:for each="{devlog:bitMask(value:logEntry.requestType)}" as="requestType">
 									<f:translate key="module.list.requestType.{requestType}" />
 								</f:for>
 							</div>
+							<f:if condition="{logEntry.beUser}">
 							<div class="col-sm-3 col-md-2">
 								<f:translate key="module.list.beUser" />: {logEntry.beUser}
 							</div>
+							</f:if>
+							<f:if condition="{logEntry.feUser}">
 							<div class="col-sm-3 col-md-2">
 								<f:translate key="module.list.feUser" />: {logEntry.feUser}
 							</div>
+							</f:if>
 							<div class="col-sm-3 col-md-6">&nbsp;</div>
 						</div>
+						<f:if condition="{logEntry.dataVar}">
 						<div class="row">
 							<div class="col-sm12 col-md-12">
 								<f:translate key="module.list.data" />: {logEntry.dataVar}
 							</div>
 						</div>
+						</f:if>
 					</div>
 				</div></td>
 			</tr>

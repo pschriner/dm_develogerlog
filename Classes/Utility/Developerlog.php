@@ -13,18 +13,31 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
- 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class Developerlog {
-    
+
     /** @var $extkey String */
-    protected $extKey = 'dm_developerlog';	// The extension key
-    
-    protected $extConf = array(); // The extension configuration
-    
+    protected $extKey = 'dm_developerlog';
+
+    /** @var $extConf array */
+    protected $extConf = array();
+
+    /** @var $request_id string */
     protected $request_id = '';
 
+    /** @var $request_type int */
     protected $request_type = 0;
-    
+
+    /** @var $excludeKeys array */
+    protected $excludeKeys = array();
+
+    /** @var $currentPageId int */
+    protected $currentPageId = null;
+
+    /**
+     * @var $requestTypeMap array Sad duplicate from \TYPO3\CMS\Core\Core\Bootstrap
+     */
     protected $requestTypeMap = [
         1 => 'TYPO3_REQUESTTYPE_FE',
         2 => 'TYPO3_REQUESTTYPE_BE',
@@ -42,8 +55,9 @@ class Developerlog {
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
         $this->request_id = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
         $this->request_type = TYPO3_REQUESTTYPE;
+        $this->excludeKeys = GeneralUtility::trimExplode(',', $this->extConf['excludeKeys'], TRUE);
     }
-    
+
     /**
      * Developer log
      * Parameter is an array containing at most
@@ -52,79 +66,111 @@ class Developerlog {
      * 'severity'	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * 'dataVar'	array		Additional data you want to pass to the logger.
      *
-     * @param array $logArr: log data array
+     * @param array $logArray: log data array
      * @return void
      */
-    public function devLog($logArr)
+    public function devLog($logArray)
     {
         $minLogLevel = -1;
         if ($this->extConf['minLogLevel'] !== '') {
             $minLogLevel = (int)$this->extConf['minLogLevel'];
         }
-        if ((int)$logArr['severity'] < $minLogLevel) {
+        if ((int)$logArray['severity'] < $minLogLevel) {
             return;
         }
-        
-        if (in_array($logArr['extKey'], \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->extConf['excludeKeys']))) {
+
+        if (in_array($logArray['extKey'], $this->excludeKeys)) {
             return;
         }
-        
-        $pid = 0;
-        if (TYPO3_MODE == 'FE') {
-            $pid = empty($GLOBALS['TSFE']->id) ? 0 : $GLOBALS['TSFE']->id;
+        $insertFields = $this->getBasicDeveloperLogInformation($logArray);
+
+        if (!empty($this->extConf['includeCallerInformation'])) {
+            $callerData = $this->getCallerInformation(debug_backtrace(false));
+            $insertFields['location'] = $callerData['location'];
+            $insertFields['line'] = $callerData['line'];
+        }
+
+        if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && is_array($logArray['dataVar'])) {
+            $insertFields['data_var'] = $this->getExtraData($logArray['dataVar']);
+        }
+        $this->getDatabaseConnection()->exec_INSERTquery('tx_dmdeveloperlog_domain_model_logentry', $insertFields);
+    }
+
+    /**
+     * Get the current page ID (if cheaply available)
+     *
+     * @return int
+     */
+    protected function getCurrentPageId()
+    {
+        if ($this->currentPageId !== null) {
+            return $this->currentPageId;
+        }
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) {
+            $this->currentPageId = $GLOBALS['TSFE']->id ?: 0;
         } else {
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id')) {
-                $pid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id');
+            $singletonInstances = GeneralUtility::getSingletonInstances();
+            if (isset($singletonInstances['TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager'])) { // lucky us
+                $backendConfigurationManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager');
+                // getDefaultBackendStoragePid() because some *** thought making getCurrentPageId() protected was a good idea
+                $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
+            } else {  // simplified backend check
+                $this->currentPageId =  GeneralUtility::_GP('id') !== null ? (int)GeneralUtility::_GP('id') : 0;
             }
         }
+        return $this->currentPageId;
+    }
+
+    /**
+     * Gather some basic log data
+     *
+     * @param $logArray array
+     *
+     * @return array
+     */
+    protected function getBasicDeveloperLogInformation($logArray)
+    {
         $insertFields = array(
-            'pid' => $pid,
+            'pid' => $this->getCurrentPageId(),
             'crdate' => microtime(true),
             'request_id' => $this->request_id,
             'request_type' => $this->request_type,
             'line' => 0
         );
-        
-        if (!empty($GLOBALS['BE_USER']->user['uid']))
+
+        if (isset($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->user['uid']))
         {
             $insertFields['be_user'] = (int)$GLOBALS['BE_USER']->user['uid'];
         }
-        
-        if (!empty($GLOBALS['TSFE']->fe_user->user['uid']))
+
+        if (isset($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->fe_user->user['uid']))
         {
             $insertFields['fe_user'] = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
-        
-		$insertFields['message'] = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($logArr['msg']);
-		
+
+        $insertFields['message'] = GeneralUtility::removeXSS($logArray['msg']);
+
         // There's no reason to have any markup in the extension key
-		$insertFields['extkey'] = strip_tags($logArr['extKey']);
-        
-		// Severity can only be a number
-		$insertFields['severity'] = intval($logArr['severity']);
+        $insertFields['extkey'] = strip_tags($logArray['extKey']);
 
-		// Try to get information about the place where this method was called from
-		if (function_exists('debug_backtrace')) {
-			$caller = $this->getCallerInformation(debug_backtrace(false));
-			$insertFields['location'] = $caller['location'];
-			$insertFields['line'] = $caller['line'];
-		}
+        // Severity can only be a number
+        $insertFields['severity'] = intval($logArray['severity']);
+        return $insertFields;
+    }
 
-        if (!empty($logArr['dataVar'])) {
-            if (is_array($logArr['dataVar']) && self::isSerializeable($logArr['dataVar'])) {
-                $serializedData = json_encode($logArr['dataVar']);
-                if (!isset($this->extConf['dumpSize']) || strlen($serializedData) <= $this->extConf['dumpSize']) {
-                    $insertFields['data_var'] = $serializedData;
-                } else {
-                    $insertFields['data_var'] = json_encode(array('tx_dm_developerlog_error' => 'toolong'));
-                }
+    protected function getExtraData($extraData)
+    {
+        $serializedData = json_encode($extraData);
+        if ($serializedData !== FALSE) {
+            if (isset($this->extConf['dataCap'])) {
+                return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
             } else {
-                $insertFields['data_var'] = json_encode(array('tx_dm_developerlog_error' => 'invalid'));
+                return $serializedData;
             }
         }
-        $this->getDatabaseConnection()->exec_INSERTquery('tx_dmdeveloperlog_domain_model_logentry', $insertFields);
+        return '';
     }
-    
+
     /**
 	 * Given a backtrace, this method tries to find the place where a "devLog" function was called
 	 * and return info about the place
@@ -133,15 +179,15 @@ class Developerlog {
 	 *
 	 * @return	array	information about the call place
 	 */
-	protected function getCallerInformation($backTrace)
+	protected function getCallerInformation($backtrace)
     {
-		foreach ($backTrace as $entry) {
-			if ($entry['class'] !== self::class && $entry['function'] === 'devLog') {
+        foreach ($backtrace as $entry) {
+            if ($entry['class'] !== self::class && $entry['function'] === 'devLog') {
                 $file = $entry['file'];
-                if (strpos($file, 'typo3conf/ext') > 0) {
-                    $file = substr($file, strpos($file, 'typo3conf/ext'));
-                } elseif (strpos($file, 'sysext') > 0) {
-                    $file = substr($file, strpos($file, 'sysext'));
+                if (strpos($file, '/typo3conf/ext/') > 0) {
+                    $file = substr($file, strpos($file, '/typo3conf/ext/')-4);
+                } elseif (strpos($file, '/sysext/') > 0) {
+                    $file = substr($file, strpos($file, '/sysext/'));
                 } else {
                     $file = basename($file);
                 }
@@ -149,39 +195,14 @@ class Developerlog {
                     'location' => $file,
                     'line' => $entry['line']
                 );
-			}
-		}
-		return array(
-            'class' => '--- unknown ---',
-            'line' => '---  unknown ---'
+            }
+        }
+        return array(
+            'location' => '--- unknown ---',
+            'line' => 0
         );
-	}
-    
-    public static function isSerializeable($something)
-    {
-        if ($something instanceof \Closure) { // cannot be serialized
-            return FALSE;
-        }
-        if (is_object($something)) {
-            $objectVars = get_object_vars($something);
-            if (is_array($objectVars)) {
-                foreach ($objectVars as $objectVar) {
-                    if (!self::isSerializeable($objectVar)) {
-                        return FALSE;
-                    }
-                }
-            }
-        }
-        if (is_array($something)) {
-            foreach ($something as $partOfSomething) {
-                if (!self::isSerializeable($partOfSomething)) {
-                    return FALSE;
-                }
-            }
-        }
-        return TRUE;
     }
-    
+
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];

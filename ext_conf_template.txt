@@ -1,8 +1,13 @@
-# cat=basic/limits/; type=integer; label=Maximum size of extra data: The extra data field accepts an array containing any number of data. However when that array becomes too large, writing it to the database may actually crash you server. It is recommended to set a limit (in number of characters).
-dumpSize = 1000000
+# customsubcategory=filtering=Filtering
 
-# cat=basic/filtering/; type=options[-1,0,1,2,3]; label=Minimum level for logging: Minimum message level required for actually writing to the log table
+# cat=basic/filtering/a; type=options[Ok(-1)=-1,Info(0)=0,Notice(1)=1,Warning(2)=2,Error(3)=3]; label=Minimum level for logging: Minimum message level required for actually writing to the log table
 minLogLevel = -1
 
-# cat=basic/filtering/; type=string; label=Exclude keys: Comma-separated list of (extension) keys that should not be logged into the Developer Log
-excludeKeys = TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, extbase
+# cat=basic/filtering/b; type=string; label=Exclude keys: Comma-separated list of (extension) keys that should not be logged into the Developer Log
+excludeKeys = TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase
+
+# cat=advanced/limits/a; type=integer; label=Maximum size of extra data: The extra data field accepts an array containing any number of data. However when that array becomes too large, writing it to the database may actually crash you server. It is recommended to set a limit (in number of characters). If not set, the DBMS might truncate the data if there is insufficient space.
+dataCap = 1000000
+
+# cat=advanced/enable/a; type=boolean; label=Include caller information
+includeCallerInformation = 1
