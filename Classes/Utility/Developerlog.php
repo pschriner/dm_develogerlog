@@ -34,6 +34,14 @@ class Developerlog {
 
     /** @var int $currentPageId */
     protected $currentPageId = null;
+    
+    protected $systemSearch = '/sysext/';
+    
+    protected $systemSearchLength = 8;
+    
+    protected $extSeach = '/typo3conf/ext/';
+    
+    protected $extSearchLength = 15;
 
     /**
      * @var array $requestTypeMap Sad duplicate from \TYPO3\CMS\Core\Core\Bootstrap
@@ -88,6 +96,7 @@ class Developerlog {
             $callerData = $this->getCallerInformation(debug_backtrace(false));
             $insertFields['location'] = $callerData['location'];
             $insertFields['line'] = $callerData['line'];
+            $insertFields['system'] = $callerData['system'];
         }
 
         if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && is_array($logArray['dataVar'])) {
@@ -135,12 +144,13 @@ class Developerlog {
             'crdate' => microtime(true),
             'request_id' => $this->request_id,
             'request_type' => $this->request_type,
-            'line' => 0
+            'line' => 0,
         );
 
         if (isset($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->user['uid']))
         {
             $insertFields['be_user'] = (int)$GLOBALS['BE_USER']->user['uid'];
+            $insertFields['workspace_uid'] = (int)$GLOBALS['BE_USER']->workspace;
         }
 
         if (isset($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->fe_user->user['uid']))
@@ -166,7 +176,7 @@ class Developerlog {
      */
     protected function getExtraData($extraData)
     {
-        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR);
+        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_PRETTY_PRINT);
         if ($serializedData !== FALSE) {
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
@@ -187,25 +197,29 @@ class Developerlog {
      */
     protected function getCallerInformation($backtrace)
     {
+        $system = 0;
         foreach ($backtrace as $entry) {
             if ($entry['class'] !== self::class && $entry['function'] === 'devLog') {
                 $file = $entry['file'];
-                if (strpos($file, '/typo3conf/ext/') > 0) {
-                    $file = substr($file, strpos($file, '/typo3conf/ext/')-4);
-                } elseif (strpos($file, '/sysext/') > 0) {
-                    $file = substr($file, strpos($file, '/sysext/'));
+                if (strpos($file, $this->extSeach) > 0) {
+                    $file = substr($file, strpos($file, $this->extSeach) + $this->extSeachLength);
+                } elseif (strpos($file, $this->systemSearch) > 0) {
+                    $file = substr($file, strpos($file, $this->systemSearch) + $this->systemSearchLength);
+                    $system = TRUE;
                 } else {
                     $file = basename($file);
                 }
                 return array(
                     'location' => $file,
-                    'line' => $entry['line']
+                    'line' => $entry['line'],
+                    'system' => $system
                 );
             }
         }
         return array(
             'location' => '--- unknown ---',
-            'line' => 0
+            'line' => 0,
+            'system' => $system
         );
     }
 

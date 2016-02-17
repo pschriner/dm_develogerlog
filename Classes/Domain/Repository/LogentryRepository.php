@@ -19,6 +19,7 @@ namespace DieMedialen\DmDeveloperlog\Domain\Repository;
  */
 class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
+    protected $tableName = '';
     
     protected $defaultOrderings = array(
         'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
@@ -36,6 +37,10 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
+        
+        $datamapFactory = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class);
+        $datamap = $datamapFactory->buildDataMap($this->objectType);
+        $this->tableName = $datamap->getTableName();
     }
 
     /**
@@ -75,17 +80,32 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         
     }
     
+    protected function getDistinctOptions($field)
+    {
+        $values =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+            $field,
+            $this->tableName,
+            '1=1',
+            $field,
+            $field,
+            '',
+            $field
+        );
+        return array_combine(array_keys($values),array_keys($values));
+    }
+    
     public function getExtensionKeys()
     {
-        $extKeys =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'extkey',
-            'tx_dmdeveloperlog_domain_model_logentry',
-            '1=1',
-            'extkey',
-            'extkey',
-            '',
-            'extkey'
-        );
-        return array_combine(array_keys($extKeys),array_keys($extKeys));
+        return $this->getDistinctOptions('extkey');
+    }
+    
+    public function getFrontendUsers()
+    {
+        return $this->getDistinctOptions('fe_user');
+    }    
+    
+    public function getBackendUsers()
+    {
+        return $this->getDistinctOptions('be_user');
     }
 }

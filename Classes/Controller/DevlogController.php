@@ -32,13 +32,22 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * @var DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
-     * @inject
      */
     protected $logEntryRepository;
+    
+    /**
+     * @param DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository
+     */
+    public function injectLogentryRepository(\DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository)
+    {
+        $this->logEntryRepository = $logEntryRepository;
+    }
     
     public function initializeIndexAction()
     {
         $this->extkeyOptions = $this->logEntryRepository->getExtensionKeys();
+        $this->frontendUsers = $this->logEntryRepository->getFrontendUsers();
+        $this->backendUsers = $this->logEntryRepository->getBackendUsers();
     }
 
     /**
@@ -53,6 +62,8 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign('constraint', $constraint);
         $this->view->assign('severity-options', $this->severityOptions);
         $this->view->assign('extkey-options', $this->extkeyOptions);
+        $this->view->assign('frontendUser', $this->frontendUsers);
+        $this->view->assign('backendUsers', $this->backendUsers);
         $this->view->assign('logEntries', $this->logEntryRepository->findByConstraint($constraint));
     }
 

@@ -79,6 +79,11 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $workspaceUid;
     
+    /**
+     * @var boolean 
+     */
+    protected $system;
+    
     public function getCrdate() {
         return $this->crdate;
     }
@@ -161,5 +166,9 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getWorkspaceUid()
     {
         return (int)$this->workspaceUid;
+    }
+    
+    public function isSystemLogEntry() {
+        return $this->system;
     }
 }
