@@ -61,7 +61,10 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         
         $search = $constraint->getSearch();
         if ($search !== '') {
-            $and['search'] = $query->like('message', '%'.$search.'%');
+            $and['search'] = $query->logicalOr(
+                $query->like('message', '%'.$search.'%'),
+                $query->like('dataVar', '%'.$search.'%')
+            );
         }
         
         $extkey = $constraint->getExtkey();
@@ -80,6 +83,19 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         
     }
     
+    /**
+     * Force delete all entries
+     * @override
+     */
+    public function removeAll() {
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tableName);
+    }
+
+    /**
+     * Get all distinct values for a given field
+     * @param string $field
+     * @return array
+     */
     protected function getDistinctOptions($field)
     {
         $values =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -94,16 +110,28 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return array_combine(array_keys($values),array_keys($values));
     }
     
+    /**
+     * Get all distinct extension keys
+     * @return array
+     */
     public function getExtensionKeys()
     {
         return $this->getDistinctOptions('extkey');
     }
     
+    /**
+     * Get all distinct frontend users
+     * @return array
+     */
     public function getFrontendUsers()
     {
         return $this->getDistinctOptions('fe_user');
     }    
-    
+
+    /**
+     * Get all distinct backend users
+     * @return array
+     */
     public function getBackendUsers()
     {
         return $this->getDistinctOptions('be_user');
