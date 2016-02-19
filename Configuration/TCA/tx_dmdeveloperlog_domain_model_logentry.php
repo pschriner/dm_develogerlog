@@ -83,6 +83,14 @@ return array(
                 'eval' => 'numeric'
             ]
         ],
+        'system' => [
+            'exclude' => 0,
+            'label' => 'System',
+            'config' => [
+                'type' => 'check',
+                'readOnly' => 1
+            ]
+        ],
         'message' => [
             'exclude' => 0,
             'label' => 'Message',

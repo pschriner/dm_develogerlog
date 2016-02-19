@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2016-01-31T18:42:28Z" product-name="dm_developerlog">
 		<header/>
 		<body>
-			<trans-unit id="search.for">
+			<trans-unit id="search.searchword">
 				<source>Search for</source>
 			</trans-unit>
 			<trans-unit id="module.list.crdate">
@@ -53,6 +53,12 @@
 			</trans-unit>
 			<trans-unit id="form.submit.search">
 				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="module.noLogEntries">
+				<source>No log entries</source>
+			</trans-unit>
+			<trans-unit id="module.list.clickToToggle">
+				<source>Click to toggle</source>
 			</trans-unit>
 			<trans-unit id="module.list.requestType">
 				<source>Request type</source>

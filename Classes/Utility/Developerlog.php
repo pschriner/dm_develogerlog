@@ -202,7 +202,7 @@ class Developerlog {
             if ($entry['class'] !== self::class && $entry['function'] === 'devLog') {
                 $file = $entry['file'];
                 if (strpos($file, $this->extSeach) > 0) {
-                    $file = substr($file, strpos($file, $this->extSeach) + $this->extSeachLength);
+                    $file = substr($file, strpos($file, $this->extSeach) + $this->extSearchLength);
                 } elseif (strpos($file, $this->systemSearch) > 0) {
                     $file = substr($file, strpos($file, $this->systemSearch) + $this->systemSearchLength);
                     $system = TRUE;

@@ -1,0 +1,77 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+{namespace devlog=DieMedialen\DmDeveloperlog\ViewHelpers}
+<table id="dm-developerlog-list" class="table table-responsive table-hover">
+	<thead>
+		<tr>
+			<th></th>
+			<th><f:translate key="module.list.crdate" /></th>
+			<th><f:translate key="module.list.request_id" /></th>
+			<th class="hidden-sm hidden-xs"><f:translate key="module.list.location" />:<f:translate key="module.list.line" /></th>
+			<th><f:translate key="module.list.message" /></th>
+			<th class="hidden-md hidden-lg"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<f:for each="{paginatedLogEntries}" as="logEntry">
+		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="{f:translate(key:'module.list.clickToToggle')}">
+			<td><f:render partial="SeverityIcon" arguments="{_all}" /></td>
+			<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
+			<td>{logEntry.requestId}</td>
+			<td class="hidden-sm hidden-xs location">
+				<f:if condition="{logEntry.location}">
+					<f:if condition="{logEntry.systemLogEntry}">
+						<f:then><span class="label label-default-original">SYS</span></f:then>
+						<f:else><span class="label label-success">EXT</span></f:else>
+					</f:if>
+					<code>{logEntry.location}:{logEntry.line}</code>
+				</f:if>
+			</td>
+			<td width="50%">{logEntry.message}</td>
+			<th class="hidden-md hidden-lg"></th>
+		</tr>
+		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}">
+			<td class="zeroPadding" colspan="5"><div class="collapse" id="collapsed-{logEntry.uid}">
+				<div class="container-fluid">
+					
+					<div class="row hidden-md hidden-lg">
+						<f:if condition="{logEntry.location}">
+						<div class="col-sm-12 col-xs-12">
+							<label><f:translate key="module.list.location" />:<f:translate key="module.list.line" /></label> {logEntry.location}:{logEntry.line}
+						</div>
+						</f:if>
+					</div>
+					<div class="row">
+						<div class="col-lg-3 col-md-4 col-sm-12">
+							<dl>
+								<dt><f:translate key="module.list.key" /></dt>
+								<dd>{logEntry.extkey}</dd>
+								<dt><f:translate key="module.list.requestType" /></dt>
+								<dd><f:for each="{devlog:bitMask(value:logEntry.requestType)}" as="requestType">
+									<f:translate key="module.list.requestType.{requestType}" />
+								</f:for><dd>
+								<f:if condition="{devlog:username(uid: logEntry.beUser)}">
+								<dt><f:translate key="module.list.beUser" /></dt>
+								<dd><be:avatar backendUser="{logEntry.beUser}" showIcon="true" />
+									<devlog:username uid="{logEntry.beUser}" />
+								</dd>
+								</f:if>
+								<f:if condition="{devlog:username(uid: logEntry.feUser, backend: 0)}">
+								<dd><f:translate key="module.list.feUser" /></dd>
+								<dt><devlog:username uid="{logEntry.feUser}" backend="0" /></dt>
+								</f:if>
+							</dl>
+						</div>
+						<f:if condition="{logEntry.dataVar}">
+						<div class="col-lg-9 col-md-8 col-sm-12">
+							<div class="data-container">
+								<label><f:translate key="module.list.data" /></label> <pre>{logEntry.dataVar}</pre>
+							</div>
+						</div>
+						</f:if>
+					</div>
+				</div>
+			</div></td>
+		</tr>
+		</f:for>
+	</tbody>
+	</table>
