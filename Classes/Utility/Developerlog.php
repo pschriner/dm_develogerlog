@@ -122,9 +122,9 @@ class Developerlog {
             $this->currentPageId = $GLOBALS['TSFE']->id ?: 0;
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
-            if (isset($singletonInstances['TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager'])) { // lucky us
+            if (isset($singletonInstances['TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager'])) { // lucky us, that guy is clever
                 $backendConfigurationManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager');
-                // getDefaultBackendStoragePid() because some *** thought making getCurrentPageId() protected was a good idea
+                // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check
                 $this->currentPageId =  GeneralUtility::_GP('id') !== null ? (int)GeneralUtility::_GP('id') : 0;
