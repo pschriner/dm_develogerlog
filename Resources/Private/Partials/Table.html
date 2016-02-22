@@ -42,24 +42,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xlg-3 col-md-4 col-sm-12">
-							<dl>
-								<dt><f:translate key="module.list.key" /></dt>
-								<dd>{logEntry.extkey}</dd>
-								<dt><f:translate key="module.list.requestType" /></dt>
-								<dd><f:for each="{devlog:bitMask(value:logEntry.requestType)}" as="requestType">
-									<f:translate key="module.list.requestType.{requestType}" />
-								</f:for><dd>
-								<f:if condition="{devlog:username(uid: logEntry.beUser)}">
-								<dt><f:translate key="module.list.beUser" /></dt>
-								<dd><be:avatar backendUser="{logEntry.beUser}" showIcon="true" />
-									<devlog:username uid="{logEntry.beUser}" />
-								</dd>
-								</f:if>
-								<f:if condition="{devlog:username(uid: logEntry.feUser, backend: 0)}">
-								<dd><f:translate key="module.list.feUser" /></dd>
-								<dt><devlog:username uid="{logEntry.feUser}" backend="0" /></dt>
-								</f:if>
-							</dl>
+							<f:render partial="Properties" arguments="{logEntry:logEntry}" />
 						</div>
 						<f:if condition="{logEntry.dataVar}">
 						<div class="col-xlg-9 col-md-8 col-sm-12">

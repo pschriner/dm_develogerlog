@@ -1,0 +1,49 @@
+.zeroPadding {
+	padding: 0 !important;
+}
+tr[data-toggle~=collapse]:hover {
+	cursor: pointer;
+}
+ul.f3-widget-paginator {
+	margin:0;padding:0;
+}
+ul.f3-widget-paginator li {
+	list-style:none;
+	display:inline-block;
+	border: 1px solid #bbbbbb;
+	padding:0.5em;
+	border-radius: 2px;
+}
+ul.f3-widget-paginator li.current {
+	background-color:#eeeeee;
+}
+.pull-right {
+	float:right;
+}
+.data-container label {
+	cursor: pointer;
+}
+.data-container pre {
+	display:none;
+}
+.data-container.showData pre {
+	display:block;
+}
+.data-container label::after {
+	content: " +";
+}
+.data-container.showData label::after {
+	content: " -";
+}
+#dm-developerlog-list-62 td dt,
+#dm-developerlog-list-62 td dd {
+	float:left;
+}
+#dm-developerlog-list-62 td dt {
+	clear:both;
+	width:100px;
+}
+pre {
+	background-color:white;
+	padding:1em;
+}

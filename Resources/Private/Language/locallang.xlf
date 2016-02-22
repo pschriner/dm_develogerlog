@@ -72,6 +72,12 @@
 			<trans-unit id="module.list.data">
 				<source>Additional data</source>
 			</trans-unit>
+			<trans-unit id="module.list.page">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="module.list.workspaceUid">
+				<source>Workspace UID</source>
+			</trans-unit>
 			<trans-unit id="module.list.requestType.1">
 				<source>FE</source>
 			</trans-unit>

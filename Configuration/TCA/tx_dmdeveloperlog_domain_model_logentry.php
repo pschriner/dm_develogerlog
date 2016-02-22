@@ -36,7 +36,6 @@ return array(
                 'size' => 12,
                 'max' => 20,
                 'eval' => 'datetime',
-                'readOnly' => 1
             ]
         ],
          'request_id' => [
@@ -44,7 +43,6 @@ return array(
             'config' => [
                 'type' => 'input',
                 'size' => 255,
-                'readOnly' => 1,
             ]
         ],
          'request_type' => [
@@ -52,7 +50,6 @@ return array(
             'config' => [
                 'type' => 'input',
                 'size' => 255,
-                'readOnly' => 1,
             ]
         ],
         'extkey' => [
@@ -60,8 +57,7 @@ return array(
             'label' => 'Extension (reported)',
             'config' => [
                 'type' => 'input',
-                'size' => 255,
-                'readOnly' => 1,
+                'size' => 50,
             ]
         ],
         'location' => [
@@ -69,8 +65,7 @@ return array(
             'label' => 'Location',
             'config' => [
                 'type' => 'input',
-                'size' => 255,
-                'readOnly' => 1,
+                'size' => 50,
             ]
         ],
         'line' => [
@@ -79,7 +74,6 @@ return array(
             'config' => [
                 'type' => 'input',
                 'size' => 10,
-                'readOnly' => 1,
                 'eval' => 'numeric'
             ]
         ],
@@ -88,7 +82,6 @@ return array(
             'label' => 'System',
             'config' => [
                 'type' => 'check',
-                'readOnly' => 1
             ]
         ],
         'message' => [
@@ -96,7 +89,6 @@ return array(
             'label' => 'Message',
             'config' => [
                 'type' => 'text',
-                'readOnly' => 1
             ]
         ],
         'data_var' => [
@@ -106,7 +98,6 @@ return array(
                 'type' => 'text',
                 'cols' => 50,
                 'rows' => 40,
-                'readOnly' => 1
             ]
         ],
         'severity' => [
@@ -120,12 +111,12 @@ return array(
                     ['Warning', 1],
                     ['Fatal Error', 2]                    
                 ],
-                'readOnly' => 1,
+
             ]
         ],
     ],
     'types' => [
-		'0' => ['showitem' => ';;basic, message, ;;source, data_var']
+		'0' => ['showitem' => 'message;;source,data_var;;basic']
 	],
     'palettes' => [
         'basic' => ['showitem' => 'crdate, severity'],

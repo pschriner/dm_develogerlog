@@ -1,45 +1,23 @@
 {namespace devlog=DieMedialen\DmDeveloperlog\ViewHelpers}
-<f:layout name="Backend/Default62" />
+<f:layout name="Backend/62/Default" />
 
 <f:section name="headline">
 	Developer log
 </f:section>
 
 <f:section name="content">
-	<style>
-		.zeroPadding {
-			padding: 0 !important;
-		}
-		tr[data-toggle~=collapse]:hover {
-			cursor: pointer;
-		}
-		ul.f3-widget-paginator {
-			margin:0;padding:0;
-		}
-		ul.f3-widget-paginator li {
-			list-style:none;
-			display:inline-block;
-			border: 1px solid #bbbbbb;
-			padding:0.5em;
-			border-radius: 2px;
-		}
-		ul.f3-widget-paginator li.current {
-			background-color:#eeeeee;
-		}
-		.pull-right {
-			float:right;
-		}
-	</style>
 
 	<f:flashMessages renderMode="div" />
-	
 	<div class="pull-right">
 		<a href="{f:uri.action(action:'flush')}" class="t3-button">{f:translate(key:'flush.action.title')}</a>
 	</div>
 	<div>
 	<f:form action="index" object="{constraint}" name="constraint" class="form-inline">
-			<label for="search"><f:translate key="search.for" /></label> <f:form.textfield property="search" class="form-control input-sm" placeholder="message" />
+			<label for="searchword"><f:translate key="search.searchword" /></label>
+			<f:form.textfield property="search" class="form-control input-sm" placeholder="message" />
+			<label for="severity"><f:translate key="search.severity">Severity</f:translate></label>
 			<f:form.select property="severity" options="{severity-options}" class="form-control input-sm" />
+			<label for="extkey"><f:translate key="search.extkey">Key</f:translate></label>
 			<f:form.select property="extkey" options="{extkey-options}" class="form-control input-sm" prependOptionLabel="{f:translate(key:'form.options.extkey.all')}" prependOptionValue="" />
 		<f:form.submit class="btn btn-default btn-sm" value="{f:translate(key:'form.submit.search')}" /> 
 	</f:form>
@@ -47,63 +25,30 @@
 	<p class="clearfix">&nbsp;</p>
 	
 	<f:if condition="{logEntries->f:count()}">
-	<f:then>
-	<f:widget.paginate objects="{logEntries}" as="paginatedLogEntries" configuration="{itemsPerPage:10,addQueryStringMethod:'POST,GET'}">
-	<div class="table-fit">
-		<table id="dm-developerlog-list" class="table table-hover t3-table">
-		<thead>
-			<tr class="t3-row-header">
-				<th>&nbsp;</th>
-				<th><f:translate key="module.list.crdate" /></th>
-				<th><f:translate key="module.list.request_id" /></th>
-				<th><f:translate key="module.list.location" />:<f:translate key="module.list.line" /></th>
-				<th><f:translate key="module.list.message" /></th>
-			</tr>
-		</thead>
-		<tbody>
-			<f:for each="{paginatedLogEntries}" as="logEntry">
-			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="Click to expand">
-				<td><f:render partial="SeverityIcon62" arguments="{_all}" /></td>
-				<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
-				<td>{logEntry.requestId}</td>
-				<td>{logEntry.location}:{logEntry.line}</td>
-				<td style="white-space:normal">{logEntry.message}</td>
-			</tr>
-			<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" class="collapse" id="collapsed-{logEntry.uid}">
-				<td>&nbsp;</td>
-				<td colspan="4">
-					<div class="container-fluid">
-						<div class="row">
-							<f:translate key="module.list.requestType" />:
-							<f:for each="{devlog:bitMask(value:logEntry.requestType)}" as="requestType">
-								<f:translate key="module.list.requestType.{requestType}" />
-							</f:for>
-							<f:translate key="module.list.key" />: {logEntry.extkey}
-							<f:translate key="module.list.beUser" />: {logEntry.beUser}
-							<f:translate key="module.list.feUser" />: {logEntry.feUser}
-						</div>
-						<div class="row">
-							<f:translate key="module.list.data" />:  <pre>{logEntry.dataVar}</pre>
-						</div>
-					</div>
-				</td>
-			</tr>
-			</f:for>
-		</tbody>
-		</table>
-	</div>
-	</f:widget.paginate>
-	</f:then>
+		<f:then>
+		<f:if condition="{logEntries->f:count()} >= {settings.list.paginate.itemsPerPage}">
+			<f:then>
+				<f:widget.paginate objects="{logEntries}" as="paginatedLogEntries" configuration="{itemsPerPage:settings.list.paginate.itemsPerPage,addQueryStringMethod:'POST,GET',maximumNumberOfLinks:settings.list.paginate.maximumNumberOfLinks}">
+					<f:render partial="62/Table" arguments="{_all}" />
+				</f:widget.paginate>
+			</f:then>
+			<f:else>
+				<f:alias map="{paginatedLogEntries: logEntries}">
+					<f:render partial="62/Table" arguments="{_all}" />
+				</f:alias>
+			</f:else>
+		</f:if>
+		</f:then>
+		<f:else>
+		<f:translate key="module.noLogEntries" />
+	</f:else>
 	</f:if>
 	
 	<script>
-	var trs = $$('tr[data-toggle="collapse"]');
-	for (i=0; i<trs.length;i++) {
-		console.log(trs[i]);
-		$(trs[i]).observe('click', function(event){
-			var x = trs[i];
-			console.log(x.readAttribute('data-target'));
-		});
-	}
+	var dataContainerLabel = jQuery('.data-container label').click(function() {
+		var $thisElement = jQuery(this);
+		var $parent = $thisElement.closest('.data-container');
+		$parent.toggleClass('showData');
+	});
 	</script>
 </f:section>
