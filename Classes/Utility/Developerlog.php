@@ -102,7 +102,10 @@ class Developerlog {
         if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && is_array($logArray['dataVar'])) {
             $insertFields['data_var'] = $this->getExtraData($logArray['dataVar']);
         }
-        $this->getDatabaseConnection()->exec_INSERTquery('tx_dmdeveloperlog_domain_model_logentry', $insertFields);
+        $db = $this->getDatabaseConnection();
+        if ($db !== NULL) { // this can happen when devLog is called to early in the bootstrap process
+            @$db->exec_INSERTquery('tx_dmdeveloperlog_domain_model_logentry', $insertFields);
+        }
     }
 
     /**
