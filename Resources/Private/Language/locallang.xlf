@@ -48,6 +48,9 @@
 			<trans-unit id="flush.action.title">
 				<source>Delete all</source>
 			</trans-unit>
+			<trans-unit id="flush.action.confirm">
+				<source>Delete all log entries?</source>
+			</trans-unit>
 			<trans-unit id="form.options.extkey.all">
 				<source>All</source>
 			</trans-unit>
