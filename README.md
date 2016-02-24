@@ -1,7 +1,7 @@
 Developer Log
 =============
 
-Replacement for the original [``devlog``](https://typo3.org/extensions/repository/view/devlog) extension.
+Extension to capture developer log entries.
 
 # Installation
 
@@ -15,8 +15,6 @@ For the ``dm_developerlog`` extension to work you have to enable TYPO3s develope
 
 Visit the install tool and search for **dlog**. Enable suitable options.
 
-# Configuration
-
 # Special thanks
 
-To the original author of ``devlog``, especially Francois Suter. The actual logging mechanism is a shameless copy.
+To the original authors of ``devlog``.
