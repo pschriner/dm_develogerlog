@@ -1,0 +1,54 @@
+{namespace devlog=DieMedialen\DmDeveloperlog\ViewHelpers}
+<f:layout name="Backend/Default" />
+
+<f:section name="headline">
+	Developer log
+</f:section>
+
+<f:section name="content">
+	<f:flashMessages />
+	<div class="pull-right">
+		<a href="{f:uri.action(action:'flush')}" class="btn btn-warning t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key:'flush.modal.title')}" data-severity"danger">{f:translate(key:'flush.action.title')}</a>
+	</div>
+	<div class="form-inline form-inline-spaced">
+		<f:form action="index" object="{constraint}" name="constraint" class="form-inline">
+			<div class="form-group">
+				<label for="searchword"><f:translate key="search.searchword" /></label> <f:form.textfield property="search" class="form-control input-sm" placeholder="message" id="searchword" />
+			</div>
+			<div class="form-group">
+				<label for="severity"><f:translate key="search.severity">Severity</f:translate></label>
+				<f:form.select property="severity" options="{severity-options}" class="form-control input-sm" id="severity" />
+			</div>
+			<div class="form-group">
+				<label for="extkey"><f:translate key="search.extkey">Key</f:translate></label>
+				<f:form.select property="extkey" options="{extkey-options}" class="form-control input-sm" prependOptionLabel="{f:translate(key:'form.options.extkey.all')}" prependOptionValue="" id="extkey" />
+			</div>
+			<div class="form-group">
+				<f:form.submit class="btn btn-default btn-sm" value="{f:translate(key:'form.submit.search')}" /> 
+			</div>
+		</f:form>
+	</div>
+	<p class="clearfix">&nbsp;</p>
+	<f:if condition="{logEntries->f:count()}">
+		<f:then>
+		<f:if condition="{logEntries->f:count()} >= {settings.list.paginate.itemsPerPage}">
+			<f:then>
+				<f:widget.paginate objects="{logEntries}" as="paginatedLogEntries" configuration="{itemsPerPage:settings.list.paginate.itemsPerPage,addQueryStringMethod:'POST,GET',maximumNumberOfLinks:settings.list.paginate.maximumNumberOfLinks}">
+					<f:render partial="Table" arguments="{_all}" />
+				</f:widget.paginate>
+			</f:then>
+			<f:else>
+				<f:alias map="{paginatedLogEntries: logEntries}">
+					<f:render partial="Table" arguments="{_all}" />
+				</f:alias>
+			</f:else>
+		</f:if>
+		</f:then>
+		<f:else>
+		<f:translate key="module.noLogEntries" />
+	</f:else>
+	</f:if>
+	<script src="{f:uri.resource(path:'JavaScript/debounce.js')}" type="text/javascript"></script>
+	<script src="{f:uri.resource(path:'JavaScript/developerlog.js')}" type="text/javascript"></script>
+	<f:render partial="Notifications" />
+</f:section>

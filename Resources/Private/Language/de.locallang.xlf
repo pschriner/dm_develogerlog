@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-22T16:12:28Z" product-name="dm_developerlog">
+		<header/>
+		<body>
+			<trans-unit id="search.searchword">
+				<source>Search for</source>
+				<target>Suchwort</target>
+			</trans-unit>
+			<trans-unit id="module.list.crdate">
+				<source>Date / Time</source>
+				<target>Tag / Uhrzeit</target>
+			</trans-unit>
+			<trans-unit id="module.list.request_id">
+				<source>Request ID</source>
+				<target>Request ID</target>
+			</trans-unit>
+			<trans-unit id="module.list.key">
+				<source>Key</source>
+				<target>Key</target>
+			</trans-unit>
+			<trans-unit id="module.list.severity">
+				<source>Severity</source>
+				<target>Schweregrat</target>
+			</trans-unit>
+			<trans-unit id="module.list.location">
+				<source>Location</source>
+				<target>Code-Quelle</target>
+			</trans-unit>
+			<trans-unit id="module.list.line">
+				<source>Line</source>
+				<target>Zeile</target>
+			</trans-unit>
+			<trans-unit id="module.list.message">
+				<source>Message</source>
+				<target>Nachricht</target>
+			</trans-unit>
+			<trans-unit id="flush.modal.title">
+				<source>Delete all log entries</source>
+				<target>Alle Logeinträge löschen</target>
+			</trans-unit>
+			<trans-unit id="flush.action.title">
+				<source>Delete all</source>
+				<target>Alle löschen</target>
+			</trans-unit>
+			<trans-unit id="flush.action.confirm">
+				<source>Delete all log entries?</source>
+				<target>Wollen Sie wirklich alle Logeinträge löschen?</target>
+			</trans-unit>
+			<trans-unit id="form.options.extkey.all">
+				<source>All</source>
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="form.submit.search">
+				<source>Search</source>
+				<target>Suchen</target>
+			</trans-unit>
+			<trans-unit id="module.noLogEntries">
+				<source>No log entries</source>
+				<target>Keine Logeinträge</target>
+			</trans-unit>
+			<trans-unit id="module.list.clickToToggle">
+				<source>Click to toggle</source>
+				<target>Klicken um zu expandieren</target>
+			</trans-unit>
+			<trans-unit id="module.list.requestType">
+				<source>Request type</source>
+				<target>Anfrage-Typ</target>
+			</trans-unit>
+			<trans-unit id="module.list.feUser">
+				<source>Frontend User</source>
+				<target>Frontend Benutzer</target>
+			</trans-unit>
+			<trans-unit id="module.list.beUser">
+				<source>Backend User</source>
+				<target>Backend Benutzer</target>
+			</trans-unit>
+			<trans-unit id="module.list.data">
+				<source>Additional data</source>
+				<target>Zusätzliche Daten</target>
+			</trans-unit>
+			<trans-unit id="module.list.page">
+				<source>Page</source>
+				<target>Seite</target>
+			</trans-unit>
+			<trans-unit id="module.list.workspaceUid">
+				<source>Workspace UID</source>
+				<target>Workspace UID</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

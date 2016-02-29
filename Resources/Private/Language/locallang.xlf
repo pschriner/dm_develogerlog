@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-01-31T18:42:28Z" product-name="dm_developerlog">
+		<header/>
+		<body>
+			<trans-unit id="search.searchword">
+				<source>Search for</source>
+			</trans-unit>
+			<trans-unit id="module.list.crdate">
+				<source>Date / Time</source>
+			</trans-unit>
+			<trans-unit id="module.list.request_id">
+				<source>Request ID</source>
+			</trans-unit>
+			<trans-unit id="module.list.key">
+				<source>Key</source>
+			</trans-unit>
+			<trans-unit id="module.list.severity">
+				<source>Severity</source>
+			</trans-unit>
+			<trans-unit id="module.list.location">
+				<source>Location</source>
+			</trans-unit>
+			<trans-unit id="module.list.line">
+				<source>Line</source>
+			</trans-unit>
+			<trans-unit id="module.list.message">
+				<source>Message</source>
+			</trans-unit>
+			<trans-unit id="flush.modal.title">
+				<source>Delete all log entries</source>
+			</trans-unit>
+			<trans-unit id="flush.action.title">
+				<source>Delete all</source>
+			</trans-unit>
+			<trans-unit id="flush.action.confirm">
+				<source>Delete all log entries?</source>
+			</trans-unit>
+			<trans-unit id="form.options.extkey.all">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="form.submit.search">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="module.noLogEntries">
+				<source>No log entries</source>
+			</trans-unit>
+			<trans-unit id="module.list.clickToToggle">
+				<source>Click to toggle</source>
+			</trans-unit>
+			<trans-unit id="module.list.requestType">
+				<source>Request type</source>
+			</trans-unit>
+			<trans-unit id="module.list.feUser">
+				<source>Frontend User</source>
+			</trans-unit>
+			<trans-unit id="module.list.beUser">
+				<source>Backend User</source>
+			</trans-unit>
+			<trans-unit id="module.list.data">
+				<source>Additional data</source>
+			</trans-unit>
+			<trans-unit id="module.list.page">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="module.list.workspaceUid">
+				<source>Workspace UID</source>
+			</trans-unit>
+			<trans-unit id="module.list.requestType.1">
+				<source>FE</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="module.list.requestType.2">
+				<source>BE</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="module.list.requestType.4">
+				<source>CLI</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="module.list.requestType.8">
+				<source>AJAX</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="module.list.requestType.16">
+				<source>INSTALL</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-notice">
+				<source>notice</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-info">
+				<source>info</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-success">
+				<source>success</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-warning">
+				<source>warning</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+			<trans-unit id="severity.to.notification.alert-danger">
+				<source>error</source><!-- $NON-NLS-1$ -->
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

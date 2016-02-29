@@ -1,0 +1,6 @@
+module.tx_dmdeveloperlog.settings {
+	list.paginate {
+		itemsPerPage = 20
+		maximumNumberOfLinks = 20
+	}
+}

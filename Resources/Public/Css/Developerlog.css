@@ -1,0 +1,51 @@
+.table > tbody > tr > td.zeroPadding {
+	padding: 0 !important;
+	border-top:0;
+}
+tr[data-toggle~=collapse]:hover {
+	cursor: pointer;
+}
+ul.f3-widget-paginator {
+	margin:0;padding:0;
+}
+ul.f3-widget-paginator li {
+	list-style:none;
+	display:inline-block;
+	border: 1px solid #bbbbbb;
+	padding:0.5em;
+	border-radius: 2px;
+}
+ul.f3-widget-paginator li.current {
+	background-color:#eeeeee;
+}
+tr.collapse.in {
+	display: table-row;
+}
+
+#dm-developerlog-list .data-container {
+	margin:1em;
+	width:600px;
+}
+#dm-developerlog-list tr[aria-expanded=true] td {
+	border-bottom-style:transparent;
+}
+#dm-developerlog-list tr[aria-expanded=true] + tr td{
+	border-top-color:transparent;
+}
+#dm-developerlog-list .container-fluid {
+	padding:1em 1em 1em 40px;
+}
+#dm-developerlog-list tr td:first-child {
+	width:34px;
+}
+
+#dm-developerlog-list td.location {
+	white-space: nowrap;
+}
+#dm-developerlog-list td.location code {
+	background-color: transparent;
+	color:black;
+}
+#dm-developerlog-list span.label-default-original {
+	background-color: #777;
+}
