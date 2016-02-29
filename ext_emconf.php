@@ -1,14 +1,14 @@
 <?php
 
-/***************************************************************
+/*********************************************************************
  * Extension Manager/Repository config file for ext "dm_developerlog".
- ***************************************************************/
+ *********************************************************************/
 
 $EM_CONF[$_EXTKEY] = array (
-    'title' => 'Developer log',
+    'title' => 'Development log',
     'description' => 'An extension to capture TYPO3 devlog messages for debugging. Provides a backend module.',
     'category' => 'misc',
-    'version' => '0.5.0',
+    'version' => '0.5.2',
     'state' => 'beta',
     'uploadfolder' => false,
     'author' => 'Patrick Schriner',

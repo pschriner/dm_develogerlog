@@ -66,6 +66,12 @@
 			<trans-unit id="module.list.workspaceUid">
 				<source>Workspace UID</source>
 			</trans-unit>
+			<trans-unit id="controller.log.flushed">
+				<source>Development log emptied</source>
+			</trans-unit>
+			<trans-unit id="controller.log.flushed.title">
+				<source>Development log emptied</source>
+			</trans-unit>
 			<trans-unit id="module.list.requestType.1">
 				<source>FE</source><!-- $NON-NLS-1$ -->
 			</trans-unit>

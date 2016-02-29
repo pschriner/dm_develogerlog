@@ -15,7 +15,7 @@ namespace DieMedialen\DmDeveloperlog\Domain\Model;
  */
 
 /**
- * A developer log entry
+ * A log entry
  */
 class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

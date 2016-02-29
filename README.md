@@ -1,7 +1,7 @@
-Developer Log
-=============
+Development Log
+===============
 
-Extension to capture developer log entries.
+Extension to capture development log entries.
 
 # Installation
 
