@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
                 ['Devlog' => 'index,flush'],
                 [
                     'access' => 'admin',
-                    'icon'   => \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('8.0') ? '' : 'EXT:' . $_EXTKEY . '/ext_icon.png',
+                    'icon'   => \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('8.0') ? '' : 'EXT:' . $extension . '/ext_icon.png',
                     'iconIdentifier' => 'module-dmdeveloperlog',
                     'labels' => 'LLL:EXT:' . $extension .'/Resources/Private/Language/locallang_mod.xlf',
                     'cssFiles' => ['EXT:'. $extension .'/Resources/Public/Css/Backend.css']
