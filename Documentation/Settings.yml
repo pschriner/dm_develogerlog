@@ -5,24 +5,16 @@
 ---
 conf.py:
   copyright: 2016
-  project: Development Log
-  version: 0.5.3
-  release: 0.5.3
-  html_theme_options:
-    github_repository: pschriner/dm_developerlog
-    github_branch: master
+  project: Development log
+  version: 0.6
+  release: 0.6
+  latex_documents:
+  - - Index
+    - dm_developerlog
+    - Patrick Schriner
+    - manual
   latex_elements:
     papersize: a4paper
     pointsize: 10pt
     preamble: \usepackage{typo3}
-  intersphinx_mapping:
-    t3tsref:
-    - http://docs.typo3.org/typo3cms/TyposcriptReference/
-    - null
-    t3start:
-    - http://docs.typo3.org/typo3cms/GettingStartedTutorial/
-    - null
-    t3editors:
-    - http://docs.typo3.org/typo3cms/EditorsTutorial/
-    - null
 ...
