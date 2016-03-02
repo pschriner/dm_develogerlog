@@ -91,10 +91,28 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         return $this->objectManager->get(
             FlashMessage::class,
-           'Developer log emptied',
-           'Flushed',
+           $this->translate('controller.log.flushed'),
+           $this->translate('controller.log.flushed.title'),
            FlashMessage::OK,
            TRUE
         );
+    }
+    
+    /**
+     * Get a translated string
+     * The second parameter is optional, and passed to vprintf.
+     * As such it is expected to either be a string, or an array.
+     *
+     * @param string $key
+     * @param mixed $sprintfParameters
+     *
+     * @return string
+     */
+    protected function translate($key,$vprintfParmeters = '')
+    {
+        if($vprintfParmeters != '' && !is_array($vprintfParmeters)) {
+            $vprintfParmeters = array($vprintfParmeters);
+        }
+        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'dm_developerlog', $vprintfParmeters);
     }
  }

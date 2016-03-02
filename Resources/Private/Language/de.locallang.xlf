@@ -87,6 +87,14 @@
 				<source>Workspace UID</source>
 				<target>Workspace UID</target>
 			</trans-unit>
+			<trans-unit id="controller.log.flushed">
+				<source>Development log emptied</source>
+				<target>Development log geleert</target>
+			</trans-unit>
+			<trans-unit id="controller.log.flushed.title">
+				<source>Development log emptied</source>
+				<target>Development log geleert</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
