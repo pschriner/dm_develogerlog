@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-03-02T18:42:28Z" product-name="dm_developerlog">
+		<header/>
+		<body>
+			<trans-unit id="logentry">
+				<source>Log entry</source>
+			</trans-unit>
+			<trans-unit id="be_user">
+				<source>Backend user</source>
+			</trans-unit>
+			<trans-unit id="fe_user">
+				<source>Frontend user</source>
+			</trans-unit>
+			<trans-unit id="pid">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="crdate">
+				<source>Creation date</source>
+			</trans-unit>
+			<trans-unit id="request_id">
+				<source>Request ID</source>
+			</trans-unit>
+			<trans-unit id="request_type">
+				<source>Request type</source>
+			</trans-unit>
+			<trans-unit id="extkey">
+				<source>Extension key</source>
+			</trans-unit>
+			<trans-unit id="location">
+				<source>Location</source>
+			</trans-unit>
+			<trans-unit id="line">
+				<source>Line</source>
+			</trans-unit>
+			<trans-unit id="system">
+				<source>System</source>
+			</trans-unit>
+			<trans-unit id="message">
+				<source>Message</source>
+			</trans-unit>
+			<trans-unit id="data_var">
+				<source>Additional data</source>
+			</trans-unit>
+			<trans-unit id="severity">
+				<source>Severity</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

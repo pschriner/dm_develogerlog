@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 return array(
     'ctrl' => [
-        'title' => 'Logentry',
+        'title' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:logentry',
         'crdate' => 'crdate',
         'dividers2tabs' => true,
         'default_sortby' => 'ORDER BY crdate DESC',
@@ -11,26 +11,26 @@ return array(
     ],
     'columns' => [
         'be_user' => [
-            'label' => 'be_user',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:be_user',
             'config' => [
                 'type' => 'passthrough'
             ]
         ],
         'fe_user' => [
-            'label' => 'fe_user',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:fe_user',
             'config' => [
                 'type' => 'passthrough'
             ]
         ],
         'pid' => [
-            'label' => 'pid',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:pid',
             'config' => [
                 'type' => 'passthrough'
             ]
         ],
         'crdate' => [
             'exclude' => 0,
-            'label' => 'Crdate',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:crdate',
             'config' => [
                 'type' => 'input',
                 'size' => 12,
@@ -39,22 +39,22 @@ return array(
             ]
         ],
          'request_id' => [
-            'label' => 'Request ID',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:request_id',
             'config' => [
                 'type' => 'input',
-                'size' => 255,
+                'size' => 10,
             ]
         ],
          'request_type' => [
-            'label' => 'Request Type',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:request_type',
             'config' => [
                 'type' => 'input',
-                'size' => 255,
+                'size' => 10,
             ]
         ],
         'extkey' => [
             'exclude' => 0,
-            'label' => 'Extension (reported)',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:extkey',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -62,7 +62,7 @@ return array(
         ],
         'location' => [
             'exclude' => 0,
-            'label' => 'Location',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:location',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -70,7 +70,7 @@ return array(
         ],
         'line' => [
             'exclude' => 0,
-            'label' => 'Line',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:line',
             'config' => [
                 'type' => 'input',
                 'size' => 10,
@@ -79,21 +79,21 @@ return array(
         ],
         'system' => [
             'exclude' => 0,
-            'label' => 'System',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:system',
             'config' => [
                 'type' => 'check',
             ]
         ],
         'message' => [
             'exclude' => 0,
-            'label' => 'Message',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:message',
             'config' => [
                 'type' => 'text',
             ]
         ],
         'data_var' => [
             'exclude' => 0,
-            'label' => 'Data',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:data_var',
             'config' => [
                 'type' => 'text',
                 'cols' => 50,
@@ -102,7 +102,7 @@ return array(
         ],
         'severity' => [
             'exclude' => 0,
-            'label' => 'Severity',
+            'label' => 'LLL:EXT:dm_developerlog/Resources/Private/Language/locallang_db.xml:severity',
             'config' => [
                 'type' => 'select',
                 'items' => [
@@ -111,15 +111,16 @@ return array(
                     ['Warning', 1],
                     ['Fatal Error', 2]                    
                 ],
-
+                'renderType' => 'selectSingle',
             ]
         ],
     ],
     'types' => [
-		'0' => ['showitem' => 'message;;source,data_var;;basic']
+		'0' => ['showitem' => '--palette--;;basic, --palette--;;source, message, data_var, --palette--;;request']
 	],
     'palettes' => [
         'basic' => ['showitem' => 'crdate, severity'],
+        'request' => ['showitem' => 'system, --linebreak--, request_id, request_type'],
         'source' => ['showitem' => 'extkey, --linebreak--, location, line']
     ],
 );
