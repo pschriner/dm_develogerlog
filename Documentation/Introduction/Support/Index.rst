@@ -13,7 +13,7 @@ There are several ways to get support for EXT:dm_developerlog:
 
 Forge
 -----
-Go to https://forge.typo3.org/projects/extension-dm_developerlog end get some support.
+Go to https://forge.typo3.org/projects/extension-dm_developerlog and you might get some support.
 
 Private/Personal support
 ------------------------

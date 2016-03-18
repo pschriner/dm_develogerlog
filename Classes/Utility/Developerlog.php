@@ -72,7 +72,8 @@ class Developerlog {
      * 'msg'		string		Message (in english).
      * 'extKey'		string		Extension key (from which extension you are calling the log)
      * 'severity'	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-     * 'dataVar'	array		Additional data you want to pass to the logger.
+     * 'dataVar'	mixed		Additional data you want to pass to the logger. This should be an array,
+     * but anything but a resource should work
      *
      * @param array $logArray: log data array
      * @return void
@@ -99,7 +100,7 @@ class Developerlog {
             $insertFields['system'] = $callerData['system'];
         }
 
-        if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && is_array($logArray['dataVar'])) {
+        if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && !is_resource($logArray['dataVar'])) {
             $insertFields['data_var'] = $this->getExtraData($logArray['dataVar']);
         }
         $db = $this->getDatabaseConnection();

@@ -18,13 +18,16 @@ Development log
 		dm_developerlog
 
 	:Version:
-		|beta|
+		|release|
 
 	:Language:
-		dm_developerlog
+		en
+
+	:Description:
+		An extension to capture TYPO3 devlog messages. Provides a backend module.
 
 	:Keywords:
-		development log
+		development,log,module
 
 	:Copyright:
 		2016
@@ -32,15 +35,18 @@ Development log
 	:Author:
 		Patrick Schriner
 
+	:Email:
+		patrick.schriner@diemedialen.de
+
 	:License:
-		This document is published under the Open Content License
-		available from http://www.opencontent.org/opl.shtml
+		This document is published under the Open Publication License
+		available from http://www.opencontent.org/openpub/
 
 	:Rendered:
 		|today|
 
 	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+	a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
 
 
 	**Table of Contents**
@@ -48,6 +54,7 @@ Development log
 .. toctree::
 	:maxdepth: 3
 	:titlesonly:
-	:glob:
 
 	Introduction/Index
+	AdministratorManual/Index
+	Links
