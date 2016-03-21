@@ -17,23 +17,18 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-     
+
 class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements CompilableInterface
 {
     /**
-     * @param string $operator
      * @param int $value
      * @param array $mask
      * @return string
      */
-    public function render($operator = '&', $value = NULL, $mask = NULL)
+    public function render($value = NULL, $mask = NULL)
     {
-        if (!in_array($operator, ['&','|'])) {
-            throw new \UnexpectedValueException('Argument $operator has to be & or |', 1455117117);
-        }
         return static::renderStatic(
             array(
-                'operator' => $operator,
                 'value' => $value,
                 'mask' => $mask
             ),
@@ -58,15 +53,13 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
                 ;
             }
         } else {
-            $value = (int)$arguments['value'];
+            $value = max(0,(int)$arguments['value']);
         }
-
-        $operator = $arguments['operator'];
 
         $mask = array();
         $masked = [];
-        if ($arguments['mask'] === NULL) {
-            $max = PHP_INT_MAX;
+        if (!is_array($arguments['mask'])) {
+            $max = is_int($arguments['mask']) ? intval($arguments['mask']) : PHP_INT_MAX;
             $i = 1;
             while ($i < $max) {
                 $mask[] = $i;
@@ -77,15 +70,8 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
         }
 
         foreach ($mask as $v) {
-            if ($operator == '&') {
-                if ($v & $value) {
-                    $masked[] = $v;
-                }
-            }
-            if ($operator == '|') {
-                if ($v | $value) {
-                    $masked[$v] = $v;
-                }
+            if ($v & $value) {
+                $masked[] = $v;
             }
         }
         return $masked;

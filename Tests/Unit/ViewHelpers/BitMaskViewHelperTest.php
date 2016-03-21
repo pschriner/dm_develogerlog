@@ -22,45 +22,89 @@ use DieMedialen\DmDeveloperlog\ViewHelpers\BitMaskViewHelper;
  */
 class BitMaskViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-    /**
-     * @test
-     */
-    public function canInstanceViewHelper()
+    static $closure;
+    static $renderingContext;
+
+    public static function setUpBeforeClass()
     {
-        $instance = new BitMaskViewHelper();
-    }
-    
-    /**
-     * @test
-     */
-    public function renderCallWithNoArgumentsExpectsBitmask()
-    {
-        $closure = function () {
+        self::$closure = function () {
             return '';
         };
-        $renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+        self::$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+    }
+
+    /**
+     * @test
+     */
+    public function createInstance()
+    {
+        $instance = new BitMaskViewHelper();
+        $this->assertNotNull($instance);
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallWitMissingParameters()
+    {
         $map = BitMaskViewHelper::renderStatic(
-            ['operator' => '&', 'mask' => NULL, 'value' => PHP_INT_MAX],
-            $closure, $renderingContext
+            ['mask' => NULL, 'value' => PHP_INT_MAX],
+            self::$closure, self::$renderingContext
         );
         $this->assertEquals(log(PHP_INT_MAX, 2.0), count($map));
-        
+
         $map = BitMaskViewHelper::renderStatic(
-            ['operator' => '&', 'mask' => NULL, 'value' => 5],
-            $closure, $renderingContext
+            ['mask' => NULL, 'value' => 5],
+            self::$closure, self::$renderingContext
         );
-        $this->assertEquals([0 => 1, 1 => 4], $map);
-        
+        $this->assertEquals([1,4], $map);
+
         $map = BitMaskViewHelper::renderStatic(
-            ['operator' => '&', 'mask' => [1,2,4,8], 'value' => 5],
-            $closure, $renderingContext
+            ['mask' => NULL, 'value' => NULL],
+            self::$closure, self::$renderingContext
         );
-        $this->assertEquals([0 => 1, 1 => 4], $map);
-        
+        $this->assertEquals([], $map);
+    }
+
+    /**
+     * @test
+     */
+    public function renderCallWithIrregularValues()
+    {
         $map = BitMaskViewHelper::renderStatic(
-            ['operator' => '|', 'mask' => [1 => 0, 2 => 0, 4 => 1, 8 => 0], 'value' => 5],
-            $closure, $renderingContext
+            ['mask' => -5, 'value' => 5],
+            self::$closure, self::$renderingContext
         );
-        $this->assertEquals([0 => 0, 1 => 1], $map);
+        $this->assertEquals([], $map);
+
+        $map = BitMaskViewHelper::renderStatic(
+            ['mask' => 5, 'value' => -5],
+            self::$closure, self::$renderingContext
+        );
+        $this->assertEquals([], $map);
+    }
+
+    /**
+     * @test
+     */
+    public function regularRenderCalls()
+    {
+        $map = BitMaskViewHelper::renderStatic(
+            ['mask' => [1,8,16], 'value' => 13],
+            self::$closure, self::$renderingContext
+        );
+        $this->assertEquals([1,8], $map);
+
+        $map = BitMaskViewHelper::renderStatic(
+            ['mask' => NULL, 'value' => 1213],
+            self::$closure, self::$renderingContext
+        );
+        $this->assertEquals([1,4,8,16,32,128,1024], $map);
+
+        $map = BitMaskViewHelper::renderStatic(
+            ['mask' => NULL, 'value' => 25],
+            self::$closure, self::$renderingContext
+        );
+        $this->assertEquals([1,8,16], $map);
     }
 }

@@ -21,7 +21,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
      
 class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-    
+    static protected $defaultSeverity = 0;
+
     static protected $map = [
         -1 => 'success',
         0 => 'info',
@@ -52,21 +53,19 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $severity = 0;
-        if ($arguments['severity'] == -2) {
+        $severity = NULL;
+        if ($arguments['severity'] == -2 || !isset($arguments['severity'])) {
             try {
                 $severity = (int)$renderChildrenClosure();
-            } catch (Exception $e) {
-                $severity = 0;
+            } catch (\Exception $e) {
+                ;
             }
         } else {
             $severity = (int)$arguments['severity'];
         }
-        if (isset(self::$map[$severity])) {
-            return self::$map[$severity];
-        } else {
-            return self::$map[0];
+        if (!isset(self::$map[$severity])) {
+            $severity = self::$defaultSeverity;
         }
-        
+        return self::$map[$severity];
     }
 }

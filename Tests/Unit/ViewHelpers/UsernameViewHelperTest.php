@@ -22,11 +22,23 @@ use DieMedialen\DmDeveloperlog\ViewHelpers\UsernameViewHelper;
  */
 class UsernameViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
     
+    static $closure;
+    static $renderingContext;
+
+    public static function setUpBeforeClass()
+    {
+        self::$closure = function () {
+            return '42';
+        };
+        self::$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+    }
+
     /**
      * @test
      */
-    public function canInstanceViewHelper ()
+    public function createInstance()
     {
         $instance = new UsernameViewHelper();
+        $this->assertNotNull($instance);
     }
 }

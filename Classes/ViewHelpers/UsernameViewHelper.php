@@ -62,25 +62,33 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
         $uid = $arguments['uid'];
         $backendOrFrontend = !empty($arguments['backend']) ? 'be' : 'fe';
 
-        $userKey = $backendOrFrontend . '-' .$uid;
+        $identifier = $backendOrFrontend . '-' .$uid;
 
-        if (isset(static::$usernameRuntimeCache[$userKey])) {
-            return htmlspecialchars(static::$usernameRuntimeCache[$userKey]);
+        $userName = static::getUserName(!empty($arguments['backend']), $uid, $identifier);
+        return htmlspecialchars($userName);
+    }
+
+    /**
+     * @param boolean $backend
+     * @param int $uid
+     * @param string $identifier
+     */
+    protected static function getUserName($backend, $uid, $identifier)
+    {
+        if (!isset(static::$usernameRuntimeCache[$identifier])) {
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            if ($backend) {
+                $backendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository::class);
+                /** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
+                $user = $backendUserRepository->findByUid($uid);
+            } else {
+                $frontendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository::class);
+                /** @var $user \TYPO3\CMS\Extbase\Domain\Model\FrontendUser */
+                $user = $frontendUserRepository->findByUid($uid);
+            }
+            // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
+            static::$usernameRuntimeCache[$identifier] = ($user === null) ? '' : $user->getUserName();
         }
-
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-
-        if ($backendOrFrontend == 'be') {
-            $backendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository::class);
-            /** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
-            $user = $backendUserRepository->findByUid($uid);
-        } else {
-            $frontendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository::class);
-            /** @var $user \TYPO3\CMS\Extbase\Domain\Model\FrontendUser */
-            $user = $frontendUserRepository->findByUid($uid);
-        }
-        // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
-        static::$usernameRuntimeCache[$userKey] = ($user === null) ? '' : $user->getUserName();
-        return htmlspecialchars(static::$usernameRuntimeCache[$userKey]);
+        return static::$usernameRuntimeCache[$identifier];
     }
 }
