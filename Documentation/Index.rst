@@ -55,6 +55,8 @@ Development log
 	:maxdepth: 3
 	:titlesonly:
 
-	Introduction/Index
-	AdministratorManual/Index
+	About/Index
+	Installation/Index
+	Configuration/Index
+	Support/Index
 	Links

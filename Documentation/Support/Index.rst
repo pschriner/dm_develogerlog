@@ -3,18 +3,17 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../Includes.txt
 
 .. _support:
 
 Need Support?
 =============
-There are several ways to get support for EXT:dm_developerlog:
 
 Forge
 -----
 Go to https://forge.typo3.org/projects/extension-dm_developerlog and you might get some support.
 
-Private/Personal support
-------------------------
-If you need private or personal support, ask one of the developers for it.
+Note on "Missing" features
+--------------------------
+This extension will not get the same backend options or features as EXT:developer_log. Many omissions are "on purpose".
