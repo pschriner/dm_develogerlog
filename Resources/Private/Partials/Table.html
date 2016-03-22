@@ -16,7 +16,7 @@
 		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" data-toggle="collapse" data-target="#collapsed-{logEntry.uid}" title="{f:translate(key:'module.list.clickToToggle')}">
 			<td><f:render partial="SeverityIcon" arguments="{_all}" /></td>
 			<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
-			<td>{logEntry.requestId}</td>
+			<td><code>{logEntry.requestId}</code></td>
 			<td class="hidden-sm hidden-xs location">
 				<f:if condition="{logEntry.location}">
 					<f:if condition="{logEntry.systemLogEntry}">

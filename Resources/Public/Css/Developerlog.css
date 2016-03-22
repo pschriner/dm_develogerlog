@@ -42,7 +42,7 @@ tr.collapse.in {
 #dm-developerlog-list td.location {
 	white-space: nowrap;
 }
-#dm-developerlog-list td.location code {
+#dm-developerlog-list td code{
 	background-color: transparent;
 	color:black;
 }

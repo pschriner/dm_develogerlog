@@ -1,6 +1,8 @@
 {namespace devlog=DieMedialen\DmDeveloperlog\ViewHelpers}
 <f:layout name="Backend/Default" />
 
+<f:comment>This is the template for TYPO3 7.6+; Bootstrap-based</f:comment>
+
 <f:section name="headline">
 	Development Log
 </f:section>
@@ -13,7 +15,7 @@
 	<div class="form-inline form-inline-spaced">
 		<f:form action="index" object="{constraint}" name="constraint" class="form-inline">
 			<div class="form-group">
-				<label for="searchword"><f:translate key="search.searchword" /></label> <f:form.textfield property="search" class="form-control input-sm" placeholder="message" id="searchword" />
+				<label for="searchword"><f:translate key="search.searchword" /></label> <f:form.textfield property="search" class="form-control input-sm" placeholder="{f:translate(key:'search.searchword.placeholder')}" id="searchword" />
 			</div>
 			<div class="form-group">
 				<label for="severity"><f:translate key="search.severity">Severity</f:translate></label>

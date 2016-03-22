@@ -15,22 +15,22 @@
 		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" title="{f:translate(key:'module.list.clickToToggle')}">
 			<td><f:render partial="62/SeverityIcon" arguments="{_all}" /></td>
 			<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
-			<td>{logEntry.requestId}</td>
+			<td><code>{logEntry.requestId}</code></td>
 			<td colspan="2">
 				<f:if condition="{logEntry.location} <>''">
 					<f:if condition="{logEntry.systemLogEntry}">
-						<f:then><span class="label label-default-original">SYS</span></f:then>
-						<f:else><span class="label label-success">EXT</span></f:else>
+						<f:then><span class="badge system">SYS</span></f:then>
+						<f:else><span class="badge ext">EXT</span></f:else>
 					</f:if>
 					<code>{logEntry.location}:{logEntry.line}</code>
 				</f:if>
 			</td>
-			<td width="50%">{logEntry.message}</td>
+			<td>{logEntry.message}</td>
 		</tr>
 		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}">
 			<td>&nbsp;</td>
 			<td colspan="3">
-				<f:render partial="Properties" arguments="{logEntry:logEntry}" />
+				<f:render partial="62/Properties" arguments="{logEntry:logEntry}" />
 			</td>
 			<td colspan="2">
 				<f:if condition="{logEntry.dataVar}">

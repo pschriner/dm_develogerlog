@@ -7,6 +7,18 @@
 				<source>Search for</source>
 				<target>Suchwort</target>
 			</trans-unit>
+			<trans-unit id="search.searchword.placeholder">
+				<source>Message</source>
+				<target>Nachricht</target>
+			</trans-unit>
+			<trans-unit id="search.severity">
+				<source>Severity</source>
+				<target>Schweregrad</target>
+			</trans-unit>
+			<trans-unit id="search.extkey">
+				<source>Key</source>
+				<target>Schlüssel</target>
+			</trans-unit>
 			<trans-unit id="module.list.crdate">
 				<source>Date / Time</source>
 				<target>Tag / Uhrzeit</target>
@@ -21,7 +33,7 @@
 			</trans-unit>
 			<trans-unit id="module.list.severity">
 				<source>Severity</source>
-				<target>Schweregrat</target>
+				<target>Schweregrad</target>
 			</trans-unit>
 			<trans-unit id="module.list.location">
 				<source>Location</source>

@@ -35,13 +35,31 @@ ul.f3-widget-paginator li.current {
 .data-container.showData label::after {
 	content: " -";
 }
+#dm-developerlog-list-62 span.badge {
+	display:inline-block;
+	padding:1px 3px;
+	border-radius:2px;
+	color:white;
+	font-size:10px;
+}
+#dm-developerlog-list-62 span.badge.system {
+	background-color: #777;
+}
+#dm-developerlog-list-62 span.badge.ext {
+	background-color: #79a548;
+}
 #dm-developerlog-list-62 td dt,
 #dm-developerlog-list-62 td dd {
 	float:left;
+	margin-bottom:0.5em;
 }
 #dm-developerlog-list-62 td dt {
 	clear:both;
-	width:100px;
+	width:130px;
+	font-weight:bold;
+}
+#dm-developerlog-list-62 td dd {
+	margin-left:20px;
 }
 pre {
 	background-color:white;

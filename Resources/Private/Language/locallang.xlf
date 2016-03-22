@@ -6,6 +6,15 @@
 			<trans-unit id="search.searchword">
 				<source>Search for</source>
 			</trans-unit>
+			<trans-unit id="search.searchword.placeholder">
+				<source>Message</source>
+			</trans-unit>
+			<trans-unit id="search.severity">
+				<source>Severity</source>
+			</trans-unit>
+			<trans-unit id="search.extkey">
+				<source>Key</source>
+			</trans-unit>
 			<trans-unit id="module.list.crdate">
 				<source>Date / Time</source>
 			</trans-unit>
