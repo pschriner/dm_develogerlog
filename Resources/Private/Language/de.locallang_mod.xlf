@@ -13,7 +13,7 @@
 				<source>Development log</source>
 			</trans-unit>
 			<trans-unit id="mlang_labels_tabdescr">
-				<source>Backend module to monitor development log entries. &lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+				<source>Backend Modul für devlog Einträge. &lt;br /&gt;&lt;em&gt;Zugriff nur für Administratoren!&lt;/em&gt;</source>
 			</trans-unit>
 		</body>
 	</file>
