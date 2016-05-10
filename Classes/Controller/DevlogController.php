@@ -31,12 +31,12 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $extkeyOptions = [];
 
     /**
-     * @var DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
+     * @var \DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
      */
     protected $logEntryRepository;
     
     /**
-     * @param DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository
+     * @param \DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository
      */
     public function injectLogentryRepository(\DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository)
     {
@@ -53,11 +53,13 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * Main action for list
      *
-     * @param DieMedialen\DmDeveloperlog\Domain\Model\Constraint $search
+     * @param \DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint
+     *
+     * @ignorevalidation $constraint
      *
      * @return void
      */
-    public function indexAction($constraint = NULL)
+    public function indexAction(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = NULL)
     {
         $this->view->assign('constraint', $constraint);
         $this->view->assign('severity-options', $this->severityOptions);

@@ -21,7 +21,12 @@ class Developerlog {
     protected $extKey = 'dm_developerlog';
 
     /** @var array $extConf */
-    protected $extConf = array();
+    protected $extConf = array(
+        'minLogLevel' => 1,
+        'excludeKeys' => 'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase',
+        'dataCap' => 1000000,
+        'includeCallerInformation' => 1
+    );
 
     /** @var string $request_id */
     protected $request_id = '';
@@ -60,7 +65,11 @@ class Developerlog {
      */
     public function __construct()
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        $extConf = array();
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey])) {
+            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        }
+        $this->extConf = array_merge($this->extConf, $extConf);
         $this->request_id = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
         $this->request_type = TYPO3_REQUESTTYPE;
         $this->excludeKeys = GeneralUtility::trimExplode(',', $this->extConf['excludeKeys'], TRUE);
@@ -124,7 +133,7 @@ class Developerlog {
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
             if (isset($singletonInstances['TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager'])) { // lucky us, that guy is clever
-                $backendConfigurationManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager');
+                $backendConfigurationManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager', GeneralUtility::makeInstance('TYPO3\CMS\Core\Database\QueryGenerator'));
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check
