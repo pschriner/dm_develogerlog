@@ -7,7 +7,7 @@ conf.py:
   copyright: 2016
   project: Development log
   version: 0.6
-  release: 0.6.1
+  release: 0.6.2
   latex_documents:
   - - Index
     - dm_developerlog.tex
