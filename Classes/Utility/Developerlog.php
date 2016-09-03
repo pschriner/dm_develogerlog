@@ -110,7 +110,7 @@ class Developerlog {
         }
 
         if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && !is_resource($logArray['dataVar'])) {
-            $insertFields['data_var'] = $this->getExtraData($logArray['dataVar']);
+            $insertFields['data_var'] = substr($this->getExtraData($logArray['dataVar']),0,(int)$this->extConf['dataCap']);
         }
         $db = $this->getDatabaseConnection();
         if ($db !== NULL) { // this can happen when devLog is called to early in the bootstrap process
