@@ -89,8 +89,8 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function removeAll()
     {
-        if (class_exists('\TYPO3\CMS\Core\Database\ConnectionPool')) {
-            GeneralUtility::makeInstance('\TYPO3\CMS\Core\Database\ConnectionPool')->getConnectionForTable($this->tableName)
+        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
                 ->truncate(
                     $this->tableName
                 );
@@ -124,8 +124,8 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     protected function getDistinctOptions($field)
     {
         $values = array();
-        if (class_exists('\TYPO3\CMS\Core\Database\ConnectionPool')) {
-            $rows = GeneralUtility::makeInstance('\TYPO3\CMS\Core\Database\ConnectionPool')->getConnectionForTable($this->tableName)
+        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+            $rows = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
                 ->select(
                     $field,
                     $this->tableName,

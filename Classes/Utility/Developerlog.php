@@ -116,8 +116,8 @@ class Developerlog
             $insertFields['data_var'] = substr($this->getExtraData($logArray['dataVar']), 0,
                 (int)$this->extConf['dataCap']);
         }
-        if (class_exists('\TYPO3\CMS\Core\Database\ConnectionPool')) {
-            GeneralUtility::makeInstance('\TYPO3\CMS\Core\Database\ConnectionPool')->getConnectionForTable($this->logTable)
+        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->logTable)
                 ->insert(
                     $this->logTable,
                     $insertFields
@@ -180,9 +180,9 @@ class Developerlog
             $this->currentPageId = $GLOBALS['TSFE']->id ?: 0;
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
-            if (isset($singletonInstances['TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager'])) { // lucky us, that guy is clever
-                $backendConfigurationManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager',
-                    GeneralUtility::makeInstance('TYPO3\CMS\Core\Database\QueryGenerator'));
+            if (isset($singletonInstances[\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class])) { // lucky us, that guy is clever
+                $backendConfigurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+                    GeneralUtility::makeInstance(TYPO3\CMS\Core\Database\QueryGenerator::class));
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check

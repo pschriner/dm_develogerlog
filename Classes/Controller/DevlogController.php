@@ -69,6 +69,10 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign('logEntries', $this->logEntryRepository->findByConstraint($constraint));
     }
 
+    /**
+     * Delete all log entries
+     * @return void
+     */
     public function flushAction()
     {
         $this->logEntryRepository->removeAll();
