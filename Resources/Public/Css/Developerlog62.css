@@ -61,6 +61,12 @@ ul.f3-widget-paginator li.current {
 #dm-developerlog-list-62 td dd {
 	margin-left:20px;
 }
+#dm-developerlog-list-62 tr.data {
+    display:none;
+}
+#dm-developerlog-list-62 tr.data.showData {
+    display:table-row;
+}
 pre {
 	background-color:white;
 	padding:1em;

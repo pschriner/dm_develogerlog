@@ -12,7 +12,7 @@
 	</thead>
 	<tbody>
 		<f:for each="{paginatedLogEntries}" as="logEntry">
-		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}" title="{f:translate(key:'module.list.clickToToggle')}">
+		<tr class="{logEntry.severity -> devlog:mapToHelperClass()} toggle" title="{f:translate(key:'module.list.clickToToggle')}">
 			<td><f:render partial="62/SeverityIcon" arguments="{_all}" /></td>
 			<td><f:format.date format="%x %X">{logEntry.crdate}</f:format.date></td>
 			<td><code>{logEntry.requestId}</code></td>
@@ -27,7 +27,7 @@
 			</td>
 			<td>{logEntry.message}</td>
 		</tr>
-		<tr class="{logEntry.severity -> devlog:mapToHelperClass()}">
+		<tr class="{logEntry.severity -> devlog:mapToHelperClass()} data">
 			<td>&nbsp;</td>
 			<td colspan="3">
 				<f:render partial="62/Properties" arguments="{logEntry:logEntry}" />
