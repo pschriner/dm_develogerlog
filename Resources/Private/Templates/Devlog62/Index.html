@@ -47,10 +47,15 @@
 	</f:if>
 	
 	<script>
-	var dataContainerLabel = jQuery('#dm-developerlog-list-62 tr.toggle').click(function() {
+	jQuery('#dm-developerlog-list-62 tr.toggle').click(function() {
 		var $thisElement = jQuery(this);
 		var $data = $thisElement.next('tr');
 		$data.toggleClass('showData');
+	});
+    jQuery('#dm-developerlog-list-62 .data-container label').click(function() {
+		var $thisElement = jQuery(this);
+		var $dataContainer = $thisElement.closest('.data-container');
+		$dataContainer.toggleClass('showData');
 	});
 	</script>
 </f:section>
