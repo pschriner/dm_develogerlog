@@ -41,6 +41,8 @@ before_install:
   - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
 
 before_script:
+  - git clean -dffx
+  - composer require typo3/cms="$TYPO3_VERSION"
   - export TYPO3_PATH_WEB="$PWD/.Build/Web"
   - export PATH="$PATH:./Scripts"
   - if [ -d .Build/vendor/typo3/cms/components/testing_framework/Resources/Core/Build ]; then export TYPO3_BUILD_DIR=".Build/vendor/typo3/cms/components/testing_framework/Resources/Core/Build"; else export TYPO3_BUILD_DIR=".Build/vendor/typo3/cms/typo3/sysext/core/Build"; fi
