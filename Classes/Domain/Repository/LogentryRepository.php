@@ -127,7 +127,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
             $rows = $queryBuilder->select($field)
                 ->from($this->tableName)
-                ->orderBy($field, 'DESC')
+                ->orderBy($field, 'ASC')
                 ->groupBy($field)
                 ->execute()
                 ->fetchAll();
