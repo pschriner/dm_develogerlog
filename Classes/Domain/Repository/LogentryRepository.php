@@ -14,9 +14,8 @@ namespace DieMedialen\DmDeveloperlog\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Develooer log entry repository
- */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     protected $tableName = '';
@@ -125,14 +124,13 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $values = array();
         if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
-            $rows = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
-                ->select(
-                    $field,
-                    $this->tableName,
-                    array(),
-                    array($field),
-                    array($field)
-                )->fetchAll();
+            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
+            $rows = $queryBuilder->select($field)
+                ->from($this->tableName)
+                ->orderBy($field, 'DESC')
+                ->groupBy($field)
+                ->execute()
+                ->fetchAll();
             foreach ($rows as $row) {
                 $values[$row[$field]] = $row[$field];
             }

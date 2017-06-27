@@ -236,7 +236,7 @@ class Developerlog
      */
     protected function getExtraData($extraData)
     {
-        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_PRETTY_PRINT);
         if ($serializedData !== false) {
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));

@@ -1,5 +1,6 @@
 /* Backend module icon background color */
-li#system_DmDeveloperlogDmDeveloperlog .t3js-icon {
+li#system_DmDeveloperlogDmDeveloperlog .t3js-icon,
+.t3js-icon.icon-module-dmdeveloperlog {
 	background-color:#0088aa;
 	color:white;
 }
