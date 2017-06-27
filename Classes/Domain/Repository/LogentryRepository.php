@@ -20,12 +20,12 @@ namespace DieMedialen\DmDeveloperlog\Domain\Repository;
 class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     protected $tableName = '';
-    
+
     protected $defaultOrderings = array(
         'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
         'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
     );
-    
+
     /**
      * Initialize some local variables to be used during creation of objects
      *
@@ -37,7 +37,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
-        
+
         $datamapFactory = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class);
         $datamap = $datamapFactory->buildDataMap($this->objectType);
         $this->tableName = $datamap->getTableName();
@@ -46,32 +46,32 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @param \DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint
      */
-    public function findByConstraint(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = NULL)
+    public function findByConstraint(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = null)
     {
-        if ($constraint == NULL) {
+        if ($constraint == null) {
             return $this->findAll();
         }
         $and = [];
-        
+
         $query = $this->createQuery();
         $severity = $constraint->getSeverity();
-        if ((int)$severity!==-1) {
+        if ((int)$severity !== -1) {
             $and['severity'] = $query->greaterThanOrEqual('severity', $severity);
         }
-        
+
         $search = $constraint->getSearch();
         if ($search !== '') {
             $and['search'] = $query->logicalOr(
-                $query->like('message', '%'.$search.'%'),
-                $query->like('dataVar', '%'.$search.'%')
+                $query->like('message', '%' . $search . '%'),
+                $query->like('dataVar', '%' . $search . '%')
             );
         }
-        
+
         $extkey = $constraint->getExtkey();
         if ($extkey !== '') {
             $and['extkey'] = $query->equals('extkey', $extkey);
         }
-        
+
         if (count($and) > 1) {
             return $query->matching($query->logicalAnd($and))->execute();
         } elseif (count($and)) {
@@ -79,16 +79,41 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         } else {
             return $this->findAll();
         }
-        
-        
+
+
     }
-    
+
     /**
      * Force delete all entries
      * @override
      */
-    public function removeAll() {
-        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tableName);
+    public function removeAll()
+    {
+        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
+                ->truncate(
+                    $this->tableName
+                );
+        } else {
+            $this->getDatabaseConnection()->exec_TRUNCATEquery($this->tableName);
+        }
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * Get all distinct extension keys
+     * @return array
+     */
+    public function getExtensionKeys()
+    {
+        return $this->getDistinctOptions('extkey');
     }
 
     /**
@@ -98,27 +123,33 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function getDistinctOptions($field)
     {
-        $values =  $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            $field,
-            $this->tableName,
-            '1=1',
-            $field,
-            $field,
-            '',
-            $field
-        );
-        return array_combine(array_keys($values),array_keys($values));
+        $values = array();
+        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+            $rows = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
+                ->select(
+                    $field,
+                    $this->tableName,
+                    array(),
+                    array($field),
+                    array($field)
+                )->fetchAll();
+            foreach ($rows as $row) {
+                $values[$row[$field]] = $row[$field];
+            }
+        } else {
+            $values = $this->getDatabaseConnection()->exec_SELECTgetRows(
+                $field,
+                $this->tableName,
+                '1=1',
+                $field,
+                $field,
+                '',
+                $field
+            );
+        }
+        return array_combine(array_keys($values), array_keys($values));
     }
-    
-    /**
-     * Get all distinct extension keys
-     * @return array
-     */
-    public function getExtensionKeys()
-    {
-        return $this->getDistinctOptions('extkey');
-    }
-    
+
     /**
      * Get all distinct frontend users
      * @return array
@@ -126,7 +157,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function getFrontendUsers()
     {
         return $this->getDistinctOptions('fe_user');
-    }    
+    }
 
     /**
      * Get all distinct backend users
