@@ -143,7 +143,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $insertFields['fe_user'] = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
 
-        $insertFields['message'] = GeneralUtility::removeXSS($logArray['msg']);
+        $insertFields['message'] = strip_tags($logArray['msg']);
 
         // There's no reason to have any markup in the extension key
         $insertFields['extkey'] = strip_tags($logArray['extKey']);
