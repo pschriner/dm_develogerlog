@@ -20,12 +20,13 @@ use DieMedialen\DmDeveloperlog\Controller\DevlogController;
  * Tests for DevlogController
  *
  */
-class DevlogControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DevlogControllerTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
+{
 
     /**
      * @test
      */
-    public function canInstanceController ()
+    public function canInstanceController()
     {
         $instance = new DevlogController();
     }

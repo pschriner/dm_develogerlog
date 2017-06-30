@@ -15,22 +15,27 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 use DieMedialen\DmDeveloperlog\ViewHelpers\MapToHelperClassViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Tests for MapToHelperClassViewHelper
  *
  */
-class MapToHelperClassViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MapToHelperClassViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
+{
 
-    static $closure;
-    static $renderingContext;
+    private $_closure;
+    private $_renderingContext;
 
-    public static function setUpBeforeClass()
+    /**
+     * Set up
+     */
+    public function setUp()
     {
-        self::$closure = function () {
-            return '42';
+        $this->_closure = function () {
+            return '';
         };
-        self::$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+        $this->_renderingContext = $this->getMockBuilder(RenderingContext::class)->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -49,17 +54,19 @@ class MapToHelperClassViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
     {
         $className = MapToHelperClassViewHelper::renderStatic(
             [],
-            self::$closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals('info', $className);
 
         $className = MapToHelperClassViewHelper::renderStatic(
             ['severity' => -2],
-            self::$closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals('info', $className);
     }
-    
+
     /**
      * @test
      */
@@ -67,17 +74,19 @@ class MapToHelperClassViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
     {
         $className = MapToHelperClassViewHelper::renderStatic(
             ['severity' => -1],
-            self::$closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals('success', $className);
 
         $className = MapToHelperClassViewHelper::renderStatic(
             ['severity' => 3],
-            self::$closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals('danger', $className);
     }
-    
+
     /**
      * @test
      */
@@ -88,7 +97,8 @@ class MapToHelperClassViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
         };
         $className = MapToHelperClassViewHelper::renderStatic(
             [],
-            $closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals('info', $className);
     }

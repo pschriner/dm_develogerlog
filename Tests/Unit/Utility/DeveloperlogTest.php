@@ -20,13 +20,29 @@ use DieMedialen\DmDeveloperlog\Utility\Developerlog;
  * Tests for Developerlog
  *
  */
-class DeveloperlogTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
+{
 
     /**
      * @test
      */
-    public function canInstanceDevlog ()
+    public function canInstanceDevlog()
     {
         $instance = new Developerlog();
+    }
+
+    /**
+     * @test
+     */
+    public function basicFunctionality()
+    {
+        $old = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'];
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'] = serialize(['excludeKeys' => 'TEST']);
+        $mock = $this->getAccessibleMock(Developerlog::class, ['createLogEntry']);
+        $this->assertNull($mock->devLog(['severity' => -4]));
+        $this->assertNull($mock->devLog(['extKey' => 'TEST']));
+
+        $mock->expects($this->once())->method('createLogEntry')->will($this->returnValue(42));
+        $this->assertNull($mock->devLog(['severity' => 3]));
     }
 }

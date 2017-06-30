@@ -15,7 +15,7 @@
         "typo3/cms-core": "^6.2 || ^7.6 || ^8.7"
     },
     "require-dev": {
-        "mikey179/vfsStream": "1.4.*@dev",
+        "nimut/testing-framework": "^1.1",
         "phpunit/phpunit": "~4.8.0"
     },
     "autoload": {
@@ -25,9 +25,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-          "DieMedialen\\DmDeveloperlog\\Tests\\": "Tests",
-          "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-          "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+            "DieMedialen\\DmDeveloperlog\\Tests\\": "Tests"
         }
     },
     "replace": {

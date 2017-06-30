@@ -99,35 +99,22 @@ class Developerlog
         if ((int)$logArray['severity'] < $minLogLevel) {
             return;
         }
-
         if (in_array($logArray['extKey'], $this->excludeKeys)) {
             return;
         }
-        $insertFields = $this->getBasicDeveloperLogInformation($logArray);
 
+        $insertFields = $this->getBasicDeveloperLogInformation($logArray);
         if (!empty($this->extConf['includeCallerInformation'])) {
             $callerData = $this->getCallerInformation(debug_backtrace(false));
             $insertFields['location'] = $callerData['location'];
             $insertFields['line'] = $callerData['line'];
             $insertFields['system'] = $callerData['system'];
         }
-
         if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && !is_resource($logArray['dataVar'])) {
             $insertFields['data_var'] = substr($this->getExtraData($logArray['dataVar']), 0,
                 (int)$this->extConf['dataCap']);
         }
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->logTable)
-                ->insert(
-                    $this->logTable,
-                    $insertFields
-                );
-        } else {
-            $db = $this->getDatabaseConnection();
-            if ($db !== null) { // this can happen when devLog is called to early in the bootstrap process
-                @$db->exec_INSERTquery($this->logTable, $insertFields);
-            }
-        }
+        $this->createLogEntry($insertFields);
     }
 
     /**
@@ -236,7 +223,7 @@ class Developerlog
      */
     protected function getExtraData($extraData)
     {
-        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_PRETTY_PRINT);
+        $serializedData = json_encode($extraData, JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         if ($serializedData !== false) {
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
@@ -253,5 +240,21 @@ class Developerlog
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    protected function createLogEntry($insertFields)
+    {
+        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->logTable)
+                ->insert(
+                    $this->logTable,
+                    $insertFields
+                );
+        } else {
+            $db = $this->getDatabaseConnection();
+            if ($db !== null) { // this can happen when devLog is called to early in the bootstrap process
+                @$db->exec_INSERTquery($this->logTable, $insertFields);
+            }
+        }
     }
 }

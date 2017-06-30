@@ -15,22 +15,27 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 use DieMedialen\DmDeveloperlog\ViewHelpers\BitMaskViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Tests for BitMaskViewHelper
  *
  */
-class BitMaskViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class BitMaskViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
+{
 
-    static $closure;
-    static $renderingContext;
+    private $_closure;
+    private $_renderingContext;
 
-    public static function setUpBeforeClass()
+    /**
+     * Set up
+     */
+    public function setUp()
     {
-        self::$closure = function () {
+        $this->_closure = function () {
             return '';
         };
-        self::$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+        $this->_renderingContext = $this->getMockBuilder(RenderingContext::class)->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -48,20 +53,23 @@ class BitMaskViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
     public function renderCallWitMissingParameters()
     {
         $map = BitMaskViewHelper::renderStatic(
-            ['mask' => NULL, 'value' => PHP_INT_MAX],
-            self::$closure, self::$renderingContext
+            ['mask' => null, 'value' => PHP_INT_MAX],
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals(log(PHP_INT_MAX, 2.0), count($map));
 
         $map = BitMaskViewHelper::renderStatic(
-            ['mask' => NULL, 'value' => 5],
-            self::$closure, self::$renderingContext
+            ['mask' => null, 'value' => 5],
+            $this->_closure,
+            $this->_renderingContext
         );
-        $this->assertEquals([1,4], $map);
+        $this->assertEquals([1, 4], $map);
 
         $map = BitMaskViewHelper::renderStatic(
-            ['mask' => NULL, 'value' => NULL],
-            self::$closure, self::$renderingContext
+            ['mask' => null, 'value' => null],
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals([], $map);
     }
@@ -73,13 +81,15 @@ class BitMaskViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
     {
         $map = BitMaskViewHelper::renderStatic(
             ['mask' => -5, 'value' => 5],
-            self::$closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals([], $map);
 
         $map = BitMaskViewHelper::renderStatic(
             ['mask' => 5, 'value' => -5],
-            self::$closure, self::$renderingContext
+            $this->_closure,
+            $this->_renderingContext
         );
         $this->assertEquals([], $map);
     }
@@ -90,21 +100,24 @@ class BitMaskViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
     public function regularRenderCalls()
     {
         $map = BitMaskViewHelper::renderStatic(
-            ['mask' => [1,8,16], 'value' => 13],
-            self::$closure, self::$renderingContext
+            ['mask' => [1, 8, 16], 'value' => 13],
+            $this->_closure,
+            $this->_renderingContext
         );
-        $this->assertEquals([1,8], $map);
+        $this->assertEquals([1, 8], $map);
 
         $map = BitMaskViewHelper::renderStatic(
-            ['mask' => NULL, 'value' => 1213],
-            self::$closure, self::$renderingContext
+            ['mask' => null, 'value' => 1213],
+            $this->_closure,
+            $this->_renderingContext
         );
-        $this->assertEquals([1,4,8,16,32,128,1024], $map);
+        $this->assertEquals([1, 4, 8, 16, 32, 128, 1024], $map);
 
         $map = BitMaskViewHelper::renderStatic(
-            ['mask' => NULL, 'value' => 25],
-            self::$closure, self::$renderingContext
+            ['mask' => null, 'value' => 25],
+            $this->_closure,
+            $this->_renderingContext
         );
-        $this->assertEquals([1,8,16], $map);
+        $this->assertEquals([1, 8, 16], $map);
     }
 }

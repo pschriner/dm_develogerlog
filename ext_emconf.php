@@ -8,7 +8,7 @@ $EM_CONF[$_EXTKEY] = array (
     'title' => 'Development log',
     'description' => 'An extension to capture TYPO3 devlog messages for debugging. Provides a backend module.',
     'category' => 'misc',
-    'version' => '0.6.4',
+    'version' => '0.7.0',
     'state' => 'beta',
     'uploadfolder' => false,
     'author' => 'Patrick Schriner',
@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = array (
     'constraints' => array (
         'depends' => array(
             'php' => '5.5.0-0.0.0',
-            'typo3' => '6.2.7-8.0.99',
+            'typo3' => '6.2.7-8.7.2',
         ),
         'conflicts' => array(),
         'suggests' => array(),
