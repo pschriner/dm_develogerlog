@@ -15,7 +15,7 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class Developerlog
+class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 {
 
     /** @var string $extkey */
