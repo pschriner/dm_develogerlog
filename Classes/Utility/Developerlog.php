@@ -169,7 +169,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $singletonInstances = GeneralUtility::getSingletonInstances();
             if (isset($singletonInstances[\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class])) { // lucky us, that guy is clever
                 $backendConfigurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-                    GeneralUtility::makeInstance(TYPO3\CMS\Core\Database\QueryGenerator::class));
+                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class));
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check
