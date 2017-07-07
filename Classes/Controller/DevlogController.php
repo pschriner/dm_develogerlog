@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     protected $severityOptions = [
         -1 => 'OK',
         0 => 'INFO',
@@ -59,7 +58,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function indexAction(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = NULL)
+    public function indexAction(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = null)
     {
         $this->view->assign('constraint', $constraint);
         $this->view->assign('severity-options', $this->severityOptions);
@@ -100,7 +99,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
            $this->translate('controller.log.flushed'),
            $this->translate('controller.log.flushed.title'),
            FlashMessage::OK,
-           TRUE
+           true
         );
     }
     
@@ -114,11 +113,11 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return string
      */
-    protected function translate($key,$vprintfParmeters = '')
+    protected function translate($key, $vprintfParmeters = '')
     {
-        if($vprintfParmeters != '' && !is_array($vprintfParmeters)) {
+        if ($vprintfParmeters != '' && !is_array($vprintfParmeters)) {
             $vprintfParmeters = array($vprintfParmeters);
         }
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'dm_developerlog', $vprintfParmeters);
     }
- }
+}

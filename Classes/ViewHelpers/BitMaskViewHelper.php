@@ -25,7 +25,7 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
      * @param array $mask
      * @return string
      */
-    public function render($value = NULL, $mask = NULL)
+    public function render($value = null, $mask = null)
     {
         return static::renderStatic(
             array(
@@ -46,14 +46,14 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $value = 0;
-        if ($arguments['value'] === NULL) {
+        if ($arguments['value'] === null) {
             try {
                 $value = (int)$renderChildrenClosure();
             } catch (\Exception $e) {
                 ;
             }
         } else {
-            $value = max(0,(int)$arguments['value']);
+            $value = max(0, (int)$arguments['value']);
         }
 
         $mask = array();

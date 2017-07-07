@@ -18,12 +18,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-     
+
 class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-    static protected $defaultSeverity = 0;
+    protected static $defaultSeverity = 0;
 
-    static protected $map = [
+    protected static $map = [
         -1 => 'success',
         0 => 'info',
         1 => 'warning',
@@ -32,7 +32,7 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
     ];
     
     /**
-     * @param int $severity 
+     * @param int $severity
      * @return string bootstrap color mapped value
      */
     public function render($severity = -2)
@@ -53,7 +53,7 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $severity = NULL;
+        $severity = null;
         if ($arguments['severity'] == -2 || !isset($arguments['severity'])) {
             try {
                 $severity = (int)$renderChildrenClosure();

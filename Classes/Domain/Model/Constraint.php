@@ -69,7 +69,8 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string
      */
-    public function getSeverity(){
+    public function getSeverity()
+    {
         return $this->severity;
     }
 

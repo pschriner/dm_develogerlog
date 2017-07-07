@@ -32,4 +32,4 @@ class Devlog62Controller extends DevlogController
 
         $this->redirect('index');
     }
- }
+}

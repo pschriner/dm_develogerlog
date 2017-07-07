@@ -38,7 +38,7 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
      * @param mixed $backend
      * @return string Username or an empty string if there is no user with that UID
      */
-    public function render($uid, $backend = TRUE)
+    public function render($uid, $backend = true)
     {
         return static::renderStatic(
             array(
