@@ -13,11 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-use DieMedialen\DmDeveloperlog\Controller\DevlogController;
 
 class Devlog62Controller extends DevlogController
 {

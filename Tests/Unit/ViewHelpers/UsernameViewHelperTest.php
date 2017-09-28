@@ -1,5 +1,4 @@
 <?php
-
 namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
 
 /**
@@ -22,7 +21,6 @@ use DieMedialen\DmDeveloperlog\ViewHelpers\UsernameViewHelper;
  */
 class UsernameViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
 {
-
     /**
      * @test
      */

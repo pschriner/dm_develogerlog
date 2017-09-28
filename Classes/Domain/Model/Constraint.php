@@ -25,7 +25,6 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $severity = -1;
 
-
     /**
      * @var string
      */

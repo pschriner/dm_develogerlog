@@ -20,10 +20,10 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     protected $tableName = '';
 
-    protected $defaultOrderings = array(
+    protected $defaultOrderings = [
         'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
-        'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-    );
+        'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+    ];
 
     /**
      * Initialize some local variables to be used during creation of objects
@@ -75,9 +75,8 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return $query->matching($query->logicalAnd($and))->execute();
         } elseif (count($and)) {
             return $query->matching(current($and))->execute();
-        } else {
-            return $this->findAll();
         }
+        return $this->findAll();
     }
 
     /**
@@ -120,7 +119,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function getDistinctOptions($field)
     {
-        $values = array();
+        $values = [];
         if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
             $rows = $queryBuilder->select($field)

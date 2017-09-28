@@ -1,5 +1,4 @@
 <?php
-
 namespace DieMedialen\DmDeveloperlog\ViewHelpers;
 
 /**
@@ -14,7 +13,6 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
@@ -28,10 +26,10 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     public function render($value = null, $mask = null)
     {
         return static::renderStatic(
-            array(
+            [
                 'value' => $value,
-                'mask' => $mask
-            ),
+                'mask' => $mask,
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -50,20 +48,19 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
             try {
                 $value = (int)$renderChildrenClosure();
             } catch (\Exception $e) {
-                ;
             }
         } else {
             $value = max(0, (int)$arguments['value']);
         }
 
-        $mask = array();
+        $mask = [];
         $masked = [];
         if (!is_array($arguments['mask'])) {
             $max = is_int($arguments['mask']) ? intval($arguments['mask']) : PHP_INT_MAX;
             $i = 1;
             while ($i < $max) {
                 $mask[] = $i;
-                $i = $i*2;
+                $i = $i * 2;
             }
         } else {
             $mask = array_map('intval', $arguments['mask']);

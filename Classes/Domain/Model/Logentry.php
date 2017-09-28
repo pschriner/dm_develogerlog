@@ -80,7 +80,7 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $workspaceUid;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $system;
 
@@ -215,7 +215,7 @@ class Logentry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Check whether this extension thinks the devLog call came from a
      * system extension (naive check via file path).
      *
-     * @return boolean
+     * @return bool
      */
     public function isSystemLogEntry()
     {

@@ -17,19 +17,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 {
-
     /** @var string $extkey */
     protected $extKey = 'dm_developerlog';
 
     protected $logTable = 'tx_dmdeveloperlog_domain_model_logentry';
 
     /** @var array $extConf */
-    protected $extConf = array(
+    protected $extConf = [
         'minLogLevel' => 1,
         'excludeKeys' => 'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase',
         'dataCap' => 1000000,
-        'includeCallerInformation' => 1
-    );
+        'includeCallerInformation' => 1,
+    ];
 
     /** @var string $request_id */
     protected $request_id = '';
@@ -38,7 +37,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     protected $request_type = 0;
 
     /** @var array $excludeKeys */
-    protected $excludeKeys = array();
+    protected $excludeKeys = [];
 
     /** @var int $currentPageId */
     protected $currentPageId = null;
@@ -59,7 +58,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         2 => 'TYPO3_REQUESTTYPE_BE',
         4 => 'TYPO3_REQUESTTYPE_CLI',
         8 => 'TYPO3_REQUESTTYPE_AJAX',
-        16 => 'TYPO3_REQUESTTYPE_INSTALL'
+        16 => 'TYPO3_REQUESTTYPE_INSTALL',
     ];
 
     /**
@@ -68,7 +67,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct()
     {
-        $extConf = array();
+        $extConf = [];
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey])) {
             $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
         }
@@ -126,13 +125,13 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getBasicDeveloperLogInformation($logArray)
     {
-        $insertFields = array(
+        $insertFields = [
             'pid' => $this->getCurrentPageId(),
             'crdate' => microtime(true),
             'request_id' => $this->request_id,
             'request_type' => $this->request_type,
             'line' => 0,
-        );
+        ];
 
         if (isset($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->user['uid'])) {
             $insertFields['be_user'] = (int)$GLOBALS['BE_USER']->user['uid'];
@@ -183,11 +182,11 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      * Given a backtrace, this method tries to find the place where a "devLog" function was called
      * and return info about the place
      *
-     * @param array $backTrace : function call backtrace, as provided by debug_backtrace()
+     * @param array $backtrace function call backtrace, as provided by debug_backtrace()
      *
      * @return array information about the call place
      */
-    protected function getCallerInformation($backtrace)
+    protected function getCallerInformation(array $backtrace)
     {
         $system = 0;
         foreach ($backtrace as $entry) {
@@ -201,18 +200,18 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 } else {
                     $file = basename($file);
                 }
-                return array(
+                return [
                     'location' => $file,
                     'line' => $entry['line'],
-                    'system' => $system
-                );
+                    'system' => $system,
+                ];
             }
         }
-        return array(
+        return [
             'location' => '--- unknown ---',
             'line' => 0,
-            'system' => $system
-        );
+            'system' => $system,
+        ];
     }
 
     /**
@@ -227,9 +226,8 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         if ($serializedData !== false) {
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
-            } else {
-                return $serializedData;
             }
+            return $serializedData;
         }
         return '';
     }

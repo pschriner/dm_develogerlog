@@ -1,5 +1,4 @@
 <?php
-
 namespace DieMedialen\DmDeveloperlog\Tests\Unit\Controller;
 
 /**
@@ -22,7 +21,6 @@ use DieMedialen\DmDeveloperlog\Controller\Devlog62Controller;
  */
 class Devlog62ControllerTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {
-
     /**
      * @test
      */

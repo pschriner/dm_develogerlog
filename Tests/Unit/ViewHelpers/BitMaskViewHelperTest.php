@@ -1,5 +1,4 @@
 <?php
-
 namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
 
 /**
@@ -23,7 +22,6 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
  */
 class BitMaskViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
 {
-
     private $_closure;
     private $_renderingContext;
 

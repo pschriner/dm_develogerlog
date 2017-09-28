@@ -29,7 +29,7 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
      *
      * @var array
      */
-    protected static $usernameRuntimeCache = array();
+    protected static $usernameRuntimeCache = [];
 
     /**
      * Resolve user name from backend user id.
@@ -41,10 +41,10 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
     public function render($uid, $backend = true)
     {
         return static::renderStatic(
-            array(
+            [
                 'uid' => $uid,
-                'backend' => $backend
-            ),
+                'backend' => $backend,
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -62,14 +62,14 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
         $uid = $arguments['uid'];
         $backendOrFrontend = !empty($arguments['backend']) ? 'be' : 'fe';
 
-        $identifier = $backendOrFrontend . '-' .$uid;
+        $identifier = $backendOrFrontend . '-' . $uid;
 
         $userName = static::getUserName(!empty($arguments['backend']), $uid, $identifier);
         return htmlspecialchars($userName);
     }
 
     /**
-     * @param boolean $backend
+     * @param bool $backend
      * @param int $uid
      * @param string $identifier
      */

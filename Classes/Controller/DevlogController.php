@@ -13,9 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -24,16 +22,16 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         0 => 'INFO',
         1 => 'NOTICE',
         2 => 'WARNING',
-        3 => 'ERROR'
+        3 => 'ERROR',
     ];
-    
+
     protected $extkeyOptions = [];
 
     /**
      * @var \DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
      */
     protected $logEntryRepository;
-    
+
     /**
      * @param \DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository
      */
@@ -41,7 +39,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $this->logEntryRepository = $logEntryRepository;
     }
-    
+
     public function initializeIndexAction()
     {
         $this->extkeyOptions = $this->logEntryRepository->getExtensionKeys();
@@ -75,7 +73,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function flushAction()
     {
         $this->logEntryRepository->removeAll();
-        
+
         /** @var FlashMessage $message */
         $message = $this->getFlushFlashMessage();
 
@@ -88,7 +86,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         $this->redirect('index');
     }
-    
+
     /**
      * @return FlashMessage $message
      */
@@ -102,7 +100,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
            true
         );
     }
-    
+
     /**
      * Get a translated string
      * The second parameter is optional, and passed to vprintf.
@@ -110,13 +108,14 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param string $key
      * @param mixed $sprintfParameters
+     * @param mixed $vprintfParmeters
      *
      * @return string
      */
     protected function translate($key, $vprintfParmeters = '')
     {
         if ($vprintfParmeters != '' && !is_array($vprintfParmeters)) {
-            $vprintfParmeters = array($vprintfParmeters);
+            $vprintfParmeters = [$vprintfParmeters];
         }
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'dm_developerlog', $vprintfParmeters);
     }

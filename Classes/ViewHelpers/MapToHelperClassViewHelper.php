@@ -1,5 +1,4 @@
 <?php
-
 namespace DieMedialen\DmDeveloperlog\ViewHelpers;
 
 /**
@@ -14,10 +13,7 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -28,9 +24,9 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
         0 => 'info',
         1 => 'warning',
         2 => 'danger',
-        3 => 'danger'
+        3 => 'danger',
     ];
-    
+
     /**
      * @param int $severity
      * @return string bootstrap color mapped value
@@ -38,13 +34,14 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
     public function render($severity = -2)
     {
         return static::renderStatic(
-            array(
+            [
                 'severity' => $severity,
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
     }
+
     /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
@@ -58,7 +55,6 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
             try {
                 $severity = (int)$renderChildrenClosure();
             } catch (\Exception $e) {
-                ;
             }
         } else {
             $severity = (int)$arguments['severity'];
