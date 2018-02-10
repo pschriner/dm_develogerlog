@@ -14,6 +14,8 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 
 class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -51,21 +53,12 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     protected $extSearchLength = 15;
 
     /**
-     * @var array $requestTypeMap Sad duplicate from \TYPO3\CMS\Core\Core\Bootstrap
-     */
-    protected $requestTypeMap = [
-        1 => 'TYPO3_REQUESTTYPE_FE',
-        2 => 'TYPO3_REQUESTTYPE_BE',
-        4 => 'TYPO3_REQUESTTYPE_CLI',
-        8 => 'TYPO3_REQUESTTYPE_AJAX',
-        16 => 'TYPO3_REQUESTTYPE_INSTALL',
-    ];
-
-    /**
      * Constructor
      * The constructor just reads the extension configuration and stores it in a member variable
+     * 
+     * @param array $options
      */
-    public function __construct()
+    public function __construct(array $options = [])
     {
         $extConf = [];
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey])) {
@@ -166,8 +159,8 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $this->currentPageId = $GLOBALS['TSFE']->id ?: 0;
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
-            if (isset($singletonInstances[\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class])) { // lucky us, that guy is clever
-                $backendConfigurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            if (isset($singletonInstances[BackendConfigurationManager::class])) { // lucky us, that guy is clever
+                $backendConfigurationManager = GeneralUtility::makeInstance(BackendConfigurationManager::class,
                     GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class));
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
@@ -242,8 +235,8 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 
     protected function createLogEntry($insertFields)
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->logTable)
+        if (class_exists(ConnectionPool::class)) {
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
                 ->insert(
                     $this->logTable,
                     $insertFields
