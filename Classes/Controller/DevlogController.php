@@ -13,8 +13,8 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
@@ -68,10 +68,10 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $pageRenderer = $view->getModuleTemplate()->getPageRenderer();
             $pageRenderer->loadJquery();
             $pageRenderer->loadRequireJsModule('bootstrap');
-		    $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-		    $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DocumentHeader');
-		    $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/SplitButtons');
-		    $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DocumentHeader');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/SplitButtons');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
             $pageRenderer->addCssFile('EXT:dm_developerlog/Resources/Public/Css/Developerlog.css');
         }

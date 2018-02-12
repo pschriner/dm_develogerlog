@@ -13,8 +13,8 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 
 class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
@@ -55,7 +55,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Constructor
      * The constructor just reads the extension configuration and stores it in a member variable
-     * 
+     *
      * @param array $options
      */
     public function __construct(array $options = [])
@@ -103,8 +103,11 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $insertFields['system'] = $callerData['system'];
         }
         if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && !is_resource($logArray['dataVar'])) {
-            $insertFields['data_var'] = substr($this->getExtraData($logArray['dataVar']), 0,
-                (int)$this->extConf['dataCap']);
+            $insertFields['data_var'] = substr(
+                $this->getExtraData($logArray['dataVar']),
+                0,
+                (int)$this->extConf['dataCap']
+            );
         }
         $this->createLogEntry($insertFields);
     }
@@ -160,8 +163,10 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
             if (isset($singletonInstances[BackendConfigurationManager::class])) { // lucky us, that guy is clever
-                $backendConfigurationManager = GeneralUtility::makeInstance(BackendConfigurationManager::class,
-                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class));
+                $backendConfigurationManager = GeneralUtility::makeInstance(
+                    BackendConfigurationManager::class,
+                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class)
+                );
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check

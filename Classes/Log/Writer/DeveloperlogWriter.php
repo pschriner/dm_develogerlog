@@ -41,7 +41,7 @@ class DeveloperlogWriter extends AbstractWriter
             'request_id' => $record->getRequestId(),
             'request_type' => TYPO3_REQUESTTYPE,
             'message' => $record->getMessage(),
-            'extkey' => $record->getComponent()
+            'extkey' => $record->getComponent(),
         ];
 
         $callerData = $this->getCallerData($record->getData());
@@ -66,8 +66,7 @@ class DeveloperlogWriter extends AbstractWriter
 
     protected function isSystemSource($component)
     {
-        if (strpos($component, 'TYPO3\CMS') > -1)
-        {
+        if (strpos($component, 'TYPO3\CMS') > -1) {
             return true;
         }
         return false;
@@ -76,11 +75,10 @@ class DeveloperlogWriter extends AbstractWriter
     protected function getCallerData($data)
     {
         $system = false;
-        if (is_array($data['backtrace']))
-        {
+        if (is_array($data['backtrace'])) {
             $firstRecord = reset($data['backtrace']);
         } else {
-            $firstRecord = $data;            
+            $firstRecord = $data;
         }
         $file = $firstRecord['file'] ?: '';
         if (strpos($file, $this->extSeach) > 0) {
@@ -94,7 +92,7 @@ class DeveloperlogWriter extends AbstractWriter
         return [
             'location' => $file,
             'line' => $firstRecord['line'] ?: '',
-            'system' => $system
+            'system' => $system,
         ];
     }
 
@@ -111,8 +109,10 @@ class DeveloperlogWriter extends AbstractWriter
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
             if (isset($singletonInstances[BackendConfigurationManager::class])) { // lucky us, that guy is clever
-                $backendConfigurationManager = GeneralUtility::makeInstance(BackendConfigurationManager::class,
-                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class));
+                $backendConfigurationManager = GeneralUtility::makeInstance(
+                    BackendConfigurationManager::class,
+                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class)
+                );
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check
@@ -146,4 +146,3 @@ class DeveloperlogWriter extends AbstractWriter
         }
     }
 }
-?>
