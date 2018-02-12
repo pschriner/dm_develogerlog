@@ -58,5 +58,6 @@ Development log
 	About/Index
 	Installation/Index
 	Configuration/Index
+	LogWriter/Index
 	Support/Index
 	Links
