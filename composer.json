@@ -2,7 +2,7 @@
   "name": "diemedialen/dm-developerlog",
   "description": "An extension to capture TYPO3 devlog messages for debugging. Provides a backend module.",
   "type": "typo3-cms-extension",
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Patrick Schriner",
