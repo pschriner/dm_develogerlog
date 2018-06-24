@@ -29,6 +29,7 @@ install:
       composer config prefer-stable true;
       composer require typo3/cms-core="@dev" --no-update;
     fi
+  - >
     if [[ "$TYPO3" = *"6.2"* ]]; then
       composer require typo3/cms:$TYPO3
     else
