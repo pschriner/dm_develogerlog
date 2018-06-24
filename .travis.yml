@@ -29,7 +29,11 @@ install:
       composer config prefer-stable true;
       composer require typo3/cms-core="@dev" --no-update;
     fi
-  - composer require nimut/typo3-complete:$TYPO3
+    if [[ "$TYPO3" = *"6.2"* ]]; then
+      composer require typo3/cms:$TYPO3
+    else
+      composer require nimut/typo3-complete:$TYPO3
+    fi
   - mkdir -p .Build/public/typo3conf/ext/
   - if [ ! -L .Build/public/typo3conf/ext/my_skeleton ]; then ln -snvf ../../../../. .Build/public/typo3conf/ext/my_skeleton; fi
   - export TYPO3_PATH_ROOT=$PWD/.Build/public
