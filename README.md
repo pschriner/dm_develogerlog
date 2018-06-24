@@ -32,3 +32,5 @@ It is most useful when combined with the IntrospectionProcessor.
 # Special thanks
 
 To the original authors of ``devlog``.
+
+To @IchHabRecht for showing me a sane way to maintain this extension  (travis config)
