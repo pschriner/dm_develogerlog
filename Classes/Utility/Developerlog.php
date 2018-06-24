@@ -260,7 +260,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             return \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
         }
         $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
-        $reflectedLogManager = new ReflectionClass($logManager);
+        $reflectedLogManager = new \ReflectionClass($logManager);
         if ($reflectedLogManager->hasProperty('requestId')) {
             $property = $reflectedLogManager->getProperty('requestId');
             $property->setAccessible(true);
