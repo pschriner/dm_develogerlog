@@ -15,12 +15,12 @@
   },
   "require": {
     "php": ">=5.5.0",
-    "typo3/cms-core": "^6.2 || ^7.6 || ^8.7 || dev-master",
-    "typo3/cms-extbase": "^6.2 || ^7.6 || ^8.7 || dev-master",
-    "typo3/cms-fluid": "^6.2 || ^7.6 || ^8.7 || dev-master"
+    "typo3/cms-core": "^6.2 || ^7.6 || ^8.7 || >=9.0 <9.4",
+    "typo3/cms-extbase": "^6.2 || ^7.6 || ^8.7 || >=9.0 <9.4",
+    "typo3/cms-fluid": "^6.2 || ^7.6 || ^8.7 || >=9.0 <9.4"
   },
   "require-dev": {
-    "nimut/testing-framework": "^1.1"
+    "nimut/testing-framework": "^1.1 || 2.x-dev || 4.x-dev"
   },
   "autoload": {
     "psr-4": {
@@ -42,8 +42,10 @@
   },
   "extra": {
     "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
+        "extension-key": "dm_developerlog",
+        "cms-package-dir": "{$vendor-dir}/typo3/cms",
+        "app-dir": ".Build",
+        "web-dir": ".Build/public"
     }
-  }
+}
 }
