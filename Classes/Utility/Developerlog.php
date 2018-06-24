@@ -264,7 +264,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         if ($reflectedLogManager->hasProperty('requestId')) {
             $property = $reflectedLogManager->getProperty('requestId');
             $property->setAccessible(true);
-            return $property->getValue($reflectedLogManager);
+            return $property->getValue($logManager);
         }
 
         return 'fake-' . substr(md5(uniqid('', true)), 0, 13);
