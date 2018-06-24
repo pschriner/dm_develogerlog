@@ -1,4 +1,5 @@
 <?php
+
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
@@ -7,9 +8,11 @@ return PhpCsFixer\Config::create()
             'syntax' => 'short',
         ],
         'binary_operator_spaces' => true,
+        'blank_line_before_return' => true,
         'concat_space' => [
             'spacing' => 'one',
         ],
+        'declare_strict_types' => true,
         'function_typehint_space' => true,
         'hash_to_slash_comment' => true,
         'linebreak_after_opening_tag' => true,
@@ -55,13 +58,19 @@ return PhpCsFixer\Config::create()
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
         'normalize_index_brace' => true,
+        'object_operator_without_whitespace' => true,
         'ordered_imports' => true,
         'phpdoc_add_missing_param_annotation' => true,
+        'phpdoc_annotation_without_dot' => true,
+        'phpdoc_indent' => true,
+        'phpdoc_no_access' => true,
         'phpdoc_no_package' => true,
         'phpdoc_order' => true,
         'phpdoc_scalar' => true,
+        'phpdoc_single_line_var_spacing' => true,
+        'phpdoc_trim' => true,
         'phpdoc_types' => true,
-        'self_accessor' => true,
+        'phpdoc_var_without_name' => true,
         'short_scalar_cast' => true,
         'single_quote' => true,
         'standardize_not_equals' => true,
@@ -74,6 +83,6 @@ return PhpCsFixer\Config::create()
             ->in(__DIR__)
             ->exclude('.Build')
             ->exclude('Documentation')
-            ->exclude('Libraries')
+            ->exclude('Resources/Private')
             ->notName('ext_emconf.php')
     );

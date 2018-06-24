@@ -65,7 +65,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
         }
         $this->extConf = array_merge($this->extConf, $extConf);
-        $this->request_id = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
+        $this->request_id = $this->getRequestIdFromBootstrapOrLogManager();
         $this->request_type = TYPO3_REQUESTTYPE;
         $this->excludeKeys = GeneralUtility::trimExplode(',', $this->extConf['excludeKeys'], true);
     }
@@ -80,7 +80,6 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      * but anything but a resource should work
      *
      * @param array $logArray : log data array
-     * @return void
      */
     public function devLog($logArray)
     {
@@ -252,5 +251,22 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 @$db->exec_INSERTquery($this->logTable, $insertFields);
             }
         }
+    }
+
+    protected function getRequestIdFromBootstrapOrLogManager()
+    {
+        $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+        if (method_exists($bootstrap, 'getRequestId')) {
+            return \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
+        }
+        $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        $reflectedLogManager = new ReflectionClass($logManager);
+        if ($reflectedLogManager->hasProperty('requestId')) {
+            $property = $reflectedLogManager->getProperty('requestId');
+            $property->setAccessible(true);
+            return $property->getValue($reflectedLogManager);
+        }
+
+        return 'fake-' . substr(md5(uniqid('', true)), 0, 13);
     }
 }
