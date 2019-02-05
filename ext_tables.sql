@@ -5,6 +5,7 @@ CREATE TABLE tx_dmdeveloperlog_domain_model_logentry (
 	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
 	pid int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate varchar(20) DEFAULT '0' NOT NULL,
+	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	request_id varchar(40) DEFAULT '' NOT NULL,
 	request_type int(11) unsigned DEFAULT '0' NOT NULL,
 	be_user int(11) unsigned DEFAULT '0' NOT NULL,
