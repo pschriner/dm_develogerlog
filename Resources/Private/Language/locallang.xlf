@@ -111,6 +111,9 @@
 			<trans-unit id="severity.to.notification.alert-danger">
 				<source>error</source><!-- $NON-NLS-1$ -->
 			</trans-unit>
+			<trans-unit id="configuration.filtering">
+				<source>Filtering</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

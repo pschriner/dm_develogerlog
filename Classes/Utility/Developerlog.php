@@ -58,7 +58,8 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         if (class_exists(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)) { // v9
             $this->extConf = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('dm_developerlog');
         } else {
-            $this->extConf = GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)->getCurrentConfiguration('dm_developerlog');
+            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            $this->extConf = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)->getCurrentConfiguration('dm_developerlog');
         }
         $this->request_id = $this->getRequestIdFromBootstrapOrLogManager();
         $this->request_type = TYPO3_REQUESTTYPE;
