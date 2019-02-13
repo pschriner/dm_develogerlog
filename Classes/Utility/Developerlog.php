@@ -25,12 +25,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     protected $logTable = 'tx_dmdeveloperlog_domain_model_logentry';
 
     /** @var array $extConf */
-    protected $extConf = [
-        'minLogLevel' => 1,
-        'excludeKeys' => 'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase',
-        'dataCap' => 1000000,
-        'includeCallerInformation' => 1,
-    ];
+    protected $extConf = [];
 
     /** @var string $request_id */
     protected $request_id = '';
@@ -60,11 +55,11 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct(array $options = [])
     {
-        $extConf = [];
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey])) {
-            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        if (class_exists(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)) { // v9
+            $this->extConf = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('dm_developerlog');
+        } else {
+            $this->extConf = GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)->getCurrentConfiguration('dm_developerlog');
         }
-        $this->extConf = array_merge($this->extConf, $extConf);
         $this->request_id = $this->getRequestIdFromBootstrapOrLogManager();
         $this->request_type = TYPO3_REQUESTTYPE;
         $this->excludeKeys = GeneralUtility::trimExplode(',', $this->extConf['excludeKeys'], true);
@@ -123,6 +118,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         $insertFields = [
             'pid' => $this->getCurrentPageId(),
             'crdate' => microtime(true),
+            'tstamp' => time(),
             'request_id' => $this->request_id,
             'request_type' => $this->request_type,
             'line' => 0,

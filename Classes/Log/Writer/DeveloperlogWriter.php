@@ -13,6 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\Writer\AbstractWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,6 +39,7 @@ class DeveloperlogWriter extends AbstractWriter
         $insertFields = [
             'pid' => $this->getCurrentPageId(),
             'crdate' => $record->getCreated(),
+            'tstamp' => time(),
             'request_id' => $record->getRequestId(),
             'request_type' => TYPO3_REQUESTTYPE,
             'message' => $record->getMessage(),
@@ -60,7 +62,6 @@ class DeveloperlogWriter extends AbstractWriter
         if (isset($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->fe_user->user['uid'])) {
             $insertFields['fe_user'] = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
-
         $this->createLogEntry($insertFields);
     }
 
@@ -72,6 +73,9 @@ class DeveloperlogWriter extends AbstractWriter
         return false;
     }
 
+    /**
+     * Add extra call data from the IntrospectionProcessor
+     */
     protected function getCallerData($data)
     {
         $system = false;
@@ -80,7 +84,7 @@ class DeveloperlogWriter extends AbstractWriter
         } else {
             $firstRecord = $data;
         }
-        $file = $firstRecord['file'] ?: '';
+        $file = isset($firstRecord['file']) ? $firstRecord['file'] : '';
         if (strpos($file, $this->extSeach) > 0) {
             $file = substr($file, strpos($file, $this->extSeach) + $this->extSearchLength);
         } elseif (strpos($file, $this->systemSearch) > 0) {
@@ -91,7 +95,7 @@ class DeveloperlogWriter extends AbstractWriter
         }
         return [
             'location' => $file,
-            'line' => $firstRecord['line'] ?: '',
+            'line' => (int)(isset($firstRecord['line']) ? $firstRecord['line'] : 0),
             'system' => $system,
         ];
     }
