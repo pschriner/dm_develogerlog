@@ -25,7 +25,12 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     protected $logTable = 'tx_dmdeveloperlog_domain_model_logentry';
 
     /** @var array $extConf */
-    protected $extConf = [];
+    protected $extConf = [
+        'minLogLevel' => 1,
+        'excludeKeys' => 'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase',
+        'dataCap' => 1000000,
+        'includeCallerInformation' => 1,
+    ];
 
     /** @var string $request_id */
     protected $request_id = '';
@@ -58,8 +63,9 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         if (class_exists(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)) { // v9
             $this->extConf = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('dm_developerlog');
         } else {
-            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-            $this->extConf = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)->getCurrentConfiguration('dm_developerlog');
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'])) {
+                $this->extConf = (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog']);
+            }
         }
         $this->request_id = $this->getRequestIdFromBootstrapOrLogManager();
         $this->request_type = TYPO3_REQUESTTYPE;
