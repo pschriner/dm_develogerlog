@@ -1,5 +1,5 @@
 <?php
-namespace DieMedialen\DmDeveloperlog\ViewHelpers;
+namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /**
  * This file is part of the dm_developerlog project.
@@ -13,11 +13,14 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-class MapToHelperClassViewHelper extends AbstractViewHelper implements CompilableInterface
+class MapToHelperClassViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     protected static $defaultSeverity = 0;
 
     protected static $map = [
@@ -30,20 +33,6 @@ class MapToHelperClassViewHelper extends AbstractViewHelper implements Compilabl
 
     public function initializeArguments() {
         $this->registerArgument('severity', 'int', 'Log level severity (-1 to 3).', false);
-    }
-
-    /**
-     * @param int $severity
-     * @return string bootstrap color mapped value
-     */
-    public function render()
-    {
-        return static::renderStatic([
-                'severity' => $severity,
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

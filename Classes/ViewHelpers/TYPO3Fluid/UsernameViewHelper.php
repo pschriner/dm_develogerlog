@@ -1,5 +1,5 @@
 <?php
-namespace DieMedialen\DmDeveloperlog\ViewHelpers;
+namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /*
  * This file is part of the dm_developerlog project.
@@ -14,16 +14,18 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get username from backend user id
  * @internal
  */
-class UsernameViewHelper extends AbstractViewHelper implements CompilableInterface
+class UsernameViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * First level cache of user names
      *
