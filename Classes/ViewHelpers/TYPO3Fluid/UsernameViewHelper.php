@@ -35,7 +35,7 @@ class UsernameViewHelper extends AbstractViewHelper
 
     public function initializeArguments() {
         $this->registerArgument('uid', 'int', 'BE user uid.', true);
-        $this->registerArgument('backend', 'string', 'be or fe', false);
+        $this->registerArgument('backend', 'bool', 'be or fe', false, true);
     }
 
     /**
