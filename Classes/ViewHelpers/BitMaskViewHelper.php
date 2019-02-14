@@ -32,8 +32,8 @@ class BitMaskViewHelper extends AbstractViewHelper implements CompilableInterfac
     {
         return static::renderStatic(
             [
-                'value' => $value,
-                'mask' => $mask,
+                'value' => $this->getArgument('value'),
+                'mask' => $this->getArgument('mask'),
             ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext

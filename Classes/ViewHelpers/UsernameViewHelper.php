@@ -38,6 +38,22 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
     }
 
     /**
+     * @param int $severity
+     * @return string bootstrap color mapped value
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            [
+                'uid' => $this->getArgument('uid'),
+                'backend' => $this->getArgument('backend')
+            ],
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
+
+    /**
      * @param array $arguments
      * @param callable $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
