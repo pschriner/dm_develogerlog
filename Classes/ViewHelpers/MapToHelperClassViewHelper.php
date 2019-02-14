@@ -42,7 +42,7 @@ class MapToHelperClassViewHelper extends AbstractViewHelper implements Compilabl
     {
         return static::renderStatic(
             [
-                'severity' => $this->getArgument('severity'),
+                'severity' => $this->arguments['severity'],
             ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext

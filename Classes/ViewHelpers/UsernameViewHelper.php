@@ -45,8 +45,8 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
     {
         return static::renderStatic(
             [
-                'uid' => $this->getArgument('uid'),
-                'backend' => $this->getArgument('backend')
+                'uid' => $this->arguments['uid'],
+                'backend' => $this->arguments['backend']
             ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
