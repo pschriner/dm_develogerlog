@@ -27,8 +27,6 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     /**
      * Initialize some local variables to be used during creation of objects
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -73,7 +71,8 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         if (count($and) > 1) {
             return $query->matching($query->logicalAnd($and))->execute();
-        } elseif (count($and)) {
+        }
+        if (count($and)) {
             return $query->matching(current($and))->execute();
         }
         return $this->findAll();

@@ -13,8 +13,9 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 class MapToHelperClassViewHelper extends AbstractViewHelper implements CompilableInterface
 {
@@ -28,7 +29,8 @@ class MapToHelperClassViewHelper extends AbstractViewHelper implements Compilabl
         3 => 'danger',
     ];
 
-    public function initializeArguments() {
+    public function initializeArguments()
+    {
         $this->registerArgument('severity', 'int', 'Log level severity (-1 to 3).', false);
     }
 
@@ -38,7 +40,8 @@ class MapToHelperClassViewHelper extends AbstractViewHelper implements Compilabl
      */
     public function render()
     {
-        return static::renderStatic([
+        return static::renderStatic(
+            [
                 'severity' => $severity,
             ],
             $this->buildRenderChildrenClosure(),

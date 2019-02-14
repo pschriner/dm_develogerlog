@@ -31,7 +31,8 @@ class MapToHelperClassViewHelper extends AbstractViewHelper
         3 => 'danger',
     ];
 
-    public function initializeArguments() {
+    public function initializeArguments()
+    {
         $this->registerArgument('severity', 'int', 'Log level severity (-1 to 3).', false);
     }
 

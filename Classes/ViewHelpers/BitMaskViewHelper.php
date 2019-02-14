@@ -14,12 +14,13 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 class BitMaskViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-    public function initializeArguments() {
+    public function initializeArguments()
+    {
         $this->registerArgument('value', 'int', 'The value to be bitmasked', false);
         $this->registerArgument('mask', 'array|string', 'The bit mask', false);
     }

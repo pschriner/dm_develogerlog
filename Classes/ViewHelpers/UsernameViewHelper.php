@@ -31,7 +31,8 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
      */
     protected static $usernameRuntimeCache = [];
 
-    public function initializeArguments() {
+    public function initializeArguments()
+    {
         $this->registerArgument('uid', 'int', 'BE user uid.', true);
         $this->registerArgument('backend', 'string', 'be or fe', false);
     }

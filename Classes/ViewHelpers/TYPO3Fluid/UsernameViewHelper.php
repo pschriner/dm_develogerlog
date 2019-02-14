@@ -33,7 +33,8 @@ class UsernameViewHelper extends AbstractViewHelper
      */
     protected static $usernameRuntimeCache = [];
 
-    public function initializeArguments() {
+    public function initializeArguments()
+    {
         $this->registerArgument('uid', 'int', 'BE user uid.', true);
         $this->registerArgument('backend', 'bool', 'be or fe', false, true);
     }

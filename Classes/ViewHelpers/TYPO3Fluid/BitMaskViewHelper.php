@@ -21,7 +21,8 @@ class BitMaskViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments() {
+    public function initializeArguments()
+    {
         $this->registerArgument('value', 'int', 'The value to be bitmasked', false);
         $this->registerArgument('mask', 'array|string', 'The bit mask', false);
     }

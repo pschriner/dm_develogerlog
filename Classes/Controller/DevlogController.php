@@ -53,7 +53,6 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -90,8 +89,6 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint
      *
      * @ignorevalidation $constraint
-     *
-     * @return void
      */
     public function indexAction(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = null)
     {
@@ -105,7 +102,6 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * Delete all log entries
-     * @return void
      */
     public function flushAction()
     {
