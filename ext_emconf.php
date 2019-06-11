@@ -16,7 +16,7 @@ $EM_CONF[$_EXTKEY] = array (
     'author_company' => 'DieMedialen GmbH',
     'constraints' => array (
         'depends' => array(
-            'php' => '5.5.0-0.0.0',
+            'php' => '5.6.0-0.0.0',
             'typo3' => '6.2.7-9.5.99',
         ),
         'conflicts' => array(),
