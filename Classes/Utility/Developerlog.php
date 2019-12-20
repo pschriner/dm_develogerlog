@@ -255,10 +255,13 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getRequestIdFromBootstrapOrLogManager(): string
     {
-        $bootstrap = Bootstrap::getInstance();
-        if (method_exists($bootstrap, 'getRequestId')) {
-            return Bootstrap::getInstance()->getRequestId();
+        if (\is_callable('\TYPO3\CMS\Core\Bootstrap::getInstance')) {
+            $bootstrap = Bootstrap::getInstance();
+            if (method_exists($bootstrap, 'getRequestId')) {
+                return Bootstrap::getInstance()->getRequestId();
+            }
         }
+        // Thank you TYPO3 9+ and the impossibe task to get the global request.id
         $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
         $reflectedLogManager = new \ReflectionClass($logManager);
         if ($reflectedLogManager->hasProperty('requestId')) {
