@@ -36,7 +36,7 @@ install:
       composer require nimut/typo3-complete:$TYPO3
     fi
   - mkdir -p .Build/public/typo3conf/ext/
-  - if [ ! -L .Build/public/typo3conf/ext/my_skeleton ]; then ln -snvf ../../../../. .Build/public/typo3conf/ext/my_skeleton; fi
+  - if [ ! -L .Build/public/typo3conf/ext/dm_developerlog ]; then ln -snvf ../../../../. .Build/public/typo3conf/ext/dm_developerlog; fi
   - export TYPO3_PATH_ROOT=$PWD/.Build/public
   - export typo3DatabaseName=typo3
   - export typo3DatabaseHost=localhost
@@ -119,7 +119,7 @@ jobs:
         echo "Uploading release ${TRAVIS_TAG} to TER";
         echo;
         echo;
-        .Build/bin/ter-client upload my_skeleton . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASSWORD" -m "$TAG_MESSAGE";
+        .Build/bin/ter-client upload dm_developerlog . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASSWORD" -m "$TAG_MESSAGE";
 
     - stage: ✔ with sonarqube scanner
       if: type = push AND branch IN (master, pre-merge) AND env(SONAR_TOKEN) IS present AND fork = false
@@ -132,7 +132,6 @@ jobs:
         - export typo3DatabaseHost=localhost
         - export typo3DatabaseUsername=root
         - export typo3DatabasePassword=
-      before_script:
       script:
         - >
           if [ -d "Tests" ]; then
@@ -148,7 +147,7 @@ jobs:
               VERSION=${TYPO3//[!0-9]/};
 
               mkdir -p .Build/public/typo3conf/ext/
-              if [ ! -L .Build/public/typo3conf/ext/my_skeleton ]; then ln -snvf ../../../../. .Build/public/typo3conf/ext/my_skeleton; fi
+              if [ ! -L .Build/public/typo3conf/ext/dm_developerlog ]; then ln -snvf ../../../../. .Build/public/typo3conf/ext/dm_developerlog; fi
 
               if [ -d "Tests/Unit" ]; then
                 echo;
