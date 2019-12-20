@@ -30,11 +30,7 @@ install:
       composer require typo3/cms-core="@dev" --no-update;
     fi
   - >
-    if [[ "$TYPO3" = *"6.2"* ]]; then
-      composer require typo3/cms:$TYPO3
-    else
-      composer require nimut/typo3-complete:$TYPO3
-    fi
+    composer require nimut/typo3-complete:$TYPO3
   - mkdir -p .Build/public/typo3conf/ext/
   - if [ ! -L .Build/public/typo3conf/ext/dm_developerlog ]; then ln -snvf ../../../../. .Build/public/typo3conf/ext/dm_developerlog; fi
   - export TYPO3_PATH_ROOT=$PWD/.Build/public
@@ -87,12 +83,6 @@ jobs:
     - stage: test
       php: 7.0
       env: TYPO3=^8.7
-    - stage: test
-      php: 5.6
-      env: TYPO3=^7.6
-    - stage: test
-      php: 5.5
-      env: TYPO3=^7.6
 
     - stage: 🚢 to ter
       if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASSWORD) IS present
