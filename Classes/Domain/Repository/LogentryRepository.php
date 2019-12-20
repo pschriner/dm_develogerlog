@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\Domain\Repository;
 
 /*
@@ -84,14 +85,10 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function removeAll()
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
-                ->truncate(
-                    $this->tableName
-                );
-        } else {
-            $this->getDatabaseConnection()->exec_TRUNCATEquery($this->tableName);
-        }
+        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->tableName)
+            ->truncate(
+                $this->tableName
+            );
     }
 
     /**
@@ -119,27 +116,15 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     protected function getDistinctOptions($field)
     {
         $values = [];
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
-            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
-            $rows = $queryBuilder->select($field)
-                ->from($this->tableName)
-                ->orderBy($field, 'ASC')
-                ->groupBy($field)
-                ->execute()
-                ->fetchAll();
-            foreach ($rows as $row) {
-                $values[$row[$field]] = $row[$field];
-            }
-        } else {
-            $values = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                $field,
-                $this->tableName,
-                '1=1',
-                $field,
-                $field,
-                '',
-                $field
-            );
+        $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
+        $rows = $queryBuilder->select($field)
+            ->from($this->tableName)
+            ->orderBy($field, 'ASC')
+            ->groupBy($field)
+            ->execute()
+            ->fetchAll();
+        foreach ($rows as $row) {
+            $values[$row[$field]] = $row[$field];
         }
         return array_combine(array_keys($values), array_keys($values));
     }

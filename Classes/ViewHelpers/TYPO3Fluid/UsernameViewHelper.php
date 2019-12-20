@@ -27,7 +27,8 @@ class UsernameViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * First level cache of user names
+     * First level cache of user names.
+     * Anti-Pattern, but expensive otherwise
      *
      * @var array
      */

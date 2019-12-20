@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\Utility;
 
 /*
@@ -13,18 +14,20 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 
 class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 {
-    /** @var string $extkey */
+    /** @var string  */
     protected $extKey = 'dm_developerlog';
 
+    /** @var string */
     protected $logTable = 'tx_dmdeveloperlog_domain_model_logentry';
 
-    /** @var array $extConf */
+    /** @var array */
     protected $extConf = [
         'minLogLevel' => 1,
         'excludeKeys' => 'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase',
@@ -32,18 +35,19 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         'includeCallerInformation' => 1,
     ];
 
-    /** @var string $request_id */
+    /** @var string */
     protected $request_id = '';
 
-    /** @var int $request_type */
+    /** @var int */
     protected $request_type = 0;
 
-    /** @var array $excludeKeys */
+    /** @var array */
     protected $excludeKeys = [];
 
     /** @var int $currentPageId */
     protected $currentPageId = null;
 
+    /** @var string */
     protected $systemSearch = '/sysext/';
 
     protected $systemSearchLength = 8;
@@ -60,8 +64,8 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct(array $options = [])
     {
-        if (class_exists(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)) { // v9
-            $this->extConf = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('dm_developerlog');
+        if (class_exists('\\TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
+            $this->extConf = GeneralUtility::makeInstance('\\TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->get('dm_developerlog');
         } else {
             if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'])) {
                 $this->extConf = (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog']);
@@ -233,34 +237,27 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * Add a log entry
      */
-    protected function getDatabaseConnection()
+    protected function createLogEntry($insertFields): void
     {
-        return $GLOBALS['TYPO3_DB'];
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
+            ->insert(
+                $this->logTable,
+                $insertFields
+            );
     }
 
-    protected function createLogEntry($insertFields)
+    /**
+     * Get the request id
+     * 
+     * @return string
+     */
+    protected function getRequestIdFromBootstrapOrLogManager(): string
     {
-        if (class_exists(ConnectionPool::class)) {
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
-                ->insert(
-                    $this->logTable,
-                    $insertFields
-                );
-        } else {
-            $db = $this->getDatabaseConnection();
-            if ($db !== null) { // this can happen when devLog is called to early in the bootstrap process
-                @$db->exec_INSERTquery($this->logTable, $insertFields);
-            }
-        }
-    }
-
-    protected function getRequestIdFromBootstrapOrLogManager()
-    {
-        $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+        $bootstrap = Bootstrap::getInstance();
         if (method_exists($bootstrap, 'getRequestId')) {
-            return \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
+            return Bootstrap::getInstance()->getRequestId();
         }
         $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
         $reflectedLogManager = new \ReflectionClass($logManager);

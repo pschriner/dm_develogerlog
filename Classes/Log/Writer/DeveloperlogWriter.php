@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\Log\Writer;
 
 /*
@@ -34,7 +35,7 @@ class DeveloperlogWriter extends AbstractWriter
      *
      * @param \TYPO3\CMS\Core\Log\LogRecord $record
      */
-    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record)
+    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record): void
     {
         $insertFields = [
             'pid' => $this->getCurrentPageId(),
@@ -65,7 +66,12 @@ class DeveloperlogWriter extends AbstractWriter
         $this->createLogEntry($insertFields);
     }
 
-    protected function isSystemSource($component)
+    /**
+     * Check whether the source is system component
+     * 
+     * @param string $component
+     */
+    protected function isSystemSource(string $component): bool
     {
         if (strpos($component, 'TYPO3\CMS') > -1) {
             return true;
@@ -76,7 +82,7 @@ class DeveloperlogWriter extends AbstractWriter
     /**
      * Add extra call data from the IntrospectionProcessor
      */
-    protected function getCallerData($data)
+    protected function getCallerData($data): array
     {
         $system = false;
         if (is_array($data['backtrace'])) {
@@ -105,7 +111,7 @@ class DeveloperlogWriter extends AbstractWriter
      *
      * @return int
      */
-    protected function getCurrentPageId()
+    protected function getCurrentPageId(): int
     {
         $currentPageId = 0;
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) {
@@ -123,30 +129,15 @@ class DeveloperlogWriter extends AbstractWriter
                 $currentPageId = GeneralUtility::_GP('id') !== null ? (int)GeneralUtility::_GP('id') : 0;
             }
         }
-        return $currentPageId;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        return (int)$currentPageId;
     }
 
     protected function createLogEntry($insertFields)
     {
-        if (class_exists(ConnectionPool::class)) {
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
-                ->insert(
-                    $this->logTable,
-                    $insertFields
-                );
-        } else {
-            $db = $this->getDatabaseConnection();
-            if ($db !== null) { // this can happen when devLog is called to early in the bootstrap process
-                @$db->exec_INSERTquery($this->logTable, $insertFields);
-            }
-        }
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
+            ->insert(
+                $this->logTable,
+                $insertFields
+            );
     }
 }

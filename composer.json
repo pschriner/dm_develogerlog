@@ -14,8 +14,8 @@
     "issues": "https://github.com/pschriner/dm_developerlog/issues"
   },
   "require": {
-    "php": ">=5.5.0",
-    "typo3/minimal": "^7.6 || ^8.7 || ^9.5"
+    "php": ">=7.0",
+    "typo3/minimal": "^8.7 || ^9.5"
   },
   "require-dev": {
     "nimut/testing-framework": "2.x-dev || 3.x-dev || 4.x-dev"
