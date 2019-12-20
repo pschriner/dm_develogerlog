@@ -47,7 +47,13 @@ class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
     protected function setDummyExtensionConfiguration()
     {
         if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
-            GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ConfigurationManager')->createLocalConfigurationFromFactoryConfiguration();
+            try {
+                GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ConfigurationManager')->createLocalConfigurationFromFactoryConfiguration();
+            } catch (\RuntimeException $rte) {
+                if ($rte->getCode() !== 1364836026) {
+                    throw $rte;
+                }
+            }
             GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
         } else {
             $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'] = serialize(['excludeKeys' => 'TEST']);
