@@ -14,6 +14,7 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use DieMedialen\DmDeveloperlog\Utility\Developerlog;
 
 /**
@@ -23,11 +24,29 @@ use DieMedialen\DmDeveloperlog\Utility\Developerlog;
 class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {
     /**
+     * Create LocalConfiguration.php or export Configuration to $GLOBALS['TYPO3_CONF_VARS']
+     */
+    public static function setUpBeforeClass()
+    {
+        try {
+            GeneralUtility::makeInstance(ConfigurationManager::class)->createLocalConfigurationFromFactoryConfiguration();
+        } catch (\RuntimeException $rte) {
+            if ($rte->getCode() !== 1364836026) { // pretty hacky: 1364836026 means LocalConfiguration.php was already there
+                throw $rte;
+            }
+        }
+        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+            
+            GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+        } else {
+            GeneralUtility::makeInstance(ConfigurationManager::class)->exportConfiguration();
+        }
+    }
+
+    /**
      * @test
      */
     public function canInstanceDevlog()
     {
-        $this->setDummyExtensionConfiguration();
         $instance = new Developerlog();
         $this->assertNotNull($instance);
     }
@@ -37,26 +56,9 @@ class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
      */
     public function basicFunctionality()
     {
-        $this->setDummyExtensionConfiguration();
         $mock = $this->getAccessibleMock(Developerlog::class, ['createLogEntry']);
         $this->assertNull($mock->devLog(['severity' => -4]));
         $this->assertNull($mock->devLog(['extKey' => 'TEST']));
         $this->assertNull($mock->devLog(['severity' => 3]));
-    }
-
-    protected function setDummyExtensionConfiguration()
-    {
-        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
-            try {
-                GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ConfigurationManager')->createLocalConfigurationFromFactoryConfiguration();
-            } catch (\RuntimeException $rte) {
-                if ($rte->getCode() !== 1364836026) {
-                    throw $rte;
-                }
-            }
-            GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'] = serialize(['excludeKeys' => 'TEST']);
-        }
     }
 }
