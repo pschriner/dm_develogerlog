@@ -102,7 +102,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 
         $insertFields = $this->getBasicDeveloperLogInformation($logArray);
         if (!empty($this->extConf['includeCallerInformation'])) {
-            $callerData = $this->getCallerInformation(debug_backtrace(false));
+            $callerData = $this->getCallerInformation(debug_backtrace(0));
             $insertFields['location'] = $callerData['location'];
             $insertFields['line'] = $callerData['line'];
             $insertFields['system'] = $callerData['system'];
