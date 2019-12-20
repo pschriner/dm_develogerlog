@@ -14,12 +14,7 @@ It provides a backend module for easy access to those log entries.
 
 - Based on extbase & fluid
 - Tries to adhere to TYPO3 CMS UI standards
-- Supports 7.6 LTS and 8.7 LTS (and 6.2)
+- Supports 8.7 LTS and 9.5 LTS
 
 .. figure:: ../Images/Module/ModuleBootstrap.png
   :alt: TYPO3 7.6+ Backend.
-
-- There is a simplified but functionally equivalent backend module for TYPO3 6.2
-
-.. figure:: ../Images/Module/Module62.png
-  :alt: TYPO3 6.2 Backend.
