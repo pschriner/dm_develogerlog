@@ -13,6 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use DieMedialen\DmDeveloperlog\Utility\Developerlog;
 
 /**
@@ -26,7 +27,9 @@ class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
      */
     public function canInstanceDevlog()
     {
+        $this->setDummyExtensionConfiguration();
         $instance = new Developerlog();
+        $this->assertNotNull($instance);
     }
 
     /**
@@ -34,13 +37,20 @@ class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
      */
     public function basicFunctionality()
     {
-        $old = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'];
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'] = serialize(['excludeKeys' => 'TEST']);
+        $this->setDummyExtensionConfiguration();
         $mock = $this->getAccessibleMock(Developerlog::class, ['createLogEntry']);
         $this->assertNull($mock->devLog(['severity' => -4]));
         $this->assertNull($mock->devLog(['extKey' => 'TEST']));
-
-        $mock->expects($this->once())->method('createLogEntry')->will($this->returnValue(42));
         $this->assertNull($mock->devLog(['severity' => 3]));
+    }
+
+    protected function setDummyExtensionConfiguration()
+    {
+        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
+            GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ConfigurationManager')->createLocalConfigurationFromFactoryConfiguration();
+            GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+        } else {
+            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'] = serialize(['excludeKeys' => 'TEST']);
+        }
     }
 }

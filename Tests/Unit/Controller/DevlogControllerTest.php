@@ -27,5 +27,6 @@ class DevlogControllerTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
     public function canInstanceController()
     {
         $instance = new DevlogController();
+        $this->assertNotNull($instance);
     }
 }

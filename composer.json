@@ -31,7 +31,6 @@
     }
   },
   "replace": {
-    "dm_developerlog": "self.version",
     "typo3-ter/dm-developerlog": "self.version"
   },
   "config": {

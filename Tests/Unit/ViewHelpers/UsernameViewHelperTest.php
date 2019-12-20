@@ -13,7 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use DieMedialen\DmDeveloperlog\ViewHelpers\UsernameViewHelper;
+use DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid\UsernameViewHelper;
 
 /**
  * Tests for UsernameViewHelper

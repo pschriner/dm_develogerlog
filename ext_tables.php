@@ -20,6 +20,6 @@ if (TYPO3_MODE === 'BE') {
             ]
         );
     };
-    $boot($_EXTKEY);
+    $boot('dm_developerlog');
     unset($boot);
 }

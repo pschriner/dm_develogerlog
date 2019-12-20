@@ -35,7 +35,7 @@ class DeveloperlogWriter extends AbstractWriter
      *
      * @param \TYPO3\CMS\Core\Log\LogRecord $record
      */
-    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record): void
+    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record)
     {
         $insertFields = [
             'pid' => $this->getCurrentPageId(),

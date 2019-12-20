@@ -64,8 +64,8 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct(array $options = [])
     {
-        if (class_exists('\\TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
-            $this->extConf = GeneralUtility::makeInstance('\\TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->get('dm_developerlog');
+        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
+            $this->extConf = GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->get('dm_developerlog');
         } else {
             if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'])) {
                 $this->extConf = (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog']);
@@ -124,7 +124,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return array
      */
-    protected function getBasicDeveloperLogInformation($logArray)
+    protected function getBasicDeveloperLogInformation($logArray): array
     {
         $insertFields = [
             'pid' => $this->getCurrentPageId(),
@@ -144,13 +144,13 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $insertFields['fe_user'] = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
 
-        $insertFields['message'] = strip_tags($logArray['msg']);
+        $insertFields['message'] = strip_tags($logArray['msg'] ?? '');
 
         // There's no reason to have any markup in the extension key
-        $insertFields['extkey'] = strip_tags($logArray['extKey']);
+        $insertFields['extkey'] = strip_tags($logArray['extKey'] ?? '');
 
         // Severity can only be a number
-        $insertFields['severity'] = intval($logArray['severity']);
+        $insertFields['severity'] = intval($logArray['severity'] ?? -1);
         return $insertFields;
     }
 
@@ -239,7 +239,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Add a log entry
      */
-    protected function createLogEntry($insertFields): void
+    protected function createLogEntry($insertFields)
     {
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
             ->insert(

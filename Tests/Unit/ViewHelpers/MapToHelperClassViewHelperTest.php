@@ -13,7 +13,7 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use DieMedialen\DmDeveloperlog\ViewHelpers\MapToHelperClassViewHelper;
+use DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid\MapToHelperClassViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
