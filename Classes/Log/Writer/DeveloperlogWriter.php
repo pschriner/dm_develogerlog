@@ -68,7 +68,7 @@ class DeveloperlogWriter extends AbstractWriter
 
     /**
      * Check whether the source is system component
-     * 
+     *
      * @param string $component
      */
     protected function isSystemSource(string $component): bool
@@ -76,11 +76,13 @@ class DeveloperlogWriter extends AbstractWriter
         if (strpos($component, 'TYPO3\CMS') > -1) {
             return true;
         }
+
         return false;
     }
 
     /**
      * Add extra call data from the IntrospectionProcessor
+     * @param mixed $data
      */
     protected function getCallerData($data): array
     {
@@ -99,6 +101,7 @@ class DeveloperlogWriter extends AbstractWriter
         } else {
             $file = basename($file);
         }
+
         return [
             'location' => $file,
             'line' => (int)(isset($firstRecord['line']) ? $firstRecord['line'] : 0),
@@ -129,10 +132,11 @@ class DeveloperlogWriter extends AbstractWriter
                 $currentPageId = GeneralUtility::_GP('id') !== null ? (int)GeneralUtility::_GP('id') : 0;
             }
         }
+
         return (int)$currentPageId;
     }
 
-    protected function createLogEntry($insertFields)
+    protected function createLogEntry(array $insertFields)
     {
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
             ->insert(

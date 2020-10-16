@@ -17,7 +17,6 @@ use DieMedialen\DmDeveloperlog\Controller\DevlogController;
 
 /**
  * Tests for DevlogController
- *
  */
 class DevlogControllerTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /*
@@ -55,6 +56,7 @@ class UsernameViewHelper extends AbstractViewHelper
         $identifier = $backendOrFrontend . '-' . $uid;
 
         $userName = static::getUserName(!empty($arguments['backend']), $uid, $identifier);
+
         return htmlspecialchars($userName);
     }
 
@@ -79,6 +81,7 @@ class UsernameViewHelper extends AbstractViewHelper
             // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
             static::$usernameRuntimeCache[$identifier] = ($user === null) ? '' : $user->getUserName();
         }
+
         return static::$usernameRuntimeCache[$identifier];
     }
 }

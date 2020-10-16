@@ -76,6 +76,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if (count($and)) {
             return $query->matching(current($and))->execute();
         }
+
         return $this->findAll();
     }
 
@@ -126,6 +127,7 @@ class LogentryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         foreach ($rows as $row) {
             $values[$row[$field]] = $row[$field];
         }
+
         return array_combine(array_keys($values), array_keys($values));
     }
 

@@ -128,10 +128,10 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         return $this->objectManager->get(
             FlashMessage::class,
-           $this->translate('controller.log.flushed'),
-           $this->translate('controller.log.flushed.title'),
-           FlashMessage::OK,
-           true
+            $this->translate('controller.log.flushed'),
+            $this->translate('controller.log.flushed.title'),
+            FlashMessage::OK,
+            true
         );
     }
 
@@ -151,6 +151,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($vprintfParmeters != '' && !is_array($vprintfParmeters)) {
             $vprintfParmeters = [$vprintfParmeters];
         }
+
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'dm_developerlog', $vprintfParmeters);
     }
 }

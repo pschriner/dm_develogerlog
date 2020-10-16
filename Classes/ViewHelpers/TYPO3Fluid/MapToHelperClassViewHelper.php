@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /**
@@ -56,6 +57,7 @@ class MapToHelperClassViewHelper extends AbstractViewHelper
         if (!isset(self::$map[$severity])) {
             $severity = self::$defaultSeverity;
         }
+
         return self::$map[$severity];
     }
 }

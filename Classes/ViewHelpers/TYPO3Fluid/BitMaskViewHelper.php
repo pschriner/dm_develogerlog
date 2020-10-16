@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /**
@@ -63,6 +64,7 @@ class BitMaskViewHelper extends AbstractViewHelper
                 $masked[] = $v;
             }
         }
+
         return $masked;
     }
 }

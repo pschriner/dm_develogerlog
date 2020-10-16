@@ -17,7 +17,6 @@ use DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid\UsernameViewHelper;
 
 /**
  * Tests for UsernameViewHelper
- *
  */
 class UsernameViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
 {

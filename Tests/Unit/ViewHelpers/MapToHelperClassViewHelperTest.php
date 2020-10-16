@@ -18,7 +18,6 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Tests for MapToHelperClassViewHelper
- *
  */
 class MapToHelperClassViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
 {

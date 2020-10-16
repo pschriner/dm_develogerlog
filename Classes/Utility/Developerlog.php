@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 
 class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 {
-    /** @var string  */
+    /** @var string */
     protected $extKey = 'dm_developerlog';
 
     /** @var string */
@@ -151,6 +151,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 
         // Severity can only be a number
         $insertFields['severity'] = intval($logArray['severity'] ?? -1);
+
         return $insertFields;
     }
 
@@ -179,6 +180,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 $this->currentPageId = GeneralUtility::_GP('id') !== null ? (int)GeneralUtility::_GP('id') : 0;
             }
         }
+
         return $this->currentPageId;
     }
 
@@ -204,6 +206,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 } else {
                     $file = basename($file);
                 }
+
                 return [
                     'location' => $file,
                     'line' => $entry['line'],
@@ -211,6 +214,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 ];
             }
         }
+
         return [
             'location' => '--- unknown ---',
             'line' => 0,
@@ -231,13 +235,16 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
             }
+
             return $serializedData;
         }
+
         return '';
     }
 
     /**
      * Add a log entry
+     * @param mixed $insertFields
      */
     protected function createLogEntry($insertFields)
     {
@@ -250,7 +257,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Get the request id
-     * 
+     *
      * @return string
      */
     protected function getRequestIdFromBootstrapOrLogManager(): string
@@ -267,6 +274,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         if ($reflectedLogManager->hasProperty('requestId')) {
             $property = $reflectedLogManager->getProperty('requestId');
             $property->setAccessible(true);
+
             return $property->getValue($logManager);
         }
 

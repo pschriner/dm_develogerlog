@@ -13,13 +13,12 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use DieMedialen\DmDeveloperlog\Utility\Developerlog;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tests for Developerlog
- *
  */
 class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {
@@ -35,7 +34,7 @@ class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
                 throw $rte;
             }
         }
-        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+            
+        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
             GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
         } else {
             GeneralUtility::makeInstance(ConfigurationManager::class)->exportConfiguration();
