@@ -1,4 +1,4 @@
-.table > tbody > tr > td.zeroPadding {
+#dm-developerlog-list tr td.zeroPadding {
 	padding: 0 !important;
 	border-top:0;
 }

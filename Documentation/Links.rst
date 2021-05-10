@@ -15,7 +15,7 @@ Links
 	https://typo3.org/extensions/repository/view/dm_developerlog
 
 :Bug Tracker:
-	https://forge.typo3.org/projects/extension-dm_developerlog/issues
+	https://github.com/pschriner/dm_developerlog/issues
 
 :Git Repository:
 	https://github.com/pschriner/dm_develogerlog

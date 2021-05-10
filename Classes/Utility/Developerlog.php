@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\Utility;
 
 /*
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -13,16 +14,20 @@ namespace DieMedialen\DmDeveloperlog\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 
 class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 {
-    /** @var string $extkey */
+    /** @var string */
     protected $extKey = 'dm_developerlog';
 
+    /** @var string */
     protected $logTable = 'tx_dmdeveloperlog_domain_model_logentry';
 
-    /** @var array $extConf */
+    /** @var array */
     protected $extConf = [
         'minLogLevel' => 1,
         'excludeKeys' => 'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication, TYPO3\CMS\Backend\Template\DocumentTemplate, extbase',
@@ -30,18 +35,19 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
         'includeCallerInformation' => 1,
     ];
 
-    /** @var string $request_id */
+    /** @var string */
     protected $request_id = '';
 
-    /** @var int $request_type */
+    /** @var int */
     protected $request_type = 0;
 
-    /** @var array $excludeKeys */
+    /** @var array */
     protected $excludeKeys = [];
 
     /** @var int $currentPageId */
     protected $currentPageId = null;
 
+    /** @var string */
     protected $systemSearch = '/sysext/';
 
     protected $systemSearchLength = 8;
@@ -51,28 +57,21 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
     protected $extSearchLength = 15;
 
     /**
-     * @var array $requestTypeMap Sad duplicate from \TYPO3\CMS\Core\Core\Bootstrap
-     */
-    protected $requestTypeMap = [
-        1 => 'TYPO3_REQUESTTYPE_FE',
-        2 => 'TYPO3_REQUESTTYPE_BE',
-        4 => 'TYPO3_REQUESTTYPE_CLI',
-        8 => 'TYPO3_REQUESTTYPE_AJAX',
-        16 => 'TYPO3_REQUESTTYPE_INSTALL',
-    ];
-
-    /**
      * Constructor
      * The constructor just reads the extension configuration and stores it in a member variable
+     *
+     * @param array $options
      */
-    public function __construct()
+    public function __construct(array $options = [])
     {
-        $extConf = [];
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey])) {
-            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
+            $this->extConf = GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->get('dm_developerlog');
+        } else {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'])) {
+                $this->extConf = (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog']);
+            }
         }
-        $this->extConf = array_merge($this->extConf, $extConf);
-        $this->request_id = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId();
+        $this->request_id = $this->getRequestIdFromBootstrapOrLogManager();
         $this->request_type = TYPO3_REQUESTTYPE;
         $this->excludeKeys = GeneralUtility::trimExplode(',', $this->extConf['excludeKeys'], true);
     }
@@ -87,7 +86,6 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      * but anything but a resource should work
      *
      * @param array $logArray : log data array
-     * @return void
      */
     public function devLog($logArray)
     {
@@ -104,14 +102,17 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
 
         $insertFields = $this->getBasicDeveloperLogInformation($logArray);
         if (!empty($this->extConf['includeCallerInformation'])) {
-            $callerData = $this->getCallerInformation(debug_backtrace(false));
+            $callerData = $this->getCallerInformation(debug_backtrace(0));
             $insertFields['location'] = $callerData['location'];
             $insertFields['line'] = $callerData['line'];
             $insertFields['system'] = $callerData['system'];
         }
         if ($this->extConf['dataCap'] !== 0 && isset($logArray['dataVar']) && !is_resource($logArray['dataVar'])) {
-            $insertFields['data_var'] = substr($this->getExtraData($logArray['dataVar']), 0,
-                (int)$this->extConf['dataCap']);
+            $insertFields['data_var'] = substr(
+                $this->getExtraData($logArray['dataVar']),
+                0,
+                (int)$this->extConf['dataCap']
+            );
         }
         $this->createLogEntry($insertFields);
     }
@@ -123,11 +124,12 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return array
      */
-    protected function getBasicDeveloperLogInformation($logArray)
+    protected function getBasicDeveloperLogInformation($logArray): array
     {
         $insertFields = [
             'pid' => $this->getCurrentPageId(),
             'crdate' => microtime(true),
+            'tstamp' => time(),
             'request_id' => $this->request_id,
             'request_type' => $this->request_type,
             'line' => 0,
@@ -142,13 +144,14 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $insertFields['fe_user'] = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
 
-        $insertFields['message'] = strip_tags($logArray['msg']);
+        $insertFields['message'] = strip_tags($logArray['msg'] ?? '');
 
         // There's no reason to have any markup in the extension key
-        $insertFields['extkey'] = strip_tags($logArray['extKey']);
+        $insertFields['extkey'] = strip_tags($logArray['extKey'] ?? '');
 
         // Severity can only be a number
-        $insertFields['severity'] = intval($logArray['severity']);
+        $insertFields['severity'] = intval($logArray['severity'] ?? -1);
+
         return $insertFields;
     }
 
@@ -166,15 +169,18 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             $this->currentPageId = $GLOBALS['TSFE']->id ?: 0;
         } else {
             $singletonInstances = GeneralUtility::getSingletonInstances();
-            if (isset($singletonInstances[\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class])) { // lucky us, that guy is clever
-                $backendConfigurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class));
+            if (isset($singletonInstances[BackendConfigurationManager::class])) { // lucky us, that guy is clever
+                $backendConfigurationManager = GeneralUtility::makeInstance(
+                    BackendConfigurationManager::class,
+                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class)
+                );
                 // getDefaultBackendStoragePid() because someone made getCurrentPageId() protected
                 $this->currentPageId = $backendConfigurationManager->getDefaultBackendStoragePid();
             } else {  // simplified backend check
                 $this->currentPageId = GeneralUtility::_GP('id') !== null ? (int)GeneralUtility::_GP('id') : 0;
             }
         }
+
         return $this->currentPageId;
     }
 
@@ -200,6 +206,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 } else {
                     $file = basename($file);
                 }
+
                 return [
                     'location' => $file,
                     'line' => $entry['line'],
@@ -207,6 +214,7 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
                 ];
             }
         }
+
         return [
             'location' => '--- unknown ---',
             'line' => 0,
@@ -227,32 +235,49 @@ class Developerlog implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($this->extConf['dataCap'])) {
                 return substr($serializedData, 0, min(strlen($serializedData), (int)$this->extConf['dataCap']));
             }
+
             return $serializedData;
         }
+
         return '';
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * Add a log entry
+     * @param mixed $insertFields
      */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
     protected function createLogEntry($insertFields)
     {
-        if (class_exists(\TYPO3\CMS\Core\Database\ConnectionPool::class)) {
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getConnectionForTable($this->logTable)
-                ->insert(
-                    $this->logTable,
-                    $insertFields
-                );
-        } else {
-            $db = $this->getDatabaseConnection();
-            if ($db !== null) { // this can happen when devLog is called to early in the bootstrap process
-                @$db->exec_INSERTquery($this->logTable, $insertFields);
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->logTable)
+            ->insert(
+                $this->logTable,
+                $insertFields
+            );
+    }
+
+    /**
+     * Get the request id
+     *
+     * @return string
+     */
+    protected function getRequestIdFromBootstrapOrLogManager(): string
+    {
+        if (\is_callable('\TYPO3\CMS\Core\Bootstrap::getInstance')) {
+            $bootstrap = Bootstrap::getInstance();
+            if (method_exists($bootstrap, 'getRequestId')) {
+                return Bootstrap::getInstance()->getRequestId();
             }
         }
+        // Thank you TYPO3 9+ and the impossibe task to get the global request.id
+        $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        $reflectedLogManager = new \ReflectionClass($logManager);
+        if ($reflectedLogManager->hasProperty('requestId')) {
+            $property = $reflectedLogManager->getProperty('requestId');
+            $property->setAccessible(true);
+
+            return $property->getValue($logManager);
+        }
+
+        return 'fake-' . substr(md5(uniqid('', true)), 0, 13);
     }
 }

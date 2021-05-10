@@ -1,8 +1,9 @@
 <?php
-namespace DieMedialen\DmDeveloperlog\ViewHelpers;
+declare(strict_types=1);
+namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /**
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -13,10 +14,14 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class MapToHelperClassViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     protected static $defaultSeverity = 0;
 
     protected static $map = [
@@ -27,19 +32,9 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
         3 => 'danger',
     ];
 
-    /**
-     * @param int $severity
-     * @return string bootstrap color mapped value
-     */
-    public function render($severity = -2)
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'severity' => $severity,
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        $this->registerArgument('severity', 'int', 'Log level severity (-1 to 3).', false);
     }
 
     /**
@@ -62,6 +57,7 @@ class MapToHelperClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
         if (!isset(self::$map[$severity])) {
             $severity = self::$defaultSeverity;
         }
+
         return self::$map[$severity];
     }
 }

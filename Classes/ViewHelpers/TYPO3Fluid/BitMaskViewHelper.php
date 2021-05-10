@@ -1,8 +1,9 @@
 <?php
-namespace DieMedialen\DmDeveloperlog\ViewHelpers;
+declare(strict_types=1);
+namespace DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid;
 
 /**
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -13,26 +14,18 @@ namespace DieMedialen\DmDeveloperlog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements CompilableInterface
+class BitMaskViewHelper extends AbstractViewHelper
 {
-    /**
-     * @param int $value
-     * @param array $mask
-     * @return string
-     */
-    public function render($value = null, $mask = null)
+    use CompileWithRenderStatic;
+
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'value' => $value,
-                'mask' => $mask,
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        $this->registerArgument('value', 'int', 'The value to be bitmasked', false);
+        $this->registerArgument('mask', 'array|string', 'The bit mask', false);
     }
 
     /**
@@ -71,6 +64,7 @@ class BitMaskViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
                 $masked[] = $v;
             }
         }
+
         return $masked;
     }
 }

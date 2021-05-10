@@ -4,3 +4,29 @@ module.tx_dmdeveloperlog.settings {
 		maximumNumberOfLinks = 20
 	}
 }
+
+module.tx_dmdeveloperlog {
+	view {
+		templateRootPaths {
+			0 = EXT:dm_developerlog/Resources/Private/Templates/
+		}
+
+		partialRootPaths {
+			0 = EXT:dm_developerlog/Resources/Private/Partials/
+		}
+
+		layoutRootPaths {
+			0 = EXT:dm_developerlog/Resources/Private/Layouts/
+		}
+	}
+}
+
+[compatVersion = 8.7.0]
+module.tx_dmdeveloperlog {
+	view {
+		partialRootPaths {
+			1 = EXT:dm_developerlog/Resources/Private/Partials/FluidTYPO3/
+		}
+	}
+}
+[global]

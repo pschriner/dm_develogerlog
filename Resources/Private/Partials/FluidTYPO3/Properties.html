@@ -1,10 +1,11 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 {namespace devlog=DieMedialen\DmDeveloperlog\ViewHelpers}
 <dl>
 	<dt><f:translate key="module.list.key" /></dt>
 	<dd>{logEntry.extkey}</dd>
 
 	<dt><f:translate key="module.list.requestType" /></dt>
-	<dd><f:for each="{devlog:bitMask(value:logEntry.requestType)}" as="requestType">
+	<dd><f:for each="{devlog:TYPO3Fluid.bitMask(value:logEntry.requestType)}" as="requestType">
 		<f:translate key="module.list.requestType.{requestType}" />
 	</f:for><dd>
 
@@ -16,15 +17,16 @@
 	<dt>{logEntry.workspaceUid}</dt>
 	</f:if>
 	
-	<f:if condition="{devlog:username(uid: logEntry.beUser)}">
+	<f:if condition="{devlog:TYPO3Fluid.username(uid: logEntry.beUser)}">
 	<dt><f:translate key="module.list.beUser" /></dt>
 	<dd>
-		<devlog:username uid="{logEntry.beUser}" />
-	</dd>
+		<be:avatar backendUser="{logEntry.beUser}" showIcon="true" />
+		<devlog:TYPO3Fluid.username uid="{logEntry.beUser}" />
+    </dd>
 	</f:if>
 
-	<f:if condition="{devlog:username(uid: logEntry.feUser, backend: 0)}">
+	<f:if condition="{devlog:TYPO3Fluid.username(uid: logEntry.feUser, backend: false)}">
 	<dd><f:translate key="module.list.feUser" /></dd>
-	<dt><devlog:username uid="{logEntry.feUser}" backend="0" /></dt>
+	<dt><devlog:TYPO3Fluid.username uid="{logEntry.feUser}" backend="0" /></dt>
 	</f:if>
 </dl>

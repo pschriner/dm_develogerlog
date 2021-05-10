@@ -10,9 +10,9 @@
 Need Support?
 =============
 
-Forge
+Github
 -----
-Go to https://forge.typo3.org/projects/extension-dm_developerlog and you might get some support.
+Go to https://github.com/pschriner/dm_developerlog/issues and you might get some support.
 
 Note on "Missing" features
 --------------------------

@@ -2,7 +2,7 @@
 namespace DieMedialen\DmDeveloperlog\Tests\Unit\Utility;
 
 /**
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -14,19 +14,40 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use DieMedialen\DmDeveloperlog\Utility\Developerlog;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tests for Developerlog
- *
  */
 class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {
+    /**
+     * Create LocalConfiguration.php or export Configuration to $GLOBALS['TYPO3_CONF_VARS']
+     */
+    public static function setUpBeforeClass()
+    {
+        try {
+            GeneralUtility::makeInstance(ConfigurationManager::class)->createLocalConfigurationFromFactoryConfiguration();
+        } catch (\RuntimeException $rte) {
+            if ($rte->getCode() !== 1364836026) { // pretty hacky: 1364836026 means LocalConfiguration.php was already there
+                throw $rte;
+            }
+        }
+        if (class_exists('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')) { // v9+
+            GeneralUtility::makeInstance('TYPO3\CMS\\Core\\Configuration\\ExtensionConfiguration')->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+        } else {
+            GeneralUtility::makeInstance(ConfigurationManager::class)->exportConfiguration();
+        }
+    }
+
     /**
      * @test
      */
     public function canInstanceDevlog()
     {
         $instance = new Developerlog();
+        $this->assertNotNull($instance);
     }
 
     /**
@@ -34,13 +55,9 @@ class DeveloperlogTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
      */
     public function basicFunctionality()
     {
-        $old = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'];
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dm_developerlog'] = serialize(['excludeKeys' => 'TEST']);
         $mock = $this->getAccessibleMock(Developerlog::class, ['createLogEntry']);
         $this->assertNull($mock->devLog(['severity' => -4]));
         $this->assertNull($mock->devLog(['extKey' => 'TEST']));
-
-        $mock->expects($this->once())->method('createLogEntry')->will($this->returnValue(42));
         $this->assertNull($mock->devLog(['severity' => 3]));
     }
 }

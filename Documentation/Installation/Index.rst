@@ -34,10 +34,6 @@ Get it via Composer
 
 Require the package ``diemedialen/dm-developerlog``.
 
-.. important::
-
-   This extension has never been tested with TYPO3 6.2 and composer. Good luck!
-
 Get it from github
 ------------------
 

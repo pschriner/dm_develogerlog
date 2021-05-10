@@ -13,12 +13,24 @@ Extension to capture development log entries.
 
 Open the TYPO3 module "**Extensions**". Select "**Get Extensions**". Search for and install extension key "**dm_developerlog**". Activate the "**dm_developerlog**" extension within in the installed extensions list.
 
-## Activate logging
+## Activate logging (devLog)
 
 For the ``dm_developerlog`` extension to work you have to enable TYPO3s developer logging mechanism.
 
 Visit the install tool and search for **dlog**. Enable suitable options.
 
+## LogWriter (Logging API)
+
+This extension provides a suitable LogWriter class:
+
+``\DieMedialen\DmDeveloperlog\Log\Writer\DeveloperlogWriter``
+
+It is most useful when combined with the IntrospectionProcessor.
+
+**Note**: None of the extension configuration is used when using the LogWriter as the TYPO3 logging API provides suitable options.
+
 # Special thanks
 
 To the original authors of ``devlog``.
+
+To @IchHabRecht for showing me a sane way to maintain this extension  (travis config)

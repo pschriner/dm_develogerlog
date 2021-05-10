@@ -9,17 +9,18 @@
 
 What does it do?
 ================
+
 This extension implements hooks into TYPO3 CMS devlog hook to capture devlog entries.
 It provides a backend module for easy access to those log entries.
 
 - Based on extbase & fluid
 - Tries to adhere to TYPO3 CMS UI standards
-- Supports 7.6 LTS and 8.0 Dev (and 6.2)
+- Supports 8.7 LTS and 9.5 LTS and 10.4 LTS
 
 .. figure:: ../Images/Module/ModuleBootstrap.png
   :alt: TYPO3 7.6+ Backend.
 
-- There is a simplified but functionally equivalent backend module for TYPO3 6.2
+Table Garbage Collector Task
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. figure:: ../Images/Module/Module62.png
-  :alt: TYPO3 6.2 Backend.
+When a table garbage collector task is configured this extension will hook into it's configuration to automatically delete old data.

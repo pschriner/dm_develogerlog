@@ -2,7 +2,7 @@
 namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
 
 /**
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -13,12 +13,11 @@ namespace DieMedialen\DmDeveloperlog\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use DieMedialen\DmDeveloperlog\ViewHelpers\MapToHelperClassViewHelper;
+use DieMedialen\DmDeveloperlog\ViewHelpers\TYPO3Fluid\MapToHelperClassViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Tests for MapToHelperClassViewHelper
- *
  */
 class MapToHelperClassViewHelperTest extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
 {

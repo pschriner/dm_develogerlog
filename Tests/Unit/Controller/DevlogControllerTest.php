@@ -2,7 +2,7 @@
 namespace DieMedialen\DmDeveloperlog\Tests\Unit\Controller;
 
 /**
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -17,7 +17,6 @@ use DieMedialen\DmDeveloperlog\Controller\DevlogController;
 
 /**
  * Tests for DevlogController
- *
  */
 class DevlogControllerTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {
@@ -27,5 +26,6 @@ class DevlogControllerTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
     public function canInstanceController()
     {
         $instance = new DevlogController();
+        $this->assertNotNull($instance);
     }
 }

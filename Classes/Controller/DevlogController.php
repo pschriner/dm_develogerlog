@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace DieMedialen\DmDeveloperlog\Controller;
 
 /**
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the dm_developerlog project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -13,7 +14,9 @@ namespace DieMedialen\DmDeveloperlog\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -28,16 +31,50 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $extkeyOptions = [];
 
     /**
-     * @var \DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository
+     * @var LogentryRepository
      */
     protected $logEntryRepository;
 
     /**
-     * @param \DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository
+     * @param LogentryRepository $logEntryRepository
      */
-    public function injectLogentryRepository(\DieMedialen\DmDeveloperlog\Domain\Repository\LogentryRepository $logEntryRepository)
+    public function injectLogentryRepository(LogentryRepository $logEntryRepository)
     {
         $this->logEntryRepository = $logEntryRepository;
+    }
+
+    /**
+     * Backend Template Container
+     *
+     * @var string
+     */
+    protected $defaultViewObjectName = \TYPO3\CMS\Backend\View\BackendTemplateView::class;
+
+    /**
+     * Set up the doc header properly here
+     *
+     * @param ViewInterface $view
+     */
+    protected function initializeView(ViewInterface $view)
+    {
+        /** @var BackendTemplateView $view */
+        parent::initializeView($view);
+        if ($this->actionMethodName == 'indexAction') {
+            //$this->generateMenu();
+            //$this->registerDocheaderButtons();
+            $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        }
+        if ($view instanceof \TYPO3\CMS\Backend\View\BackendTemplateView) {
+            $pageRenderer = $view->getModuleTemplate()->getPageRenderer();
+            $pageRenderer->loadJquery();
+            $pageRenderer->loadRequireJsModule('bootstrap');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DocumentHeader');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/SplitButtons');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
+            $pageRenderer->addCssFile('EXT:dm_developerlog/Resources/Public/Css/Developerlog.css');
+        }
     }
 
     public function initializeIndexAction()
@@ -53,8 +90,6 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint
      *
      * @ignorevalidation $constraint
-     *
-     * @return void
      */
     public function indexAction(\DieMedialen\DmDeveloperlog\Domain\Model\Constraint $constraint = null)
     {
@@ -68,7 +103,6 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * Delete all log entries
-     * @return void
      */
     public function flushAction()
     {
@@ -94,10 +128,10 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         return $this->objectManager->get(
             FlashMessage::class,
-           $this->translate('controller.log.flushed'),
-           $this->translate('controller.log.flushed.title'),
-           FlashMessage::OK,
-           true
+            $this->translate('controller.log.flushed'),
+            $this->translate('controller.log.flushed.title'),
+            FlashMessage::OK,
+            true
         );
     }
 
@@ -117,6 +151,7 @@ class DevlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($vprintfParmeters != '' && !is_array($vprintfParmeters)) {
             $vprintfParmeters = [$vprintfParmeters];
         }
+
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'dm_developerlog', $vprintfParmeters);
     }
 }
