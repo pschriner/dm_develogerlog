@@ -67,20 +67,6 @@ class DeveloperlogWriter extends AbstractWriter
     }
 
     /**
-     * Check whether the source is system component
-     *
-     * @param string $component
-     */
-    protected function isSystemSource(string $component): bool
-    {
-        if (strpos($component, 'TYPO3\CMS') > -1) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Add extra call data from the IntrospectionProcessor
      * @param mixed $data
      */

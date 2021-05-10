@@ -69,11 +69,11 @@ jobs:
   fast_finish: true
   include:
     - stage: test
-      php: 7.2
+      php: 7.4
       env: TYPO3=dev-master
     - stage: test
-      php: 7.2
-      env: TYPO3=~10.2.0
+      php: 7.3
+      env: TYPO3=^10.4
     - stage: test
       php: 7.2
       env: TYPO3=^9.5
@@ -128,7 +128,7 @@ jobs:
       script:
         - >
           if [ -d "Tests" ]; then
-            for TYPO3 in "^8.7" "^9.5" "~10.2.0" "dev-master"; do
+            for TYPO3 in "^8.7" "^9.5" "^10.4" "dev-master"; do
 
               echo;
               echo "Running TYPO3 version $TYPO3";
